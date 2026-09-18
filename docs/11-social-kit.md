@@ -19,7 +19,7 @@ platform; if `goodwalkapp` is gone on TikTok, use `getgoodwalk` everywhere.
 | Reddit | u/goodwalkapp | Value-first posts. See section 7; most dog subs ban promotion outright. | |
 | Product Hunt | maker profile under your own name | Launch day listing. | Set up a personal maker account now; the product page comes at launch. |
 
-Also `press@goodwalk.app` → it's covered by the catch-all already, once the domain is bought
+Also `press@getgoodwalk.app` → it's covered by the catch-all already, once the domain is bought
 and Email Routing is on.
 
 ## 2. Profile
@@ -28,7 +28,7 @@ and Email Routing is on.
 **Banner (X, YouTube):** `docs/brand/banner-1500x500.png` (cream, the ring mark, "Good Walk", "Every dog
 deserves a good walk.").
 **First post image:** `docs/brand/post-reveal.png` ("A dog like Rex needs about 60 min a day. Most dogs his size get 22.").
-**Link:** `https://goodwalk.app` everywhere. No Linktree; one link, one action.
+**Link:** `https://getgoodwalk.app` everywhere. No Linktree; one link, one action.
 **Name field:** `Good Walk` on all platforms. Not "Good Walk App", not "Good Walk – Dog Tracker".
 
 **Bios (each fits its platform's limit):**
@@ -36,7 +36,7 @@ deserves a good walk.").
 - TikTok (80 chars): `Every dog deserves a good walk. One tap a day. iPhone app, out this October.`
 - Instagram (150 chars): `Every dog deserves a good walk.\nA daily walk target for your dog, a streak with their face on it.\nNo collar, no map, no account ↓`
 - X (160 chars): `Your dog needs a walk every day. Good Walk makes it a streak. One-tap dog walk tracker for iPhone. No collar, no map, no account. Building in public.`
-- YouTube (1000 chars, use the short one): `Good Walk gives your dog a daily walk target and turns it into a streak. One tap from the reminder, your dog's photo in the ring, a card at every milestone, nothing leaves your phone. Walk targets are general guidelines, not veterinary advice. Free 7-day trial, then $24.99/yr. goodwalk.app`
+- YouTube (1000 chars, use the short one): `Good Walk gives your dog a daily walk target and turns it into a streak. One tap from the reminder, your dog's photo in the ring, a card at every milestone, nothing leaves your phone. Walk targets are general guidelines, not veterinary advice. Free 7-day trial, then $24.99/yr. getgoodwalk.app`
 - Threads: same as Instagram.
 - Reddit: `Building Good Walk, a one-tap dog walk streak app for iPhone. No collar, no GPS, no account.`
 
@@ -46,7 +46,7 @@ Video #1 from the launch list (dog at the door → notification → tap Walked �
 Caption:
 
 > One tap. That's the whole habit.
-> Good Walk gives your dog a daily walk target and makes it a streak. Their face in the ring, a card every milestone. No collar, no map, no account. On iPhone for Walk Your Dog Week. goodwalk.app for early access.
+> Good Walk gives your dog a daily walk target and makes it a streak. Their face in the ring, a card every milestone. No collar, no map, no account. On iPhone for Walk Your Dog Week. getgoodwalk.app for early access.
 > #walkyourdogweek #dogtok #dogwalk #dogsoftiktok #doglife
 
 ## 4. Two-week posting schedule (starts Sep 24, one week before Walk Your Dog Week)
@@ -97,12 +97,12 @@ Hashtag set (pick 4–5 per post, don't paste all): `#walkyourdogweek #walkyourd
 - "So it's just a timer?" → "Yep. A timer with a reminder you can answer without opening it, a target for your actual dog, and their face on the streak. That's what makes people keep going."
 - "Why not Strava / Apple Fitness?" → "Great for you. They don't know your dog exists. This is the dog's streak, not yours."
 - "Why not a Fi / Tractive?" → "Different job. Those find a lost dog. This makes sure the walk happens. No collar, no GPS."
-- "Android?" → "Not yet. Email hello@goodwalk.app and you'll be first to hear."
+- "Android?" → "Not yet. Email hello@getgoodwalk.app and you'll be first to hear."
 - "Is 60 minutes right for my dog?" → "It's a general guideline from size, breed type and age, and you can change it. It's not vet advice; your vet knows your dog, especially puppies, seniors and flat-faced breeds."
 - "Does it track my location?" → "No. Distance comes from your phone's step sensor. No GPS, no map, no account, nothing leaves your phone."
 - "Multiple dogs?" → "One dog in v1. It's the most-asked thing already; noted."
-- "Link?" → "goodwalk.app" (never "link in bio")
-- "When?" → "Before Oct 1. Early access at goodwalk.app."
+- "Link?" → "getgoodwalk.app" (never "link in bio")
+- "When?" → "Before Oct 1. Early access at getgoodwalk.app."
 
 ## 7. Reddit (value first, product second)
 

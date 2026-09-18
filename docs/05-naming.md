@@ -40,14 +40,14 @@ App Store title: `Good Walk: Dog Walk Streak`. Subtitle: `Daily walk goal for yo
 
 ## Domain
 
-`goodwalk.app` is the choice. **Not bought yet** (Nick buys it at Cloudflare Registrar). A
+`getgoodwalk.app` is the choice (the exact-match `goodwalk.app` turned out to be taken). **Not bought yet** (Nick buys it at Cloudflare Registrar). A
 registry "not found" is a strong signal, not a guarantee: a name can still be premium-priced or
 reserved. Check the price at checkout. If it's gone or premium, fall back in this order:
 
 | Candidate | Verdict |
 |---|---|
-| **goodwalk.app** | **Chosen.** Exact match, shortest, matches the bundle ID. |
-| getgoodwalk.app | Standard "get<name>" pattern; matches the fallback handle. |
+| goodwalk.app | **Taken.** Registered 15 Nov 2025 (Squarespace); hosts "GoodWalk.app", a golf-course walkability guide in alpha. Different category, but watch for their App Store launch. |
+| **getgoodwalk.app** | **Chosen.** Standard "get<name>" pattern. Registry RDAP lookup on 18 Sep 2026 returned not-registered. Matches the bundle ID. |
 | goodwalkapp.com | Fine as a redirect, weak as the primary. |
 | agoodwalk.app | Reads nicely, but one more thing to spell out loud. |
 
@@ -56,11 +56,11 @@ by then and nobody sees them.
 
 ## Done / still to do
 
-- Domain: **goodwalk.app**, to be bought at Cloudflare (grab `goodwalk.com` too if it's cheap
+- Domain: **getgoodwalk.app**, to be bought at Cloudflare (grab `goodwalk.com` too if it's cheap
   and redirect it; don't pay a premium for it).
-  Bundle IDs are `app.goodwalk.goodwalk` and `app.goodwalk.goodwalk.widgets`; App Group
-  `group.app.goodwalk.goodwalk`. SKU `goodwalk-ios`.
-- Support address: `support@goodwalk.app`, plus `hello@goodwalk.app` (Email Routing steps in
+  Bundle IDs are `app.getgoodwalk.goodwalk` and `app.getgoodwalk.goodwalk.widgets`; App Group
+  `group.app.getgoodwalk.goodwalk`. SKU `goodwalk-ios`.
+- Support address: `support@getgoodwalk.app`, plus `hello@getgoodwalk.app` (Email Routing steps in
   the runbook).
 - Still to do: buy the domain; claim @goodwalkapp on TikTok and Instagram (fallback:
   @getgoodwalk); search "Good Walk" on the App Store once more on a phone before submission;

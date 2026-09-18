@@ -2,7 +2,7 @@ import Foundation
 
 /// Constants shared between the app and the widget extension.
 enum AppGroup {
-    static let identifier = "group.app.goodwalk.goodwalk"
+    static let identifier = "group.app.getgoodwalk.goodwalk"
 
     /// UserDefaults suite shared across the app and its extensions.
     static var defaults: UserDefaults {

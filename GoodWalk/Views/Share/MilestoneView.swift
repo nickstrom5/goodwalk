@@ -57,7 +57,7 @@ struct MilestoneView: View {
             ConfettiView().ignoresSafeArea()
         }
         .sheet(item: $shareImage) { image in
-            ShareSheet(items: [image, "\(streak) days of walks in a row with \(dog.displayName). goodwalk.app"])
+            ShareSheet(items: [image, "\(streak) days of walks in a row with \(dog.displayName). getgoodwalk.app"])
         }
     }
 
@@ -112,7 +112,7 @@ struct ShareTotalsView: View {
             .padding(.bottom, 8)
         }
         .sheet(item: $shareImage) { image in
-            ShareSheet(items: [image, "\(card.headline). \(card.detail). goodwalk.app"])
+            ShareSheet(items: [image, "\(card.headline). \(card.detail). getgoodwalk.app"])
         }
     }
 }
