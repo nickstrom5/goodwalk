@@ -1,7 +1,7 @@
 # Good Walk — notes for Claude Code sessions
 
-iOS app (SwiftUI, iOS 17+). Read `README.md` and `docs/01-strategy.md` first.
-(Repo folder is `dogwalk/`, the working slug. The brand is Good Walk; see `docs/05-naming.md`.)
+iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first.
+(Repo folder is `dogwalk/`, the working slug. The brand is Good Walk; see `playbook/05-naming.md`.)
 
 ## Build
 - The Xcode project is **generated**: `xcodegen generate` (brew install xcodegen). Never commit `GoodWalk.xcodeproj`.
@@ -13,7 +13,20 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `docs/01-strategy.md` first.
   to open one screen with seeded data (`GoodWalk/App/ScreenshotMode.swift`). `scripts/capture-screenshots.sh` and the
   `Screenshots` workflow capture all of them and write PNGs to `docs/screenshots/`. Look there before and after UI changes.
 - Brand images: `swift scripts/make-brand.swift` regenerates the app icon, the illustrated sample dog
-  (`SampleDog`, used only by screenshot mode) and `docs/brand/`.
+  (`SampleDog`, used only by screenshot mode), `docs/brand/`, and the site's `docs/og.png`, `favicon-32.png`,
+  `apple-touch-icon.png`, `icon-192.png` and `icon-512.png`.
+
+## Public vs private
+- `docs/` is the **public** website: GitHub Pages serves every file in it at getgoodwalk.app. Only site files go
+  there (HTML, `robots.txt`, `sitemap.xml`, `site.webmanifest`, images, `CNAME`, `.nojekyll`). Never put notes in it.
+- Internal notes (strategy, launch, outreach, sources: the numbered `NN-*.md` files) live in `playbook/`, which is
+  not served. Links from a note to a site asset are `../docs/...`.
+- The site is static HTML with inline CSS: no build step, no frameworks, no third-party scripts, no tracking. Every
+  page has its own title, description, canonical, Open Graph tags and JSON-LD; the FAQ JSON-LD must mirror the
+  visible FAQ text exactly. New page → add it to `docs/sitemap.xml` and the footer nav on every page.
+- Every number on the site must match `playbook/12-sources.md` (§4b lists where each sits) and prices must match
+  `Products.storekit`. The calculator on `docs/how-much-exercise-does-my-dog-need.html` is `WalkPlan` in JavaScript;
+  change one and change the other.
 
 ## Runtime notes
 - No restricted entitlements. Only App Groups (`group.app.getgoodwalk.goodwalk`) for the widget.
@@ -32,12 +45,12 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `docs/01-strategy.md` first.
 - StoreKit uses `GoodWalk/Resources/Products.storekit`; product IDs `goodwalk.yearly`, `goodwalk.monthly`, `goodwalk.lifetime`.
   `SIMCTL_CHILD_GOODWALK_FORCE_PRO=1` unlocks Pro in debug builds.
 - All stats are derived (`Stats.compute`) from the walk log + the target. Never store a streak; recompute it.
-- The recommendation math is `WalkPlan` and nothing else. Its tables are mirrored in `docs/01-strategy.md`
-  and sourced in `docs/12-sources.md`. A new number about dogs, owners or competitors needs a row there first.
+- The recommendation math is `WalkPlan` and nothing else. Its tables are mirrored in `playbook/01-strategy.md`
+  and sourced in `playbook/12-sources.md`. A new number about dogs, owners or competitors needs a row there first.
 
 ## Conventions
 - One core loop, no feature creep: onboarding → paywall → daily walk → milestone card. New features need a line in
-  `docs/01-strategy.md` explaining which funnel metric they move.
+  `playbook/01-strategy.md` explaining which funnel metric they move.
 - Every funnel step logs an `AnalyticsEvent`. Add events there, never ad-hoc strings. PostHog is the sink
   when `Config.postHogKey` is set; keep it anonymous (no `identify`, no replay).
 - Copy lives in the views. Short, direct, warm, never guilt-tripping. A missed day is a missed day, not a bad owner.

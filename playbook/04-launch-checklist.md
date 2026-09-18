@@ -3,12 +3,12 @@
 ## Day 1 (do these before writing another line of code)
 
 - [ ] Buy `getgoodwalk.app` at Cloudflare Registrar (not bought yet as of 18 Sep 2026). Then run
-      the runbook in `docs/10-site-and-email-runbook.md` (or
+      the runbook in `playbook/10-site-and-email-runbook.md` (or
       `CF_TOKEN=… GITHUB_TXT_VALUE=… bash scripts/cloudflare-setup.sh`).
 - [ ] Create the App IDs `app.getgoodwalk.goodwalk` and `app.getgoodwalk.goodwalk.widgets` in the
       Apple Developer portal (matches `project.yml`). Enable **App Groups**
       (`group.app.getgoodwalk.goodwalk`) on both.
-- [ ] App Store Connect (full walkthrough in `docs/09-app-store-connect.md`): create the app,
+- [ ] App Store Connect (full walkthrough in `playbook/09-app-store-connect.md`): create the app,
       three in-app purchases matching `GoodWalk/Resources/Products.storekit`
       (`goodwalk.yearly`, `goodwalk.monthly`, `goodwalk.lifetime`), one subscription group
       "Good Walk Pro", 7-day free trial intro offer on yearly.
@@ -46,7 +46,7 @@ open GoodWalk.xcodeproj
 
 ## Before submission
 
-- [x] Replace or cite every placeholder number (done 18 Sep 2026, `docs/12-sources.md`): the
+- [x] Replace or cite every placeholder number (done 18 Sep 2026, `playbook/12-sources.md`): the
       hook is now the cited 23 min (160 min a week, Christian et al. 2013), the per-size
       "typical" figures are gone, and the size/breed tables in `GoodWalk/Models/WalkPlan.swift`
       follow the Kennel Club bands and PDSA breed pages.
@@ -79,8 +79,10 @@ open GoodWalk.xcodeproj
 
 ## Day of launch
 
-- [ ] Landing page: paste the App Store URL into `APP_STORE_URL` at the bottom of `docs/index.html`.
-      The button switches to "Download on the App Store" by itself.
+- [ ] Landing page: paste the App Store URL into `APP_STORE_URL` at the bottom of `docs/index.html`
+      and the three guide pages (`grep -l 'APP_STORE_URL = ""' docs/*.html`). The buttons switch to
+      "Download on the App Store" by themselves. Then fill in the commented `apple-itunes-app` meta tag in
+      the `<head>` of `docs/index.html` and do the "SEO after launch" steps in `playbook/10-site-and-email-runbook.md`.
 - [ ] Promo codes for creators generated in App Store Connect (Offer Codes).
 - [ ] Post the first 10 videos already recorded.
 - [ ] Read every review daily. One fix per day for the first two weeks.

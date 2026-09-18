@@ -1,0 +1,24 @@
+{
+  "name": "Good Walk",
+  "short_name": "Good Walk",
+  "description": "Dog walk tracker and streak app for iPhone.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#FAF5EC",
+  "theme_color": "#FAF5EC",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

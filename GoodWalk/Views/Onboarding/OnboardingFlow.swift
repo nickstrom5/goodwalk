@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// The belief sequence. Reorder by editing `Step.allCases` order; every screen is self-contained.
-/// Rationale for each screen is in docs/02-onboarding-and-paywall.md.
+/// Rationale for each screen is in playbook/02-onboarding-and-paywall.md.
 struct OnboardingFlow: View {
     enum Step: Int, CaseIterable {
         case hook, dog, size, breed, usual, reveal, plan, first, result, paywall

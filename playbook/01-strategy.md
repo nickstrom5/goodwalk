@@ -12,7 +12,7 @@ in every frame. People post their dog without being asked.
 | Check | Evidence |
 |---|---|
 | Daily felt pain | The 5:30pm look from the dog. The guilt of "just round the block again". Every owner knows the number is too low; nobody knows what it should be. |
-| Proven spend | Owners pay $100+/yr for collar subscriptions: Tractive ($79 tracker + $108/yr Basic, billed annually), Fi ($189/yr membership). Prices checked 18 Sep 2026; sources in `docs/12-sources.md`. |
+| Proven spend | Owners pay $100+/yr for collar subscriptions: Tractive ($79 tracker + $108/yr Basic, billed annually), Fi ($189/yr membership). Prices checked 18 Sep 2026; sources in `playbook/12-sources.md`. |
 | Loud complaints | Tractive retired its separate Dog Walk app on 1 Jan 2025 and moved walk tracking into its GPS app, which is built around the tracker. Collar reviews repeat: subscription on top of hardware, battery, "I just wanted to log walks". Free trackers: map-first, account required, the dog is a profile field. |
 | 7-second demo | 5:30pm notification "Has Rex had a walk today?" → tap "Walked ✓" → Rex's ring fills, streak goes 29 → 30, confetti. Nothing to explain. |
 | Shareable result | "47 miles walked with Rex · 30-day streak" card with the dog's photo on it. Streak milestones at 1, 3, 7, 14, 30, 60, 100, 365. |
@@ -48,7 +48,7 @@ Ship for October to learn. Optimise for January to earn.
 
 ## 4. Positioning against the category
 
-Prices checked 18 Sep 2026 (`docs/12-sources.md`). They move; check again on the day you quote one in public.
+Prices checked 18 Sep 2026 (`playbook/12-sources.md`). They move; check again on the day you quote one in public.
 
 | Competitor | What they do well | What users hate | Good Walk's answer |
 |---|---|---|---|
@@ -120,7 +120,7 @@ size, so the old per-size numbers (17/19/22/24/21) are gone.
 bands into a number per dog is our interpolation, pinned to named breeds by
 `testNamedBreedsSitInTheirPublishedBands`. The puppy and senior factors are our judgment: the
 sources say "shorter" and give no ratio. The full list, with URLs, exact figures and the date
-accessed, is `docs/12-sources.md`. (Changed 18 Sep 2026: large 75 → 90, giant 45 → 60, companion
+accessed, is `playbook/12-sources.md`. (Changed 18 Sep 2026: large 75 → 90, giant 45 → 60, companion
 0.75 → 1.0, sporting 1.25 → 1.35, herding 1.35 → 1.5, because the old table put Labradors,
 Shepherds and Great Danes well under both sources.) In the app the target is always presented as a general
 guideline, not advice: "Not veterinary advice; ask your vet, especially for puppies, seniors,
@@ -158,7 +158,7 @@ users/mo, ~$13.5k/mo run-rate by month 3, before January.
 
 ## 8. Distribution plan (starts before the app is approved)
 
-See `docs/03-distribution.md`. Short version:
+See `playbook/03-distribution.md`. Short version:
 
 1. **Week 0–1:** study 20 winning videos from dog-tok, Fi/Tractive ads and "day in the life of
    my dog" creators. Save hook, first frame, time-to-dog, time-to-product, CTA.
@@ -187,7 +187,7 @@ cancel. The 5:30pm notification with tap-to-log exists to protect this number.
 | Risk | Mitigation |
 |---|---|
 | App Review or a vet reads the target as veterinary advice | It's a general guideline, says so on the reveal, the plan screen and the Settings footer, and tells people to ask their vet. No health-outcome claims anywhere. The user can change the number. |
-| The numbers get challenged in comments | Every one is in `docs/12-sources.md` with a link: Kennel Club bands, PDSA breed pages, Christian et al. for the 23. Reply with the source, never with a health claim. |
+| The numbers get challenged in comments | Every one is in `playbook/12-sources.md` with a link: Kennel Club bands, PDSA breed pages, Christian et al. for the 23. Reply with the source, never with a health claim. |
 | Free competitors (Walky has streaks) | We don't compete on tracking. We compete on the dog's own number, the tap-to-log loop, the photo card and distribution. Price says the rest. |
 | Users stop logging | Notification action logs without opening the app; widget starts a walk in one tap; quick log backfills today. A missed day never punishes. |
 | Distance without GPS is approximate | Pedometer distance is good enough for "47 miles with Rex". Say "about" in copy. Motion permission is optional; without it, distance is estimated at 2.0 mph. |
@@ -198,10 +198,10 @@ cancel. The 5:30pm notification with tap-to-log exists to protect this number.
 
 | Days | Deliverable |
 |---|---|
-| 1 | App Store Connect record, products, small-business program. Domain, Pages, email (runbook in `docs/10-site-and-email-runbook.md`). |
+| 1 | App Store Connect record, products, small-business program. Domain, Pages, email (runbook in `playbook/10-site-and-email-runbook.md`). |
 | 1–4 | Run onboarding on a real phone with a real dog. Fix the screen you stop wanting to continue on. TestFlight to 10 dog-owning friends. |
-| 4–7 | Record the first 10 videos (`docs/07-launch-videos.md`). Start posting the Walk Your Dog Week countdown. |
+| 4–7 | Record the first 10 videos (`playbook/07-launch-videos.md`). Start posting the Walk Your Dog Week countdown. |
 | 7 | Submit for review. |
 | 10–13 | Live before Oct 1. Daily posts. |
 | Oct 1–7 | "Day N of Walk Your Dog Week" series. Seed creators. Read every review, one fix a day. |
-| Oct 8–18 | Keep the daily streak series going from the founder account. First read on the funnel; start the A/B list in `docs/02-onboarding-and-paywall.md`. |
+| Oct 8–18 | Keep the daily streak series going from the founder account. First read on the funnel; start the A/B list in `playbook/02-onboarding-and-paywall.md`. |
