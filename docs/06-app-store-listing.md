@@ -76,7 +76,7 @@ Terms of use: https://getgoodwalk.app/terms.html
 |---|---|---|
 | 1 | Lock screen notification "Has Rex had a walk today?" with the Walked ✓ button | One tap. That's it. |
 | 2 | Home: Rex in the ring, "60 of 60 min", 30-day streak, week bars | Your dog's streak. |
-| 3 | Reveal: "Rex needs about 60 min" vs "22" | See what your dog needs. |
+| 3 | Reveal: "Rex needs about 60 min" vs "23" | See what your dog needs. |
 | 4 | Milestone card: "47 miles walked with Rex · 30-day streak" | A card every milestone. |
 | 5 | Walk timer with live distance | No collar. No map. |
 | 6 | Widget on a Home Screen | Start a walk from anywhere. |

@@ -186,8 +186,8 @@ do {
     drawText(ctx, "Good Walk", at: CGPoint(x: 256, y: 872), size: 54, color: rgb(0.180, 0.133, 0.098, 0.66), weight: .semibold)
     drawText(ctx, "A dog like Rex needs about", at: CGPoint(x: 150, y: 690), size: 56, color: brown, weight: .semibold)
     drawText(ctx, "60 min", at: CGPoint(x: 150, y: 510), size: 190, color: terracotta)
-    drawText(ctx, "a day. Most dogs his", at: CGPoint(x: 150, y: 400), size: 56, color: brown, weight: .semibold)
-    drawText(ctx, "size get", at: CGPoint(x: 150, y: 330), size: 56, color: brown, weight: .semibold)
-    drawText(ctx, "22.", at: CGPoint(x: 150, y: 170), size: 150, color: rgb(0.870, 0.600, 0.130))
+    drawText(ctx, "a day. The typical", at: CGPoint(x: 150, y: 400), size: 56, color: brown, weight: .semibold)
+    drawText(ctx, "dog gets about", at: CGPoint(x: 150, y: 330), size: 56, color: brown, weight: .semibold)
+    drawText(ctx, "23.", at: CGPoint(x: 150, y: 170), size: 150, color: rgb(0.870, 0.600, 0.130))
     save(ctx, "\(root)/docs/brand/post-reveal.png")
 }

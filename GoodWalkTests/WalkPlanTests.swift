@@ -13,17 +13,39 @@ final class WalkPlanTests: XCTestCase {
     }
 
     func testDefaultDogMatchesThePitch() {
-        // "Rex needs ~60 min a day; most dogs his size get 22."
+        // "Rex needs about 60 min a day; the typical dog gets about 23."
         let rex = dog(.medium)
         XCTAssertEqual(WalkPlan.recommendedMinutes(for: rex), 60)
-        XCTAssertEqual(WalkPlan.typicalMinutes(for: .medium), 22)
+        // 160 min a week (Christian et al., 2013) / 7 = 22.9.
+        XCTAssertEqual(WalkPlan.typicalMinutesPerWeek, 160)
+        XCTAssertEqual(WalkPlan.typicalMinutes, 23)
+    }
+
+    /// Named breeds against the Royal Kennel Club's Breeds A to Z exercise bands and PDSA's breed
+    /// pages, accessed 18 Sep 2026 (docs/12-sources.md). "More than 2 hours" means the 120 cap
+    /// or close to it; "Up to 1 hour" / "Up to 30 minutes" are ceilings.
+    func testNamedBreedsSitInTheirPublishedBands() {
+        // KC "Up to 30 minutes per day"; PDSA "a minimum of half an hour".
+        XCTAssertEqual(WalkPlan.recommendedMinutes(for: dog(.toy, .companion)), 30)          // Chihuahua
+        XCTAssertLessThanOrEqual(WalkPlan.recommendedMinutes(for: dog(.toy, .terrier)), 30)  // Yorkshire Terrier
+        // KC "Up to 1 hour per day"; PDSA "up to an hour".
+        XCTAssertLessThanOrEqual(WalkPlan.recommendedMinutes(for: dog(.small, .flatFaced)), 60)   // Pug, French Bulldog
+        XCTAssertLessThanOrEqual(WalkPlan.recommendedMinutes(for: dog(.medium, .flatFaced)), 60)  // Bulldog
+        XCTAssertLessThanOrEqual(WalkPlan.recommendedMinutes(for: dog(.small, .terrier)), 60)     // Jack Russell
+        XCTAssertLessThanOrEqual(WalkPlan.recommendedMinutes(for: dog(.small, .hound)), 60)       // Dachshund
+        XCTAssertLessThanOrEqual(WalkPlan.recommendedMinutes(for: dog(.giant, .mixed)), 60)       // St. Bernard, Mastiff
+        // KC "More than 2 hours per day"; PDSA "a minimum of two hours".
+        XCTAssertEqual(WalkPlan.recommendedMinutes(for: dog(.large, .sporting)), 120)   // Labrador, Golden Retriever
+        XCTAssertEqual(WalkPlan.recommendedMinutes(for: dog(.large, .herding)), 120)    // German Shepherd
+        XCTAssertGreaterThanOrEqual(WalkPlan.recommendedMinutes(for: dog(.medium, .herding)), 90)  // Border Collie
     }
 
     func testBreedTypeMovesTheNumber() {
-        XCTAssertEqual(WalkPlan.recommendedMinutes(for: dog(.medium, .herding)), 80)    // 81 → 80
-        XCTAssertEqual(WalkPlan.recommendedMinutes(for: dog(.medium, .sporting)), 75)
+        XCTAssertEqual(WalkPlan.recommendedMinutes(for: dog(.medium, .herding)), 90)
+        XCTAssertEqual(WalkPlan.recommendedMinutes(for: dog(.medium, .sporting)), 80)   // 81 → 80
         XCTAssertEqual(WalkPlan.recommendedMinutes(for: dog(.medium, .flatFaced)), 35)  // 36 → 35
-        XCTAssertEqual(WalkPlan.recommendedMinutes(for: dog(.large, .working)), 85)     // 86.25 → 85
+        XCTAssertEqual(WalkPlan.recommendedMinutes(for: dog(.large, .working)), 105)    // 103.5 → 105
+        XCTAssertEqual(WalkPlan.recommendedMinutes(for: dog(.giant, .working)), 70)     // 69 → 70
     }
 
     func testPuppiesAndSeniorsGetLess() {
@@ -66,8 +88,8 @@ final class WalkPlanTests: XCTestCase {
         XCTAssertEqual(WalkPlan.goalOptions(for: rex), [30, 45, 60, 75])
         let tiny = dog(.toy, .flatFaced, .puppy)
         XCTAssertEqual(WalkPlan.goalOptions(for: tiny), [15, 30])
-        let max = dog(.large, .herding)   // 101 → 100
-        XCTAssertTrue(WalkPlan.goalOptions(for: max).contains(100))
+        let max = dog(.large, .herding)   // 135 → capped at 120
+        XCTAssertEqual(WalkPlan.goalOptions(for: max), [90, 105, 120])
         XCTAssertTrue(WalkPlan.goalOptions(for: max).allSatisfy { $0 <= WalkPlan.maximumMinutes })
     }
 
