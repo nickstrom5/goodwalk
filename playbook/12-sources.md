@@ -18,7 +18,7 @@ https://www.pdsa.org.uk/pet-help-and-advice/looking-after-your-pet/puppies-dogs/
 
 | Claim | Where | Exact figure in the source | Action |
 |---|---|---|---|
-| Toy base 30 min | `GoodWalk/Models/WalkPlan.swift:21`, `docs/01-strategy.md` §6, `README.md:76` | KC: 18 of 24 Toy-group breeds "Up to 30 minutes per day" (Chihuahua, Yorkshire Terrier, Pekingese), 6 "Up to 1 hour". PDSA Chihuahua: "a minimum of half an hour exercise every day" | Kept + cited |
+| Toy base 30 min | `GoodWalk/Models/WalkPlan.swift:21`, `playbook/01-strategy.md` §6, `README.md:76` | KC: 18 of 24 Toy-group breeds "Up to 30 minutes per day" (Chihuahua, Yorkshire Terrier, Pekingese), 6 "Up to 1 hour". PDSA Chihuahua: "a minimum of half an hour exercise every day" | Kept + cited |
 | Small base 40 | `WalkPlan.swift:22` | KC: 47 of 49 small breeds outside the Toy group "Up to 1 hour per day". PDSA Pug and French Bulldog: "up to an hour"; Jack Russell and Cocker Spaniel: "a minimum of an hour" | Kept + cited (40 sits inside "up to 1 hour"; PDSA's terrier minimum is higher, the user can raise it) |
 | Medium base 60 | `WalkPlan.swift:23` | KC: 37 of 55 medium breeds "Up to 1 hour per day", 17 "More than 2 hours", 1 "Between 1-2 hours" | Kept + cited |
 | Large base | `WalkPlan.swift:24` | KC: 56 of 79 large breeds "More than 2 hours per day", 23 "Up to 1 hour". PDSA Golden Retriever, German Shepherd: "a minimum of two hours" | **Corrected 75 → 90** |
@@ -30,7 +30,7 @@ https://www.pdsa.org.uk/pet-help-and-advice/looking-after-your-pet/puppies-dogs/
 | Sporting factor | `WalkPlan.swift:34` | KC Gundog group: 21 of 24 large breeds "More than 2 hours"; medium 6 "More than 2 hours", 5 "Up to 1 hour". PDSA Golden Retriever: "a minimum of two hours" | **Corrected 1.25 → 1.35** so a large adult reaches the 120 cap |
 | Herding factor | `WalkPlan.swift:35` | KC Border Collie, German Shepherd: "More than 2 hours per day". PDSA Border Collie: "a minimum of two hours exercise every day"; German Shepherd: "a minimum of two hours" | **Corrected 1.35 → 1.5** (medium 90, large 120) |
 | 15–120 clamp | `WalkPlan.swift:9-10` | KC's top band is "More than 2 hours", lowest "Up to 30 minutes" | Kept; design choice, consistent with the bands |
-| Puppy × 0.6, senior × 0.7 | `WalkPlan.swift:43-45` | PDSA puppies: "keep sessions short"; PDSA also says of the 5-minutes-per-month rule "there's no scientific evidence behind this rule". KC walking tips give that rule as "a good rule of thumb". PDSA seniors: "shorter, flatter walking routes". RSPCA seniors: "They may need shorter walks though – little and often" | **FLAG, unresolved.** Direction is sourced, the ratios are not: no source gives one. Kept as our judgment, said so in code and `docs/01-strategy.md`; the footnote tells owners of puppies and seniors to ask their vet |
+| Puppy × 0.6, senior × 0.7 | `WalkPlan.swift:43-45` | PDSA puppies: "keep sessions short"; PDSA also says of the 5-minutes-per-month rule "there's no scientific evidence behind this rule". KC walking tips give that rule as "a good rule of thumb". PDSA seniors: "shorter, flatter walking routes". RSPCA seniors: "They may need shorter walks though – little and often" | **FLAG, unresolved.** Direction is sourced, the ratios are not: no source gives one. Kept as our judgment, said so in code and `playbook/01-strategy.md`; the footnote tells owners of puppies and seniors to ask their vet |
 | Named breeds land in their band | `GoodWalkTests/WalkPlanTests.swift` `testNamedBreedsSitInTheirPublishedBands` | The KC / PDSA figures above | New test |
 
 URLs opened for the PDSA quotes: `.../medium-dogs/border-collie`, `.../small-dogs/pug`,
@@ -56,10 +56,10 @@ guideline", the owner can change the number, and no source is presented as endor
 |---|---|---|---|
 | Hook "Most dogs get about 20 minutes a day. Most need a lot more." | `GoodWalk/Views/Onboarding/OnboardingScreens.swift:13-33` | Christian HE, Westgarth C, Bauman A, et al. "Dog ownership and physical activity: a review of the evidence." *J Phys Act Health* 2013;10(5):750-9, PMID 23006510. Abstract (opened via Europe PMC): "Approximately 60% of DO walked their dog, with a median duration and frequency of 160 minutes/week and 4 walks/week" (29 studies, 1990–2010, mostly Australia and the US) | **Corrected and softened:** "The typical dog gets about 23 minutes a day. Many are built for more." 160 ÷ 7 = 22.9. Source line on screen. "Many are built for more" rests on §1: 85 of 227 KC breeds are "More than 2 hours per day", 122 "Up to 1 hour", 19 "Up to 30 minutes" |
 | Reveal "Most medium dogs get 22 min" (per-size 17 / 19 / 22 / 24 / 21) | was `WalkPlan.typicalMinutes(for:)`; now `WalkPlan.swift:54-62`, `OnboardingScreens.swift:305-312` | No source splits walking minutes by dog size. Westgarth 2015 (below) only finds medium dogs more likely to be walked daily than small ones | **Removed.** One cited figure for every size: `typicalMinutesPerWeek = 160` → 23. Test updated |
-| Same line in docs, site and brand image | `README.md:10,80`, `docs/01-strategy.md` §6, `docs/02-onboarding-and-paywall.md:13,18,53`, `docs/03-distribution.md:26,37`, `docs/04-launch-checklist.md:60`, `docs/06-app-store-listing.md:79`, `docs/11-social-kit.md:30`, `docs/index.html:146-147`, `scripts/make-brand.swift:189-191` → `docs/brand/post-reveal.png` | as above | Updated everywhere to 23 / "the typical dog" |
+| Same line in docs, site and brand image | `README.md:10,80`, `playbook/01-strategy.md` §6, `playbook/02-onboarding-and-paywall.md:13,18,53`, `playbook/03-distribution.md:26,37`, `playbook/04-launch-checklist.md:60`, `playbook/06-app-store-listing.md:79`, `playbook/11-social-kit.md:30`, `docs/index.html` (#target section), `scripts/make-brand.swift` (first post image) → `docs/brand/post-reveal.png` | as above | Updated everywhere to 23 / "the typical dog" |
 | Usual screen: "Right around what most dogs get" / "Better than most" / "Plenty of dogs live here" | `OnboardingScreens.swift:259-262` | 23 min median among walkers; about 40% of owners in the same review did not walk their dog | First line reworded to "Right around the typical dog"; the other two kept, supported |
 | Usual screen: "Most people guess high." | `OnboardingScreens.swift:231` | No source found | **Removed** ("No judgement." instead) |
-| Reddit template: "what the log said (22 minutes)", "a third of what I thought" | `docs/11-social-kit.md:114-115` | It is meant to be the founder's own log | Replaced with "your real number; don't borrow one" |
+| Reddit template: "what the log said (22 minutes)", "a third of what I thought" | `playbook/11-social-kit.md:114-115` | It is meant to be the founder's own log | Replaced with "your real number; don't borrow one" |
 
 Supporting context, not used in copy (so nobody is surprised in the comments):
 
@@ -83,15 +83,15 @@ Supporting context, not used in copy (so nobody is surprised in the comments):
 
 | Claim | Where | Source and exact figure | Action |
 |---|---|---|---|
-| Tractive "~$49 device + ~$96/yr" | `docs/01-strategy.md:15,55`, §7 | https://tractive.com/en/pd/gps-tracker-dog (opened): tracker "$79"; Basic "$9 / month", "$108 billed annually"; Premium "$120 billed annually"; 2-year Basic "$144" | **Corrected to $79 + $108/yr** |
-| Fi "~$129/yr" | `docs/01-strategy.md:15,56`, §7 | Fi's own pages (fitracking.com, shop.fitracking.com) opened but show no prices without JavaScript. Third-party: https://lifewithkleekai.com/how-much-does-fi-series-3-dog-collar-cost/ (opened, updated 13 Sep 2026): 6 months "$99", 12 months "$189", 24 months "$339", "$20 activation fee" | **Corrected to $189/yr. FLAG:** second-hand; confirm on Fi's store before quoting |
-| "A GPS collar is $100 a year" | `docs/03-distribution.md:44`, `docs/07-launch-videos.md:67`, `docs/11-social-kit.md:86` | Cheapest yearly plan found: Tractive Basic $108 | **Softened to "$100+ a year"** |
-| "$24.99 … about a quarter of a collar subscription" | `docs/01-strategy.md` §4, §7 | 24.99 ÷ 108 = 23% | Kept, reworded to "under a quarter of the cheapest" |
-| Tractive "discontinued its separate Dog Walk app on 1 Jan 2025 and left those users without a home" | `docs/01-strategy.md:16,55`, `docs/03-distribution.md:54` | Tractive Help Center, "Tractive Dog Walk App", https://help.tractive.com/hc/en-us/articles/115005779525 — page returned 403; the search snippet reads: as of January 1st, 2025 the app "has been deprecated and is no longer supported", Walk tracking "is now part of" the Tractive GPS app | Date kept. **Softened**: walk tracking moved into the GPS app, it didn't vanish. **FLAG:** snippet only; open the page in a browser before video #18 |
-| Walky: free, streaks | `docs/01-strategy.md:57`, `docs/05-naming.md:33` | App Store listing https://apps.apple.com/us/app/walky-dog-walk-tracker/id6759896890 (opened): Free; "No account. No ads. No subscription."; "Every day you walk, your streak grows. Miss a day, it resets." | Kept + cited; added "no account" to their strengths, since our "no account" is not a difference against Walky |
-| TreatWalk, Amiko, Dog Walk Tracking & Playdates, onedog: "free / small", "accounts, social features" | `docs/01-strategy.md:58` | TreatWalk and Amiko listings exist on the App Store (seen in search results); none of the four listings was opened | **FLAG, unresolved.** Internal positioning only; do not repeat in public copy |
-| Fi "breed rankings, US-centric"; collar-review complaints ("subscription on top of hardware, battery") | `docs/01-strategy.md:16,55-56` | Not checked | **FLAG, unresolved.** Internal only |
-| "Pet spending is the category that doesn't get cut" | was `docs/01-strategy.md:15` | No source looked for; APPA figures are behind a paywall | **Removed** |
+| Tractive "~$49 device + ~$96/yr" | `playbook/01-strategy.md:15,55`, §7 | https://tractive.com/en/pd/gps-tracker-dog (opened): tracker "$79"; Basic "$9 / month", "$108 billed annually"; Premium "$120 billed annually"; 2-year Basic "$144" | **Corrected to $79 + $108/yr** |
+| Fi "~$129/yr" | `playbook/01-strategy.md:15,56`, §7 | Fi's own pages (fitracking.com, shop.fitracking.com) opened but show no prices without JavaScript. Third-party: https://lifewithkleekai.com/how-much-does-fi-series-3-dog-collar-cost/ (opened, updated 13 Sep 2026): 6 months "$99", 12 months "$189", 24 months "$339", "$20 activation fee" | **Corrected to $189/yr. FLAG:** second-hand; confirm on Fi's store before quoting |
+| "A GPS collar is $100 a year" | `playbook/03-distribution.md:44`, `playbook/07-launch-videos.md:67`, `playbook/11-social-kit.md:86` | Cheapest yearly plan found: Tractive Basic $108 | **Softened to "$100+ a year"** |
+| "$24.99 … about a quarter of a collar subscription" | `playbook/01-strategy.md` §4, §7 | 24.99 ÷ 108 = 23% | Kept, reworded to "under a quarter of the cheapest" |
+| Tractive "discontinued its separate Dog Walk app on 1 Jan 2025 and left those users without a home" | `playbook/01-strategy.md:16,55`, `playbook/03-distribution.md:54` | Tractive Help Center, "Tractive Dog Walk App", https://help.tractive.com/hc/en-us/articles/115005779525 — page returned 403; the search snippet reads: as of January 1st, 2025 the app "has been deprecated and is no longer supported", Walk tracking "is now part of" the Tractive GPS app | Date kept. **Softened**: walk tracking moved into the GPS app, it didn't vanish. **FLAG:** snippet only; open the page in a browser before video #18 |
+| Walky: free, streaks | `playbook/01-strategy.md:57`, `playbook/05-naming.md:33` | App Store listing https://apps.apple.com/us/app/walky-dog-walk-tracker/id6759896890 (opened): Free; "No account. No ads. No subscription."; "Every day you walk, your streak grows. Miss a day, it resets." | Kept + cited; added "no account" to their strengths, since our "no account" is not a difference against Walky |
+| TreatWalk, Amiko, Dog Walk Tracking & Playdates, onedog: "free / small", "accounts, social features" | `playbook/01-strategy.md:58` | TreatWalk and Amiko listings exist on the App Store (seen in search results); none of the four listings was opened | **FLAG, unresolved.** Internal positioning only; do not repeat in public copy |
+| Fi "breed rankings, US-centric"; collar-review complaints ("subscription on top of hardware, battery") | `playbook/01-strategy.md:16,55-56` | Not checked | **FLAG, unresolved.** Internal only |
+| "Pet spending is the category that doesn't get cut" | was `playbook/01-strategy.md:15` | No source looked for; APPA figures are behind a paywall | **Removed** |
 
 No market-size figures (TAM, owner counts, APPA numbers) appear anywhere in the folder; none were added.
 
@@ -99,15 +99,29 @@ No market-size figures (TAM, owner counts, APPA numbers) appear anywhere in the 
 
 | Claim | Where | Source | Action |
 |---|---|---|---|
-| National Walk Your Dog Week, 1–7 October | `README.md:11`, `docs/01-strategy.md:43`, `docs/06-app-store-listing.md:18`, `docs/09-app-store-connect.md:127`, `docs/index.html:106` | https://nationaltoday.com/national-walk-your-dog-week/ (opened): October 1–7 annually, founded by Colleen Paige in 2010 | Kept + cited. It is an unofficial observance; don't call it anything grander |
-| Walk Your Dog Month is January | `README.md:11`, `docs/01-strategy.md:44` | Search results only (American Humane, Rover, Dogster, nationaltoday.com/walk-dog-month/ all titled "January"); no page opened | Kept. Low risk, widely repeated; flag lifted once one page is opened |
+| National Walk Your Dog Week, 1–7 October | `README.md:11`, `playbook/01-strategy.md:43`, `playbook/06-app-store-listing.md:18`, `playbook/09-app-store-connect.md:127`, `docs/index.html` (hero note) | https://nationaltoday.com/national-walk-your-dog-week/ (opened): October 1–7 annually, founded by Colleen Paige in 2010 | Kept + cited. It is an unofficial observance; don't call it anything grander |
+| Walk Your Dog Month is January | `README.md:11`, `playbook/01-strategy.md:44` | Search results only (American Humane, Rover, Dogster, nationaltoday.com/walk-dog-month/ all titled "January"); no page opened | Kept. Low risk, widely repeated; flag lifted once one page is opened |
+
+## 4b. The public site (added 18 Sep 2026, SEO pass)
+
+The site repeats numbers from the sections above and adds none. Where each one sits:
+
+| Page | Numbers used | Section above |
+|---|---|---|
+| `docs/index.html` | 60 / 23 / 243 (Rex), 160 min a week, 29 studies, "$100 or more a year" collar subscription, 1–7 October, prices from `Products.storekit` | §1, §2, §3, §4, §5 |
+| `docs/how-much-exercise-does-my-dog-need.html` | KC label counts (19 / 122 / 1 / 85 of 227), per-size splits (18 of 24, 47 of 49, 37 and 17 of 55, 56 and 23 of 79), named giant breeds, PDSA breed figures (paraphrased), the `WalkPlan` bases, factors and 15–120 clamp (the calculator is the same formula in JavaScript), 160 min a week → 23, "about 60%" of owners walk their dog | §1, §2 |
+| `docs/how-long-should-i-walk-my-dog.html` | 85 and 122 of 227, 160 → 23, PDSA "1-2 walks per day", the 5-minutes-per-month rule with both the KC and PDSA positions, puppy 0.6 / senior 0.7 stated as our judgment, flat-faced 25 / 35 | §1, §2 |
+| `docs/dog-walking-log.html` | No figures about dogs or owners. 2 mph quick-log estimate, milestone days, prices | §5, `Products.storekit` |
+
+Change a number in `WalkPlan.swift` and the calculator's `<option value>`s, its table and the
+flat-faced 25 / 35 line must change with it. The site names no competitor and quotes no competitor price.
 
 ## 5. App-internal assumptions (not claims about the world)
 
 | Item | Where | Status |
 |---|---|---|
 | Quick-log distance at 2.0 mph "dog pace" | `WalkPlan.swift:16` | No source; it is an estimate and the UI labels it "est.". Kept |
-| Unit-economics targets (65% / 25% / 40%, $1.35 CPI, 10,000 installs) | `docs/01-strategy.md` §7 | Targets, not facts. Labelled as targets. Kept |
+| Unit-economics targets (65% / 25% / 40%, $1.35 CPI, 10,000 installs) | `playbook/01-strategy.md` §7 | Targets, not facts. Labelled as targets. Kept |
 | "243 hours a year" | reveal, site, listing | Arithmetic: (60 − 20) × 365 ÷ 60. Tested |
 
 ## Still open

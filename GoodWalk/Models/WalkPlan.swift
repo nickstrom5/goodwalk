@@ -5,8 +5,8 @@ import Foundation
 ///
 /// The size bases and breed-type factors are calibrated to the Royal Kennel Club's Breeds A to Z
 /// exercise bands ("Up to 30 minutes", "Up to 1 hour", "More than 2 hours per day") and PDSA's
-/// breed pages. Every figure, source and date is in docs/12-sources.md; the tables are mirrored in
-/// docs/01-strategy.md. Change a number here and change it there.
+/// breed pages. Every figure, source and date is in playbook/12-sources.md; the tables are mirrored in
+/// playbook/01-strategy.md. Change a number here and change it there.
 enum WalkPlan {
     static let minimumMinutes = 15
     static let maximumMinutes = 120
@@ -37,7 +37,7 @@ enum WalkPlan {
     }
 
     /// PDSA, the Kennel Club and the RSPCA all say puppies and older dogs want shorter walks, but
-    /// none gives a ratio. The direction is sourced; 0.6 and 0.7 are our judgment (docs/12-sources.md).
+    /// none gives a ratio. The direction is sourced; 0.6 and 0.7 are our judgment (playbook/12-sources.md).
     static func ageFactor(for age: DogProfile.Age) -> Double {
         switch age {
         case .puppy: return 0.6

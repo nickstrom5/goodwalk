@@ -71,7 +71,7 @@ Rules for all ten:
 3. Home screen demo, 3s.
 4. End card.
 **Note:** Keep it factual. Collars solve a real problem (lost dogs); we solve a different one.
-Cheapest yearly plan checked 18 Sep 2026: Tractive Basic, $108 (`docs/12-sources.md`). Check again
+Cheapest yearly plan checked 18 Sep 2026: Tractive Basic, $108 (`playbook/12-sources.md`). Check again
 before posting, and don't show a competitor's logo.
 
 ### 7. The missed day

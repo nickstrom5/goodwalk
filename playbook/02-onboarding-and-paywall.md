@@ -22,7 +22,7 @@ This is hypothesis #1, not the final flow. The step enum lives in
 | 10 | **paywall** | (pay) | Hard paywall. Yearly w/ 7-day trial preselected, monthly + lifetime as alternates. | See below. |
 
 The reveal math (60 vs 20 → 40 min × 365 ÷ 60 = 243 hours) and the target formula are documented
-in `docs/01-strategy.md` section 6 and live in `GoodWalk/Models/WalkPlan.swift`.
+in `playbook/01-strategy.md` section 6 and live in `GoodWalk/Models/WalkPlan.swift`.
 
 ## Paywall design decisions
 
@@ -44,7 +44,7 @@ in `docs/01-strategy.md` section 6 and live in `GoodWalk/Models/WalkPlan.swift`.
 ## Copy rules for every screen
 
 - The dog's name, never "your dog", once we have it.
-- "About", "guideline", "the typical dog". A number about dogs or owners needs a row in `docs/12-sources.md`. Never "should", "must", "vet-recommended" or any health
+- "About", "guideline", "the typical dog". A number about dogs or owners needs a row in `playbook/12-sources.md`. Never "should", "must", "vet-recommended" or any health
   outcome ("lives longer", "loses weight", "less anxious").
 - No guilt imagery. The reveal is the only screen that stings, and it stings with a number.
 

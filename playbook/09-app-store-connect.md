@@ -91,7 +91,7 @@ above are still the right answer for a build with the key set.
 
 ## 8. Version 1.0 page
 
-Paste from `docs/06-app-store-listing.md`: subtitle, promotional text, description, keywords.
+Paste from `playbook/06-app-store-listing.md`: subtitle, promotional text, description, keywords.
 Upload the six screenshots (6.9-inch required; Apple scales down for smaller phones). Use the
 set re-shot with a real dog photo, not the illustrated sample dog from ScreenshotMode.
 App Review Information: contact details, and the review notes from the listing doc. No

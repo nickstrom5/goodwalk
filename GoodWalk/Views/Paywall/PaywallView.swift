@@ -3,7 +3,7 @@ import SwiftUI
 import UserNotifications
 
 /// Hard paywall. Trial-first framing, yearly preselected, reminder toggle that really schedules
-/// a notification. Design notes in docs/02-onboarding-and-paywall.md.
+/// a notification. Design notes in playbook/02-onboarding-and-paywall.md.
 struct PaywallView: View {
     enum Context { case onboarding, home }
 

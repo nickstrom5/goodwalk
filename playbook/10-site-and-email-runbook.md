@@ -16,6 +16,10 @@ branch with `docs/` at the root).
 - `docs/privacy.html` privacy policy
 - `docs/terms.html` terms (must cover auto-renewing subscriptions and the cancel-24h rule)
 - `docs/CNAME` one line containing DOMAIN
+- SEO files at the site root: `robots.txt`, `sitemap.xml`, `404.html`, `site.webmanifest`, `.nojekyll`, `og.png`,
+  `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` (images from `scripts/make-brand.swift`),
+  plus the content pages. Every page carries its own title, description, canonical, Open Graph and JSON-LD.
+- Nothing internal goes in `docs/`: it is public. Strategy and launch notes live in `playbook/`.
 - Landing page has one App Store button driven by a JS constant `APP_STORE_URL = ""`:
   empty shows "Get early access" (mailto), set shows "Download on the App Store".
 - All mailto links use `support@DOMAIN` or `hello@DOMAIN`.
@@ -68,6 +72,24 @@ branch with `docs/` at the root).
 - App Store Connect: support URL `https://DOMAIN/`, privacy policy `https://DOMAIN/privacy.html`.
 - In-app: paywall footer and settings link to privacy.html and terms.html; feedback → support@DOMAIN.
 - Bundle ID convention: reverse of DOMAIN, e.g. `app.getgoodwalk.goodwalk` (extensions `.widgets`).
+
+## 9. SEO after launch
+Do these once the site is live on DOMAIN over HTTPS. None of them can be done from the repo.
+- **Google Search Console** (search.google.com/search-console): add a Domain property for DOMAIN and verify it
+  with the TXT record it gives you (Cloudflare → DNS → add TXT on `@`, DNS only). Bing Webmaster Tools
+  (bing.com/webmasters): add the site; "Import from Google Search Console" is the quickest route, or verify with
+  its own TXT/CNAME record.
+- **Submit the sitemap** in both: `https://DOMAIN/sitemap.xml`. When a page is added or changed, update its
+  `<lastmod>` in `docs/sitemap.xml`.
+- **Fill in the App Store ID** once the App Store Connect record exists: uncomment
+  `<meta name="apple-itunes-app" content="app-id=APP_ID">` in the `<head>` of `docs/index.html` with the numeric
+  Apple ID (Safari on iPhone then shows the Smart App Banner), and set `APP_STORE_URL` in `docs/index.html` and the
+  guide pages so every button becomes "Download on the App Store".
+- **Request indexing**: in Search Console, URL Inspection → paste `https://DOMAIN/` → Request indexing; repeat for
+  each content page. In Bing, URL Submission.
+- Check the link preview (`og.png`) by pasting the URL into iMessage or a social post composer, and run the home
+  page through Google's Rich Results Test to confirm the SoftwareApplication and FAQ markup parse.
+- Do not add `aggregateRating` or review markup until there are real App Store ratings to point to.
 
 ## Gotchas
 - Orange (proxied) cloud on the A records means GitHub can never issue HTTPS. Must be grey.

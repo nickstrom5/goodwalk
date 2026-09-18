@@ -22,7 +22,7 @@ final class WalkPlanTests: XCTestCase {
     }
 
     /// Named breeds against the Royal Kennel Club's Breeds A to Z exercise bands and PDSA's breed
-    /// pages, accessed 18 Sep 2026 (docs/12-sources.md). "More than 2 hours" means the 120 cap
+    /// pages, accessed 18 Sep 2026 (playbook/12-sources.md). "More than 2 hours" means the 120 cap
     /// or close to it; "Up to 1 hour" / "Up to 30 minutes" are ceilings.
     func testNamedBreedsSitInTheirPublishedBands() {
         // KC "Up to 30 minutes per day"; PDSA "a minimum of half an hour".

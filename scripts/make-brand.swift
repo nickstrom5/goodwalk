@@ -1,5 +1,6 @@
-// Generates the app icon, the sample dog used in screenshots, and the social images from code,
-// so the brand is reproducible.
+// Generates the app icon, the sample dog used in screenshots, the social images and the site's
+// link-preview image and favicons (docs/og.png, favicon-32.png, apple-touch-icon.png,
+// icon-192.png, icon-512.png) from code, so the brand is reproducible.
 // Run: swift scripts/make-brand.swift   (from the repo root; needs macOS, no dependencies)
 import AppKit
 import CoreGraphics
@@ -88,6 +89,19 @@ func drawText(_ ctx: CGContext, _ text: String, at point: CGPoint, size: CGFloat
     ctx.textPosition = point
     CTLineDraw(line, ctx)
     ctx.restoreGState()
+}
+
+/// Draws one line, shrinking the font until it fits `maxWidth`. Keeps link-preview text as large as the canvas allows.
+func drawTextFitted(_ ctx: CGContext, _ text: String, at point: CGPoint, size: CGFloat, maxWidth: CGFloat, color: CGColor, weight: NSFont.Weight = .bold) {
+    var s = size
+    while s > 12 {
+        let base = NSFont.systemFont(ofSize: s, weight: weight)
+        let font = base.fontDescriptor.withDesign(.rounded).flatMap { NSFont(descriptor: $0, size: s) } ?? base
+        let width = NSAttributedString(string: text, attributes: [.font: font]).size().width
+        if width <= maxWidth { break }
+        s -= 1
+    }
+    drawText(ctx, text, at: point, size: s, color: color, weight: weight)
 }
 
 /// Rex: the illustrated sample dog used by `-screenshot` launches. A friendly tan mutt in a park.
@@ -190,4 +204,37 @@ do {
     drawText(ctx, "dog gets about", at: CGPoint(x: 150, y: 330), size: 56, color: brown, weight: .semibold)
     drawText(ctx, "23.", at: CGPoint(x: 150, y: 170), size: 150, color: rgb(0.870, 0.600, 0.130))
     save(ctx, "\(root)/docs/brand/post-reveal.png")
+}
+
+// Site link preview (Open Graph / Twitter card), 1200x630. Brand colours, name, one-line pitch.
+do {
+    let ctx = context(1200, 630)
+    ctx.setFillColor(cream)
+    ctx.fill(CGRect(x: 0, y: 0, width: 1200, height: 630))
+    ctx.setFillColor(terracotta)
+    ctx.fill(CGRect(x: 0, y: 0, width: 1200, height: 18))
+    drawMark(ctx, center: CGPoint(x: 160, y: 490), diameter: 150, track: oat, arc: terracotta, paw: terracotta)
+    drawText(ctx, "Good Walk", at: CGPoint(x: 262, y: 460), size: 88, color: brown)
+    drawTextFitted(ctx, "Your dog needs a walk every day.", at: CGPoint(x: 84, y: 300), size: 70, maxWidth: 1032, color: brown)
+    drawTextFitted(ctx, "Good Walk makes it a streak.", at: CGPoint(x: 84, y: 212), size: 70, maxWidth: 1032, color: terracottaDeep)
+    drawTextFitted(ctx, "Dog walk streak tracker for iPhone  ·  getgoodwalk.app", at: CGPoint(x: 86, y: 92), size: 38, maxWidth: 1032,
+                   color: rgb(0.180, 0.133, 0.098, 0.68), weight: .semibold)
+    save(ctx, "\(root)/docs/og.png")
+}
+
+// Favicon 32: the same rounded square and paw as the inline SVG favicon.
+do {
+    let ctx = context(32, 32)
+    roundedRect(ctx, CGRect(x: 0, y: 0, width: 32, height: 32), 7, terracotta)
+    drawPaw(ctx, center: CGPoint(x: 16, y: 15.5), size: 21, color: white)
+    save(ctx, "\(root)/docs/favicon-32.png")
+}
+
+// Apple touch icon (180) and web manifest icons (192, 512): full bleed like the app icon; the OS masks them.
+for (size, name) in [(180, "apple-touch-icon"), (192, "icon-192"), (512, "icon-512")] {
+    let s = CGFloat(size)
+    let ctx = context(size, size)
+    gradient(ctx, CGRect(x: 0, y: 0, width: s, height: s), top: rgb(0.965, 0.545, 0.270), bottom: terracottaDeep)
+    drawMark(ctx, center: CGPoint(x: s / 2, y: s / 2), diameter: s * 0.68, track: rgb(1, 1, 1, 0.25), arc: white, paw: white)
+    save(ctx, "\(root)/docs/\(name).png")
 }
