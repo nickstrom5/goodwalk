@@ -1,9 +1,9 @@
 # Runbook: static site + custom domain + free support email for an iOS app
 
-Reusable for any app. Replace: `APP` (app name), `DOMAIN` (e.g. goodwalk.app), `GH_USER`
+Reusable for any app. Replace: `APP` (app name), `DOMAIN` (e.g. getgoodwalk.app), `GH_USER`
 (GitHub username), `REPO` (repo name), `GMAIL` (the Gmail inbox that receives support mail).
 Cost: the domain only (~$15/yr for .app at Cloudflare). Everything else is free.
-For Good Walk: APP=Good Walk, DOMAIN=goodwalk.app, GH_USER=nickstrom5, REPO=the repo that holds
+For Good Walk: APP=Good Walk, DOMAIN=getgoodwalk.app, GH_USER=nickstrom5, REPO=the repo that holds
 `dogwalk/` (Pages serves one `/docs` folder per repo, so Good Walk needs its own repo or its own
 branch with `docs/` at the root).
 
@@ -43,7 +43,7 @@ branch with `docs/` at the root).
 - Tick "Enforce HTTPS" when it appears (up to an hour for the certificate).
 - `scripts/cloudflare-setup.sh` in this repo does this section and the next via the API:
   `CF_TOKEN=… GITHUB_TXT_VALUE=… bash scripts/cloudflare-setup.sh` (DOMAIN defaults to
-  goodwalk.app). Delete the API token afterwards.
+  getgoodwalk.app). Delete the API token afterwards.
 
 ## 5. Inbound email (Cloudflare → DOMAIN → Email → Email Routing)
 - Enable Email Routing; accept the MX/SPF/DKIM records it adds.
@@ -67,7 +67,7 @@ branch with `docs/` at the root).
 ## 8. Use the URLs
 - App Store Connect: support URL `https://DOMAIN/`, privacy policy `https://DOMAIN/privacy.html`.
 - In-app: paywall footer and settings link to privacy.html and terms.html; feedback → support@DOMAIN.
-- Bundle ID convention: reverse of DOMAIN, e.g. `app.goodwalk.goodwalk` (extensions `.widgets`).
+- Bundle ID convention: reverse of DOMAIN, e.g. `app.getgoodwalk.goodwalk` (extensions `.widgets`).
 
 ## Gotchas
 - Orange (proxied) cloud on the A records means GitHub can never issue HTTPS. Must be grey.

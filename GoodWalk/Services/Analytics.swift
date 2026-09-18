@@ -45,7 +45,7 @@ enum Analytics {
 }
 
 struct ConsoleAnalytics: AnalyticsSink {
-    private let log = Logger(subsystem: "app.goodwalk.goodwalk", category: "analytics")
+    private let log = Logger(subsystem: "app.getgoodwalk.goodwalk", category: "analytics")
 
     func track(_ event: AnalyticsEvent, _ properties: [String: Any]) {
         let props = properties.isEmpty ? "" : " \(properties)"

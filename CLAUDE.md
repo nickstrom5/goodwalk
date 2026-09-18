@@ -16,7 +16,7 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `docs/01-strategy.md` first.
   (`SampleDog`, used only by screenshot mode) and `docs/brand/`.
 
 ## Runtime notes
-- No restricted entitlements. Only App Groups (`group.app.goodwalk.goodwalk`) for the widget.
+- No restricted entitlements. Only App Groups (`group.app.getgoodwalk.goodwalk`) for the widget.
 - The daily nudge is a repeating `UNCalendarNotificationTrigger` with two actions (`ReminderManager`).
   "Walked ✓" logs the user's usual walk length without opening the app via the delegate → `AppState.quickLog`.
   "Start a walk" opens the app on the timer.

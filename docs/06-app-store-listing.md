@@ -66,8 +66,8 @@ Good Walk is free to try for 7 days, then $24.99/year, $4.99/month, or $39.99 on
 Subscriptions renew automatically unless cancelled at least 24 hours before the end of the
 current period. Manage or cancel in Settings > Apple ID > Subscriptions.
 
-Privacy policy: https://goodwalk.app/privacy.html
-Terms of use: https://goodwalk.app/terms.html
+Privacy policy: https://getgoodwalk.app/privacy.html
+Terms of use: https://getgoodwalk.app/terms.html
 ```
 
 ## Screenshots (6.9-inch, in this order)
@@ -109,7 +109,7 @@ time the user picks, with two actions (log the usual walk / start a walk).
 
 To test: enter any dog in onboarding, log a first walk on step 8, see the result card.
 Purchases can be tested with the yearly plan; the 7-day trial is configured in App Store
-Connect. The widget extension (app.goodwalk.goodwalk.widgets) shows the dog's photo, today's
+Connect. The widget extension (app.getgoodwalk.goodwalk.widgets) shows the dog's photo, today's
 progress and a button that opens the app and starts a walk.
 ```
 

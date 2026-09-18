@@ -12,8 +12,8 @@ enum Config {
 
     static var analyticsEnabled: Bool { !postHogKey.isEmpty }
 
-    static let site = "https://goodwalk.app"
+    static let site = "https://getgoodwalk.app"
     static let privacyURL = URL(string: "\(site)/privacy.html")!
     static let termsURL = URL(string: "\(site)/terms.html")!
-    static let supportEmail = "support@goodwalk.app"
+    static let supportEmail = "support@getgoodwalk.app"
 }

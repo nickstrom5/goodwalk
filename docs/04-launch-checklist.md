@@ -2,20 +2,20 @@
 
 ## Day 1 (do these before writing another line of code)
 
-- [ ] Buy `goodwalk.app` at Cloudflare Registrar (not bought yet as of 18 Sep 2026). Then run
+- [ ] Buy `getgoodwalk.app` at Cloudflare Registrar (not bought yet as of 18 Sep 2026). Then run
       the runbook in `docs/10-site-and-email-runbook.md` (or
       `CF_TOKEN=… GITHUB_TXT_VALUE=… bash scripts/cloudflare-setup.sh`).
-- [ ] Create the App IDs `app.goodwalk.goodwalk` and `app.goodwalk.goodwalk.widgets` in the
+- [ ] Create the App IDs `app.getgoodwalk.goodwalk` and `app.getgoodwalk.goodwalk.widgets` in the
       Apple Developer portal (matches `project.yml`). Enable **App Groups**
-      (`group.app.goodwalk.goodwalk`) on both.
+      (`group.app.getgoodwalk.goodwalk`) on both.
 - [ ] App Store Connect (full walkthrough in `docs/09-app-store-connect.md`): create the app,
       three in-app purchases matching `GoodWalk/Resources/Products.storekit`
       (`goodwalk.yearly`, `goodwalk.monthly`, `goodwalk.lifetime`), one subscription group
       "Good Walk Pro", 7-day free trial intro offer on yearly.
 - [ ] GitHub: push this repo, turn on Pages (Settings → Pages → Deploy from a branch →
-      folder `/docs`), custom domain `goodwalk.app` (the `docs/CNAME` file already says so),
+      folder `/docs`), custom domain `getgoodwalk.app` (the `docs/CNAME` file already says so),
       tick "Enforce HTTPS" once the certificate appears.
-- [ ] Cloudflare Email Routing: `support@goodwalk.app` and `hello@goodwalk.app` → your inbox.
+- [ ] Cloudflare Email Routing: `support@getgoodwalk.app` and `hello@getgoodwalk.app` → your inbox.
       Gmail "Send mail as" for replies. Gmail filter → label "Good Walk support", skip inbox.
 - [ ] Search "Good Walk" on the App Store on a phone. It wasn't in the dog-walk-tracker results
       in a web search on 18 Sep 2026; confirm before anything is printed on it.
