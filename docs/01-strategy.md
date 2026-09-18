@@ -12,8 +12,8 @@ in every frame. People post their dog without being asked.
 | Check | Evidence |
 |---|---|
 | Daily felt pain | The 5:30pm look from the dog. The guilt of "just round the block again". Every owner knows the number is too low; nobody knows what it should be. |
-| Proven spend | Owners pay $100+/yr for collar subscriptions: Tractive (~$49 device + ~$96/yr), Fi (~$129/yr). Prices checked 18 Sep 2026, re-verify. Pet spending is the category that doesn't get cut. |
-| Loud complaints | Tractive discontinued its separate Dog Walk app on 1 Jan 2025 and left those users without a home. Collar reviews repeat: subscription on top of hardware, battery, "I just wanted to log walks". Free trackers: map-first, account required, the dog is a profile field. |
+| Proven spend | Owners pay $100+/yr for collar subscriptions: Tractive ($79 tracker + $108/yr Basic, billed annually), Fi ($189/yr membership). Prices checked 18 Sep 2026; sources in `docs/12-sources.md`. |
+| Loud complaints | Tractive retired its separate Dog Walk app on 1 Jan 2025 and moved walk tracking into its GPS app, which is built around the tracker. Collar reviews repeat: subscription on top of hardware, battery, "I just wanted to log walks". Free trackers: map-first, account required, the dog is a profile field. |
 | 7-second demo | 5:30pm notification "Has Rex had a walk today?" → tap "Walked ✓" → Rex's ring fills, streak goes 29 → 30, confetti. Nothing to explain. |
 | Shareable result | "47 miles walked with Rex · 30-day streak" card with the dog's photo on it. Streak milestones at 1, 3, 7, 14, 30, 60, 100, 365. |
 | No backend needed for v1 | Local notifications + StoreKit 2 + a widget + the phone's pedometer. Zero server cost, no account, no location, and no special entitlement to wait for. |
@@ -48,13 +48,13 @@ Ship for October to learn. Optimise for January to earn.
 
 ## 4. Positioning against the category
 
-Prices checked 18 Sep 2026; re-verify before quoting any of them in public.
+Prices checked 18 Sep 2026 (`docs/12-sources.md`). They move; check again on the day you quote one in public.
 
 | Competitor | What they do well | What users hate | Good Walk's answer |
 |---|---|---|---|
-| Tractive (~$49 + ~$96/yr) | GPS, escape alerts, activity minutes | Hardware plus subscription, battery; Dog Walk app shut down 1 Jan 2025 | No hardware. A quarter of the yearly price. A home for the people who only wanted to log walks. |
-| Fi (~$129/yr) | Nice collar, step goals, breed rankings | Price, collar required, US-centric | The phone already in your pocket counts the distance. |
-| Walky (free) | Map, streak, free | Map-first, generic, no personal target, no notification loop | Same honesty, plus the dog's own number, the tap-to-log reminder and the card. |
+| Tractive ($79 + $108/yr) | GPS, escape alerts, activity minutes | Hardware plus subscription, battery; Dog Walk app shut down 1 Jan 2025 | No hardware. A quarter of the yearly price. A home for the people who only wanted to log walks. |
+| Fi ($189/yr) | Nice collar, step goals, breed rankings | Price, collar required, US-centric | The phone already in your pocket counts the distance. |
+| Walky (free) | Map, streak, free, no account | Map-first, generic, no personal target, no notification loop | Same honesty, plus the dog's own number, the tap-to-log reminder and the card. |
 | TreatWalk, Amiko, Dog Walk Tracking & Playdates, onedog (free / small) | Simple, some social | Accounts, social features nobody asked for, small, no distribution | No account. We out-distribute on short-form; same simplicity. |
 | Strava, Apple Fitness | Great trackers | They don't know the dog exists | The dog's name and face are the interface. |
 
@@ -90,31 +90,39 @@ The daily target is computed in `GoodWalk/Models/WalkPlan.swift`:
 
 `base minutes (size) × breed-type factor × age factor`, rounded to the nearest 5, clamped 15–120.
 
-| Size | Base min/day | "Typical dog this size gets" |
+| Size | Base min/day | What the Royal Kennel Club's Breeds A to Z says |
 |---|---|---|
-| Toy | 30 | 17 |
-| Small | 40 | 19 |
-| Medium | 60 | 22 |
-| Large | 75 | 24 |
-| Giant | 45 | 21 |
+| Toy | 30 | 18 of 24 Toy-group breeds: "Up to 30 minutes per day" |
+| Small | 40 | Small terrier, utility and hound breeds: "Up to 1 hour per day" |
+| Medium | 60 | Most medium breeds: "Up to 1 hour per day" |
+| Large | 90 | 56 of 79 large breeds: "More than 2 hours per day"; the other 23: "Up to 1 hour" |
+| Giant | 60 | St. Bernard, Mastiff, Newfoundland: "Up to 1 hour"; Great Dane, Irish Wolfhound: "More than 2 hours" |
 
 | Breed type | Factor | | Age | Factor |
 |---|---|---|---|---|
-| Companion | 0.75 | | Puppy | 0.6 |
-| Flat-faced | 0.6 | | Adult | 1.0 |
-| Terrier / Hound / Mixed | 1.0 | | Senior | 0.7 |
-| Working | 1.15 | | | |
-| Sporting (retrievers, spaniels, pointers) | 1.25 | | | |
-| Herding | 1.35 | | | |
+| Flat-faced | 0.6 | | Puppy | 0.6 |
+| Companion / Terrier / Hound / Mixed | 1.0 | | Adult | 1.0 |
+| Working | 1.15 | | Senior | 0.7 |
+| Sporting (retrievers, spaniels, pointers) | 1.35 | | | |
+| Herding | 1.5 | | | |
 
-Examples: medium adult mixed = 60. Large adult herding = 75 × 1.35 = 101 → 100. Small senior
-flat-faced = 40 × 0.6 × 0.7 = 17 → 15. Quick-logged walks estimate distance at 2.0 mph
-("dog pace"); timed walks use the pedometer.
+Examples: medium adult mixed = 60. Large adult sporting (a Labrador) = 90 × 1.35 = 121 → 120,
+the cap, where the Kennel Club says "More than 2 hours" and PDSA says "a minimum of two hours".
+Medium adult herding (a Border Collie) = 90. Small senior flat-faced = 40 × 0.6 × 0.7 = 17 → 15.
+Quick-logged walks estimate distance at 2.0 mph ("dog pace"); timed walks use the pedometer.
 
-**These are assumptions.** The bases and factors are our reading of general exercise guidance
-(AKC, PDSA, kennel-club breed pages); the "typical dog gets" figures and the hook's "about 20
-minutes a day" are placeholders in the range owner surveys report. Cite sources for every one
-before submission, or soften the copy. In the app the target is always presented as a general
+"The typical dog gets about 23 minutes a day" (hook and reveal) is 160 minutes a week ÷ 7: the
+median among owners who walk their dog, across 29 studies (Christian et al., 2013). The same
+review found only about 60% of owners walk their dog at all. No source splits the figure by dog
+size, so the old per-size numbers (17/19/22/24/21) are gone.
+
+**What is sourced and what is ours.** The bands are the Kennel Club's and PDSA's; turning three
+bands into a number per dog is our interpolation, pinned to named breeds by
+`testNamedBreedsSitInTheirPublishedBands`. The puppy and senior factors are our judgment: the
+sources say "shorter" and give no ratio. The full list, with URLs, exact figures and the date
+accessed, is `docs/12-sources.md`. (Changed 18 Sep 2026: large 75 → 90, giant 45 → 60, companion
+0.75 → 1.0, sporting 1.25 → 1.35, herding 1.35 → 1.5, because the old table put Labradors,
+Shepherds and Great Danes well under both sources.) In the app the target is always presented as a general
 guideline, not advice: "Not veterinary advice; ask your vet, especially for puppies, seniors,
 flat-faced breeds and dogs with health conditions." The user can change the target on the plan
 screen and in Settings.
@@ -126,11 +134,11 @@ first walk and seen the first card with their dog on it).
 
 | Plan | Price | Notes |
 |---|---|---|
-| Yearly | **$24.99** with 7-day free trial | Default. "$2.08/mo" framing. About a quarter of a collar subscription. |
+| Yearly | **$24.99** with 7-day free trial | Default. "$2.08/mo" framing. Under a quarter of the cheapest collar subscription ($108). |
 | Monthly | $4.99 | Anchor to make yearly obvious. |
 | Lifetime | $39.99 | For the subscription-haters (a loud group in collar reviews). |
 
-Why these numbers: the paid reference points are collar subscriptions at ~$96–129/yr, so $24.99
+Why these numbers: the paid reference points are collar subscriptions at $108–189/yr, so $24.99
 reads as "the honest one" and still supports a business. The free trackers set the floor; the
 personal target, the loop and the card are what the money is for.
 
@@ -179,7 +187,7 @@ cancel. The 5:30pm notification with tap-to-log exists to protect this number.
 | Risk | Mitigation |
 |---|---|
 | App Review or a vet reads the target as veterinary advice | It's a general guideline, says so on the reveal, the plan screen and the Settings footer, and tells people to ask their vet. No health-outcome claims anywhere. The user can change the number. |
-| The numbers get challenged in comments | Cite AKC / PDSA / kennel-club guidance and the owner surveys before submission. Where a figure can't be cited, soften it ("many dogs", "about"). |
+| The numbers get challenged in comments | Every one is in `docs/12-sources.md` with a link: Kennel Club bands, PDSA breed pages, Christian et al. for the 23. Reply with the source, never with a health claim. |
 | Free competitors (Walky has streaks) | We don't compete on tracking. We compete on the dog's own number, the tap-to-log loop, the photo card and distribution. Price says the rest. |
 | Users stop logging | Notification action logs without opening the app; widget starts a walk in one tap; quick log backfills today. A missed day never punishes. |
 | Distance without GPS is approximate | Pedometer distance is good enough for "47 miles with Rex". Say "about" in copy. Motion permission is optional; without it, distance is estimated at 2.0 mph. |

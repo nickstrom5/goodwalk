@@ -27,7 +27,7 @@ and Email Routing is on.
 **Picture:** `docs/brand/profile-400.png` (the white paw in today's ring on terracotta, padded for circular crops).
 **Banner (X, YouTube):** `docs/brand/banner-1500x500.png` (cream, the ring mark, "Good Walk", "Every dog
 deserves a good walk.").
-**First post image:** `docs/brand/post-reveal.png` ("A dog like Rex needs about 60 min a day. Most dogs his size get 22.").
+**First post image:** `docs/brand/post-reveal.png` ("A dog like Rex needs about 60 min a day. The typical dog gets about 23.").
 **Link:** `https://getgoodwalk.app` everywhere. No Linktree; one link, one action.
 **Name field:** `Good Walk` on all platforms. Not "Good Walk App", not "Good Walk – Dog Tracker".
 
@@ -83,7 +83,7 @@ ten more of each. Keep the daily streak post going all October regardless; the 1
 3. Your dog needs a walk every day. This makes it a streak.
 4. I asked how much walking he needs. It said 60. He was getting 20.
 5. 30 days in a row. 47 miles with Rex.
-6. A GPS collar is $100 a year. This is $25 and has one button.
+6. A GPS collar is $100+ a year. This is $25 and has one button.
 7. A missed day is just a missed day.
 8. The streak isn't mine. It's his.
 9. Day N of Walk Your Dog Week. The card says it all.
@@ -111,8 +111,8 @@ first; r/dogs and r/puppy101 remove self-promotion. **r/reactivedogs: do not pro
 Walks are the hard part of those owners' day; contribute there as a dog owner or not at all.
 
 **r/dogs:**
-> Title: I tracked my dog's actual walk minutes for 30 days. It was a third of what I thought.
-> Body: the honest list. What I assumed (an hour a day), what the log said (22 minutes), what changed once there was a number (a fixed time, a lower bar for "counts", never two missed days in a row). Ask what others' real numbers are. Happy to share what I use if anyone wants; the principle works with a notes app.
+> Title: I tracked my dog's actual walk minutes for 30 days. It wasn't what I thought.
+> Body: the honest list. What I assumed (an hour a day), what the log said (your real number; don't borrow one), what changed once there was a number (a fixed time, a lower bar for "counts", never two missed days in a row). Ask what others' real numbers are. Happy to share what I use if anyone wants; the principle works with a notes app.
 
 **r/puppy101:**
 > Title: What helped us build a walk routine that survived week 3

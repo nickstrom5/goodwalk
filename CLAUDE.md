@@ -32,7 +32,8 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `docs/01-strategy.md` first.
 - StoreKit uses `GoodWalk/Resources/Products.storekit`; product IDs `goodwalk.yearly`, `goodwalk.monthly`, `goodwalk.lifetime`.
   `SIMCTL_CHILD_GOODWALK_FORCE_PRO=1` unlocks Pro in debug builds.
 - All stats are derived (`Stats.compute`) from the walk log + the target. Never store a streak; recompute it.
-- The recommendation math is `WalkPlan` and nothing else. Its tables are mirrored in `docs/01-strategy.md`.
+- The recommendation math is `WalkPlan` and nothing else. Its tables are mirrored in `docs/01-strategy.md`
+  and sourced in `docs/12-sources.md`. A new number about dogs, owners or competitors needs a row there first.
 
 ## Conventions
 - One core loop, no feature creep: onboarding → paywall → daily walk → milestone card. New features need a line in

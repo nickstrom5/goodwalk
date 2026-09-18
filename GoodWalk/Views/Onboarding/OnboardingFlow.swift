@@ -117,7 +117,7 @@ struct NoteCard: View {
 /// The line that keeps us honest wherever a guideline number is shown.
 struct GuidelineFootnote: View {
     var body: some View {
-        Text("A general guideline, not veterinary advice. Your vet knows your dog best, especially for puppies, seniors, flat-faced breeds and dogs with health conditions.")
+        Text("A general guideline, not veterinary advice, drawn from published Kennel Club and PDSA breed exercise guidance. Your vet knows your dog best, especially for puppies, seniors, flat-faced breeds and dogs with health conditions. Typical figure: Christian et al., 2013.")
             .font(Theme.Font.caption)
             .foregroundStyle(Theme.textTertiary)
             .fixedSize(horizontal: false, vertical: true)

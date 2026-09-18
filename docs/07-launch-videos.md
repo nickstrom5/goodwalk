@@ -64,14 +64,15 @@ Rules for all ten:
 **Note:** Behaviour jokes only. Nothing that sounds like a symptom.
 
 ### 6. Collar vs. phone
-**Hook text:** "A GPS collar is $100 a year."
+**Hook text:** "A GPS collar is $100+ a year."
 **Shots:**
 1. Dog on a walk, normal collar. Text: "I don't need to know where he is. He's right here."
 2. Cut: Good Walk paywall. "$24.99. No collar. One tap a day."
 3. Home screen demo, 3s.
 4. End card.
 **Note:** Keep it factual. Collars solve a real problem (lost dogs); we solve a different one.
-Re-verify the price before posting, and don't show a competitor's logo.
+Cheapest yearly plan checked 18 Sep 2026: Tractive Basic, $108 (`docs/12-sources.md`). Check again
+before posting, and don't show a competitor's logo.
 
 ### 7. The missed day
 **Hook text:** "What a missed day looks like here"

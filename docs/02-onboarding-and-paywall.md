@@ -10,12 +10,12 @@ This is hypothesis #1, not the final flow. The step enum lives in
 
 | # | Step | Belief it moves | What it does | Why |
 |---|---|---|---|---|
-| 1 | **hook** | "I have this problem" | Full-bleed: "Most dogs get about 20 minutes a day. Most need a lot more." One button: "What does my dog need?" | Every owner suspects this already. The CTA is a question they actually want answered. No welcome, no feature list. |
+| 1 | **hook** | "I have this problem" | Full-bleed: "The typical dog gets about 23 minutes a day. Many are built for more." Source line underneath (160 min a week, median of 29 studies, Christian et al. 2013). One button: "What does my dog need?" | Every owner suspects this already. The CTA is a question they actually want answered. No welcome, no feature list. |
 | 2 | **dog** | "This app understands my dog" | Name + optional photo (system photo picker, no library permission). | From here on every screen says "Rex", not "your dog". The photo is what makes the ring, the widget and the card theirs. |
 | 3 | **size** | "This app understands my dog" | Toy / small / medium / large / giant. | First input to the target. One tap. |
 | 4 | **breed** | "This app understands my dog" | Breed-type chips: companion, terrier, hound, sporting, herding, working, flat-faced, mixed. Plus age: puppy / adult / senior. | Types, not 300 breeds: nobody scrolls a list, and mixed-breed owners aren't excluded. Age and flat-faced pull the target *down*, which is what makes it credible. |
 | 5 | **usual** | "I have this problem" | "How long is a normal day's walking right now?" 10 / 20 / 30 / 45 / 60. | Making them *state* the number is a small commitment and the input for the reveal. It also becomes the default for "Walked ✓". |
-| 6 | **reveal** | "This might help" | Animated count-ups: "Rex needs about 60 min a day." → "Most dogs his size get 22." → "You're at 20. That's 243 hours a year Rex is missing." General-guideline footnote. | The aha. Three numbers, screenshot-able. If the owner already meets the target the gap is 0, so the third block turns into praise ("Rex is already there. The hard part now is every day.") instead of "0 hours". |
+| 6 | **reveal** | "This might help" | Animated count-ups: "Rex needs about 60 min a day." → "The typical dog gets about 23." → "You said 20. That's 243 hours a year Rex is missing." General-guideline footnote. | The aha. Three numbers, screenshot-able. If the owner already meets the target the gap is 0, so the third block turns into praise ("Rex is already there. The hard part now is every day.") instead of "0 hours". |
 | 7 | **plan** | "This might help" | Confirm or adjust the daily target. Set the reminder time (default 5:30 PM). CTA requests notification permission. | The commitment and the mechanism on one screen. Permission is asked with the reason on screen. Adjustable target keeps us out of advice territory. |
 | 8 | **first** | "I want the result" | "Has Rex walked today?" Minute chips log today's first walk. Escape hatch: "Not yet. We'll start with the next walk." | The product is used *before* the paywall. This is the screen that sells. |
 | 9 | **result** | "I want the result" | Ring fills around Rex's photo. "Day 1 with Rex." First share card with the photo. | Immediate win + the first shareable artifact, with their dog's face on it. |
@@ -44,13 +44,13 @@ in `docs/01-strategy.md` section 6 and live in `GoodWalk/Models/WalkPlan.swift`.
 ## Copy rules for every screen
 
 - The dog's name, never "your dog", once we have it.
-- "About", "guideline", "most dogs". Never "should", "must", "vet-recommended" or any health
+- "About", "guideline", "the typical dog". A number about dogs or owners needs a row in `docs/12-sources.md`. Never "should", "must", "vet-recommended" or any health
   outcome ("lives longer", "loses weight", "less anxious").
 - No guilt imagery. The reveal is the only screen that stings, and it stings with a number.
 
 ## What to A/B test first (in order)
 
-1. Hook copy ("Most dogs get about 20 minutes a day" vs. "Your dog can't ask for a longer walk" vs. "How much walking does your dog actually need?").
+1. Hook copy ("The typical dog gets about 23 minutes a day" vs. "Your dog can't ask for a longer walk" vs. "How much walking does your dog actually need?").
 2. Reveal order (the dog's target first vs. "hours a year missing" first).
 3. First-walk screen: default to logging vs. asking.
 4. Paywall: trial reminder toggle on vs. off by default.

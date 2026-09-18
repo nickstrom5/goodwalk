@@ -10,11 +10,11 @@ struct HookScreen: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Spacer()
-            Text("Most dogs get about")
+            Text("The typical dog gets about")
                 .font(Theme.Font.headline)
                 .foregroundStyle(Theme.textSecondary)
             HStack(alignment: .lastTextBaseline, spacing: 10) {
-                Text("20")
+                Text("\(WalkPlan.typicalMinutes)")
                     .font(Theme.Font.display(104))
                     .foregroundStyle(Theme.accent)
                 Text("minutes\na day.")
@@ -22,11 +22,16 @@ struct HookScreen: View {
                     .foregroundStyle(Theme.textPrimary)
             }
             .padding(.vertical, -6)
-            Text("Most need a lot more.")
+            Text("Many are built for more.")
                 .font(Theme.Font.title)
                 .foregroundStyle(Theme.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 8)
+            Text("\(WalkPlan.typicalMinutesPerWeek) minutes a week: the median across 29 studies of owners who walk their dog (Christian et al., 2013).")
+                .font(Theme.Font.caption)
+                .foregroundStyle(Theme.textTertiary)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 14)
             Spacer()
             PrimaryButton(title: "What does my dog need?", action: onNext)
             Text("Good Walk turns the daily walk into a streak. Their name on it, not yours.")
@@ -223,7 +228,7 @@ struct UsualScreen: View {
     var body: some View {
         OnboardingScreen(
             title: "Honestly, how much does \(appState.dog.displayName) walk on a normal day?",
-            subtitle: "All walks added up. Not the best day, the normal one. Most people guess high.",
+            subtitle: "All walks added up. Not the best day, the normal one. No judgement.",
             onCTA: onNext
         ) {
             VStack(spacing: 24) {
@@ -252,7 +257,7 @@ struct UsualScreen: View {
     private var comparison: String {
         switch appState.dog.usualMinutes {
         case ..<15: return "A lap of the block. Plenty of dogs live here; it's the easiest number to move."
-        case 15..<30: return "Right around what most dogs get. Let's see what \(appState.dog.displayName) is built for."
+        case 15..<30: return "Right around the typical dog. Let's see what \(appState.dog.displayName) is built for."
         case 30..<60: return "Better than most. Let's see how close that is to what \(appState.dog.displayName) is built for."
         default: return "That's a well-walked dog. Good Walk keeps it that way, and keeps the receipts."
         }
@@ -297,11 +302,11 @@ struct RevealScreen: View {
                     }
 
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Most \(dog.size.rawValue) dogs get")
+                        Text("The typical dog gets about")
                             .font(Theme.Font.headline)
                             .foregroundStyle(Theme.textSecondary)
                         HStack(alignment: .firstTextBaseline, spacing: 8) {
-                            CountUpText(target: WalkPlan.typicalMinutes(for: dog.size), delay: 0.9)
+                            CountUpText(target: WalkPlan.typicalMinutes, delay: 0.9)
                                 .font(Theme.Font.display(56))
                                 .foregroundStyle(Theme.warning)
                             Text("min. You said \(dog.usualMinutes).")

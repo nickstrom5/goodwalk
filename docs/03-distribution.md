@@ -23,7 +23,7 @@ videos get views for free; views are not the goal.
    around the dog's photo, streak ticks. 5–8s.
 2. **"Day N" series** — "Day 12 of walking Rex every single day" with the app's streak as the
    proof. Daily.
-3. **The reveal** — "I asked an app how much walking my dog actually needs" → the 60 vs 22
+3. **The reveal** — "I asked an app how much walking my dog actually needs" → the 60 vs 23
    screen. Reaction face, then the dog's face.
 4. **Slideshow / text-on-image** — "5 signs your dog needs a longer walk" → slide 5 is the app.
    (Behaviour signs only: zoomies at 9pm, staring at the lead. No health claims.)
@@ -34,14 +34,14 @@ videos get views for free; views are not the goal.
 
 ## 20 hooks to test (first frame text, over a shot of the dog)
 
-1. Most dogs get about 20 minutes a day. Here's what mine needs.
+1. The typical dog gets about 23 minutes a day. Here's what mine needs.
 2. I asked an app how much walking my dog needs. It said 60.
 3. My dog can't ask for a longer walk. So my phone does.
 4. Day 1 of Walk Your Dog Week. Here's my tracker.
 5. POV: it's 5:30 and your phone asks "Has Rex had a walk today?"
 6. 243 hours a year. That's what my dog was missing.
 7. 47 miles with Rex. My phone made me a card.
-8. A GPS collar is $100 a year. I just wanted to log walks.
+8. A GPS collar is $100+ a year. I just wanted to log walks.
 9. I put my honest number in. It said I'm at a third.
 10. The streak isn't mine. It's his.
 11. 30 days in a row. Here's what my Home Screen looks like.

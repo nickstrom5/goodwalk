@@ -46,16 +46,18 @@ open GoodWalk.xcodeproj
 
 ## Before submission
 
-- [ ] Replace or cite every placeholder number: the hook ("about 20 minutes a day"), the
-      "typical dog this size gets" figures (17/19/22/24/21) and the size/breed/age factors in
-      `GoodWalk/Models/WalkPlan.swift`. Sources to check: AKC, PDSA, kennel-club exercise
-      guidance, published owner surveys. If a number can't be cited, soften the copy. See
-      `docs/01-strategy.md` section 6.
+- [x] Replace or cite every placeholder number (done 18 Sep 2026, `docs/12-sources.md`): the
+      hook is now the cited 23 min (160 min a week, Christian et al. 2013), the per-size
+      "typical" figures are gone, and the size/breed tables in `GoodWalk/Models/WalkPlan.swift`
+      follow the Kennel Club bands and PDSA breed pages.
+- [ ] Still open from that pass: the puppy (0.6) and senior (0.7) factors are our judgment, not a
+      published ratio; Fi's $189/yr came from a third-party review because Fi's store page would
+      not load. Open shop.fitracking.com and tractive.com on the day you quote a price.
 - [ ] Check every screen that shows the target also shows "general guideline": reveal, plan,
       Settings footer ("Not veterinary advice; ask your vet, especially for puppies, seniors,
       flat-faced breeds and dogs with health conditions.").
 - [ ] App Store screenshots: 1) 5:30pm notification with Walked ✓, 2) home with Rex in the
-      ring and a 30-day streak, 3) reveal "60 min vs 22", 4) milestone card, 5) walk timer,
+      ring and a 30-day streak, 3) reveal "60 min vs 23", 4) milestone card, 5) walk timer,
       6) widget. Same order as the onboarding beliefs. `docs/screenshots/` has the raw captures.
       **The seeded captures use an illustrated sample dog. Re-shoot the App Store set with a
       real dog photo** (yours, or one you have written permission to use).
