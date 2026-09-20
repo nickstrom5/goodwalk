@@ -139,7 +139,9 @@ private struct StatBlock: View {
                         .font(Theme.Font.caption)
                         .foregroundStyle(Theme.textSecondary)
                         .multilineTextAlignment(.center)
-                        .lineLimit(2)
+                        // Always two lines' worth, so a one-line label like "day streak" does not
+                        // make its card shorter and drop its number below the other two.
+                        .lineLimit(2, reservesSpace: true)
                 }
                 .frame(maxWidth: .infinity)
             }
