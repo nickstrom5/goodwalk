@@ -367,17 +367,17 @@
 
   <section id="your-dog">
     <h2>See your dog in it</h2>
-    <p class="sub">Pick a photo and a name to see the home screen the way you would have it. Your photo is only shown here in your browser: it is never uploaded, and it is gone when you close the tab.</p>
+    <p class="sub">The dog in the ring is a sample. Pick a photo and a name to see the home screen the way you would have it. Your photo is only shown here in your browser: it is never uploaded, and it is gone when you close the tab.</p>
     <div class="tryit">
       <div class="ringwrap">
         <svg viewBox="0 0 100 100" role="img" aria-labelledby="ringtitle">
-          <title id="ringtitle">Today&#x27;s progress ring, 25 of 60 minutes walked, around your dog&#x27;s photo</title>
+          <title id="ringtitle">Today&#x27;s progress ring, 25 of 60 minutes walked, around the dog&#x27;s photo</title>
           <defs><clipPath id="dogclip"><circle cx="50" cy="50" r="31"/></clipPath></defs>
           <circle cx="50" cy="50" r="42" fill="none" stroke="#EFE6D6" stroke-width="10"/>
           <circle cx="50" cy="50" r="42" fill="none" stroke="#ED7433" stroke-width="10" stroke-linecap="round" stroke-dasharray="110 264" transform="rotate(-90 50 50)"/>
           <circle cx="50" cy="50" r="31" fill="#F6D9C3"/>
           <g id="dog-paw" fill="#C9551B"><ellipse cx="50" cy="57" rx="9" ry="7.5"/><ellipse cx="38" cy="48" rx="3.6" ry="4.8"/><ellipse cx="45.5" cy="40" rx="3.6" ry="4.8"/><ellipse cx="54.5" cy="40" rx="3.6" ry="4.8"/><ellipse cx="62" cy="48" rx="3.6" ry="4.8"/></g>
-          <image id="dog-photo" clip-path="url(#dogclip)" x="19" y="19" width="62" height="62" preserveAspectRatio="xMidYMid slice" hidden></image>
+          <image id="dog-photo" clip-path="url(#dogclip)" x="19" y="19" width="62" height="62" preserveAspectRatio="xMidYMid slice" href="brand/sample-dog.jpg"></image>
         </svg>
       </div>
       <div class="controls">
@@ -386,7 +386,7 @@
           <span id="picklabel">Choose your dog&#x27;s photo</span>
           <input id="dogphoto" type="file" accept="image/*">
         </label>
-        <p><button class="linkbtn" id="dogreset" type="button" hidden>Remove photo</button></p>
+        <p><button class="linkbtn" id="dogreset" type="button" hidden>Remove my photo</button></p>
         <label class="field" for="dogname">Their name</label>
         <input id="dogname" type="text" value="Rex" maxlength="20" autocomplete="off" spellcheck="false">
         <p class="statline"><b>25</b> of 60 min today · <b>30</b>-day streak with <span id="dogname-out">Rex</span></p>
@@ -513,11 +513,18 @@
     if (!input || !photo || !name) return;
     var current = null;
 
+    var sample = photo.getAttribute('href');
+
     function clearPhoto() {
       if (current) { URL.revokeObjectURL(current); current = null; }
-      photo.removeAttribute('href');
-      photo.setAttribute('hidden', '');
-      paw.removeAttribute('hidden');
+      if (sample) {
+        photo.setAttribute('href', sample);
+        photo.removeAttribute('hidden');
+      } else {
+        photo.removeAttribute('href');
+        photo.setAttribute('hidden', '');
+        paw.removeAttribute('hidden');
+      }
       reset.setAttribute('hidden', '');
       pickLabel.textContent = "Choose your dog's photo";
       input.value = '';
@@ -535,7 +542,6 @@
       current = URL.createObjectURL(file);
       photo.setAttribute('href', current);
       photo.removeAttribute('hidden');
-      paw.setAttribute('hidden', '');
       reset.removeAttribute('hidden');
       pickLabel.textContent = 'Choose a different photo';
       status.textContent = 'Your photo is in the ring. It stays in this browser.';
@@ -543,7 +549,7 @@
 
     reset.addEventListener('click', function () {
       clearPhoto();
-      status.textContent = 'Photo removed.';
+      status.textContent = 'Your photo was removed. Showing the sample dog again.';
     });
 
     name.addEventListener('input', function () {
