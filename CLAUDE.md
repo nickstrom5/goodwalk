@@ -21,6 +21,9 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
   there (HTML, `robots.txt`, `sitemap.xml`, `site.webmanifest`, images, `CNAME`, `.nojekyll`). Never put notes in it.
 - Internal notes (strategy, launch, outreach, sources: the numbered `NN-*.md` files) live in `playbook/`, which is
   not served. Links from a note to a site asset are `../docs/...`.
+- The site's "See your dog in it" section (`#your-dog` in `docs/index.html`) previews a visitor's own photo inside the
+  ring. It is pure client-side: a blob URL in an SVG `<image>`, revoked on removal and on `pagehide`. Nothing is uploaded
+  and no script is fetched, which is what lets the copy keep saying nothing leaves your phone.
 - The site is static HTML with inline CSS: no build step, no frameworks, no third-party scripts, no tracking. Every
   page has its own title, description, canonical, Open Graph tags and JSON-LD; the FAQ JSON-LD must mirror the
   visible FAQ text exactly. New page → add it to `docs/sitemap.xml` and the footer nav on every page.
