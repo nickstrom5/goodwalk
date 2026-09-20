@@ -2,7 +2,7 @@
 # One-shot Cloudflare setup for getgoodwalk.app: DNS for GitHub Pages + email forwarding.
 # Idempotent: re-running skips anything that already exists.
 #
-# Usage:  CF_TOKEN=<api token> bash scripts/cloudflare-setup.sh
+# Usage:  bash scripts/cloudflare-setup.sh        (asks for the token; or pass CF_TOKEN=...)
 # Token needs: Account:Email Routing Addresses:Edit, Zone:Email Routing Rules:Edit,
 #              Zone:DNS:Edit, Zone:Zone:Read, scoped to getgoodwalk.app.
 set -euo pipefail
@@ -10,10 +10,14 @@ set -euo pipefail
 DOMAIN="${DOMAIN:-getgoodwalk.app}"
 FORWARD_TO="${FORWARD_TO:-Nickstrom5@gmail.com}"
 GITHUB_USER="${GITHUB_USER:-nickstrom5}"
-GITHUB_TXT_VALUE="${GITHUB_TXT_VALUE:?set to the value GitHub shows at github.com/settings/pages_verified_domains}"
+GITHUB_TXT_VALUE="${GITHUB_TXT_VALUE:-}"   # optional: value from github.com/settings/pages_verified_domains
 API="https://api.cloudflare.com/client/v4"
 
-[ -n "${CF_TOKEN:-}" ] || { echo "Set CF_TOKEN first."; exit 1; }
+case "${CF_TOKEN:-}" in ""|yourtoken|PASTE_TOKEN_HERE|"<token>")
+  printf "Paste your Cloudflare API token and press Return (it will not show on screen): "
+  read -rs CF_TOKEN; echo ;;
+esac
+[ "${#CF_TOKEN}" -ge 30 ] || { echo "That does not look like a Cloudflare token (too short). Nothing was changed."; exit 1; }
 command -v jq >/dev/null || { echo "jq is required: brew install jq"; exit 1; }
 
 cf() { # METHOD PATH [JSON]
@@ -56,7 +60,11 @@ ensure() { # TYPE NAME CONTENT
 }
 for ip in 185.199.108.153 185.199.109.153 185.199.110.153 185.199.111.153; do ensure A "$DOMAIN" "$ip"; done
 ensure CNAME "www.$DOMAIN" "$GITHUB_USER.github.io"
-ensure TXT "_github-pages-challenge-$GITHUB_USER.$DOMAIN" "$GITHUB_TXT_VALUE"
+if [ -n "$GITHUB_TXT_VALUE" ] && [ "${GITHUB_TXT_VALUE#value_for}" = "$GITHUB_TXT_VALUE" ]; then
+  ensure TXT "_github-pages-challenge-$GITHUB_USER.$DOMAIN" "$GITHUB_TXT_VALUE"
+else
+  echo "  skipped  GitHub verification TXT (optional; the site works without it)"
+fi
 
 # ---------- Email routing ----------
 echo "▶ Email routing"
