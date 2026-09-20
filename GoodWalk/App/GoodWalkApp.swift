@@ -44,7 +44,6 @@ struct GoodWalkApp: App {
 /// Routes between onboarding and the main app.
 struct RootView: View {
     @EnvironmentObject private var appState: AppState
-    @Environment(\.horizontalSizeClass) private var sizeClass
 
     var body: some View {
         ZStack {
@@ -60,10 +59,9 @@ struct RootView: View {
                         .transition(.opacity)
                 }
             }
-            // iPhone Duo's inner display reports a regular width class. Keep the one-column
-            // layout readable there by capping its width, per Apple's Duo guidance.
-            .frame(maxWidth: sizeClass == .regular ? Theme.regularWidthMax : .infinity)
-            .frame(maxWidth: .infinity)
+            // iPhone Duo's inner display reports a regular width class; keep the one-column
+            // layout readable there, per Apple's Duo guidance.
+            .phoneWidthColumn()
         }
         .animation(.easeInOut(duration: 0.35), value: appState.hasCompletedOnboarding)
     }
