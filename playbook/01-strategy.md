@@ -80,6 +80,11 @@ stored (`GoodWalk/Models/Stats.swift`).
 Entry points besides the app: the notification actions, a Home Screen widget (dog photo,
 today's ring, a "Start a walk" button), Siri ("Start a walk"), Shortcuts, the Action Button.
 
+**Added 20 Sep 2026: walk Live Activity.** The running walk shows on the Lock Screen and Dynamic Island, and on
+iPhone Duo in the outer display's status bar while the phone is folded in a pocket. Metric it moves:
+`walk_finished / walk_started` (people forget a timer they can't see, then discard the walk), and it is the Duo
+launch-week demo. No new permission, no backend.
+
 **What is deliberately not in v1:** GPS maps, routes, multiple dogs, family sharing, social
 feed, playdates, HealthKit, Apple Watch, Android, training content. Each is a v1.x candidate
 only if reviews ask for it. (Multiple dogs will be the first ask; note it and wait.)

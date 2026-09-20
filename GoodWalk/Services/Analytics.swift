@@ -29,6 +29,7 @@ enum AnalyticsEvent: String {
     case milestoneReached = "milestone_reached"
     case shareTapped = "share_tapped"
     case supportTapped = "support_tapped"
+    case liveActivityFailed = "live_activity_failed"
     case reminderTimeChanged = "reminder_time_changed"
 }
 

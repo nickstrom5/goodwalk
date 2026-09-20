@@ -6,7 +6,7 @@ import PostHog
 struct PostHogAnalytics: AnalyticsSink {
     static func start() -> PostHogAnalytics? {
         guard Config.analyticsEnabled else { return nil }
-        let config = PostHogConfig(apiKey: Config.postHogKey, host: Config.postHogHost)
+        let config = PostHogConfig(projectToken: Config.postHogKey, host: Config.postHogHost)
         config.captureApplicationLifecycleEvents = true   // installed / opened / updated
         config.captureScreenViews = false
         config.sessionReplay = false

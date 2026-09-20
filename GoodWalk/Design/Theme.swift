@@ -19,6 +19,8 @@ enum Theme {
 
     static let cornerRadius: CGFloat = 20
     static let horizontalPadding: CGFloat = 24
+    /// Content width on regular-width screens (iPhone Duo open). Keeps lines and buttons phone-sized.
+    static let regularWidthMax: CGFloat = 560
 
     enum Font {
         static func display(_ size: CGFloat = 40) -> SwiftUI.Font {
