@@ -104,10 +104,11 @@ struct SettingsView: View {
                     Button("Restore purchases") { Task { await store.restore() } }
                 }
 
+                HelpSection()
+
                 Section {
                     Link("Privacy policy", destination: Config.privacyURL)
                     Link("Terms", destination: Config.termsURL)
-                    Link("Send feedback", destination: URL(string: "mailto:\(Config.supportEmail)")!)
                 } footer: {
                     Text("Good Walk \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") · Everything stays on your phone, including the photo. Walk targets are general guidelines, not veterinary advice. Ask your vet what's right for your dog, especially puppies, seniors, flat-faced breeds and dogs with health conditions.")
                 }

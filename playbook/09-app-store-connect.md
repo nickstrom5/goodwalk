@@ -86,7 +86,7 @@ above are still the right answer for a build with the key set.
 
 - Category: Health & Fitness (primary), Lifestyle (secondary).
 - Age rating: questionnaire → everything "None". Expect 4+.
-- Support URL: https://getgoodwalk.app/ Marketing URL: same.
+- Support URL: https://getgoodwalk.app/support.html Marketing URL: same.
 - Copyright: 2026 <your name>.
 
 ## 8. Version 1.0 page
