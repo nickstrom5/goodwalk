@@ -1,0 +1,206 @@
+Command line invocation:
+    /Applications/Xcode-beta.app/Contents/Developer/usr/bin/xcodebuild test -project GoodWalk.xcodeproj -scheme GoodWalk -destination "platform=iOS Simulator,name=iPhone Duo" -derivedDataPath /tmp/dd-dogwalk-duo "-only-testing:GoodWalkTests" -skipPackagePluginValidation CODE_SIGNING_ALLOWED=NO
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  PostHog: https://github.com/PostHog/posthog-ios @ 3.78.1
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (10 targets)
+    Target 'GoodWalkTests' in project 'GoodWalk'
+        ➜ Explicit dependency on target 'GoodWalk' in project 'GoodWalk'
+    Target 'GoodWalk' in project 'GoodWalk'
+        ➜ Explicit dependency on target 'GoodWalkWidgets' in project 'GoodWalk'
+        ➜ Explicit dependency on target 'PostHog-product' in project 'PostHog'
+    Target 'PostHog-product' in project 'PostHog'
+        ➜ Explicit dependency on target 'PostHog' in project 'PostHog'
+        ➜ Explicit dependency on target 'PostHog_PostHog' in project 'PostHog'
+        ➜ Explicit dependency on target 'PostHogObjCExceptionSupport' in project 'PostHog'
+        ➜ Explicit dependency on target 'phlibwebp' in project 'PostHog'
+        ➜ Explicit dependency on target 'PHPLCrashReporter' in project 'PostHog'
+    Target 'PostHog' in project 'PostHog'
+        ➜ Explicit dependency on target 'PostHog_PostHog' in project 'PostHog'
+        ➜ Explicit dependency on target 'PostHogObjCExceptionSupport' in project 'PostHog'
+        ➜ Explicit dependency on target 'phlibwebp' in project 'PostHog'
+        ➜ Explicit dependency on target 'PHPLCrashReporter' in project 'PostHog'
+    Target 'PHPLCrashReporter' in project 'PostHog'
+        ➜ Explicit dependency on target 'PostHog_PHPLCrashReporter' in project 'PostHog'
+    Target 'PostHog_PHPLCrashReporter' in project 'PostHog' (no dependencies)
+    Target 'phlibwebp' in project 'PostHog' (no dependencies)
+    Target 'PostHogObjCExceptionSupport' in project 'PostHog' (no dependencies)
+    Target 'PostHog_PostHog' in project 'PostHog' (no dependencies)
+    Target 'GoodWalkWidgets' in project 'GoodWalk' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ClangStatCache /Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode-beta.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk /tmp/dd-dogwalk-duo/SDKStatCaches.noindex/iphonesimulator27.1-24A94403-ad27b2e959b5dc8f758a274836ee501f.sdkstatcache
+    cd /Users/nicksoderstrom/Developer/claudecode/dogwalk/GoodWalk.xcodeproj
+    /Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode-beta.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -o /tmp/dd-dogwalk-duo/SDKStatCaches.noindex/iphonesimulator27.1-24A94403-ad27b2e959b5dc8f758a274836ee501f.sdkstatcache
+
+ProcessInfoPlistFile /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalkWidgets.appex/Info.plist /Users/nicksoderstrom/Developer/claudecode/dogwalk/GoodWalkWidgets/Info.plist (in target 'GoodWalkWidgets' from project 'GoodWalk')
+    cd /Users/nicksoderstrom/Developer/claudecode/dogwalk
+    builtin-infoPlistUtility /Users/nicksoderstrom/Developer/claudecode/dogwalk/GoodWalkWidgets/Info.plist -producttype com.apple.product-type.app-extension -expandbuildsettings -format binary -platform iphonesimulator -o /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalkWidgets.appex/Info.plist
+
+ProcessInfoPlistFile /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/PostHog_PostHog.bundle/Info.plist /tmp/dd-dogwalk-duo/Build/Intermediates.noindex/PostHog.build/Debug-iphonesimulator/PostHog_PostHog-b.build/empty-PostHog_PostHog.plist (in target 'PostHog_PostHog' from project 'PostHog')
+    cd /tmp/dd-dogwalk-duo/SourcePackages/checkouts/posthog-ios
+    builtin-infoPlistUtility /tmp/dd-dogwalk-duo/Build/Intermediates.noindex/PostHog.build/Debug-iphonesimulator/PostHog_PostHog-b.build/empty-PostHog_PostHog.plist -producttype com.apple.product-type.bundle -expandbuildsettings -format binary -platform iphonesimulator -o /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/PostHog_PostHog.bundle/Info.plist
+
+ProcessInfoPlistFile /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/PostHog_PHPLCrashReporter.bundle/Info.plist /tmp/dd-dogwalk-duo/Build/Intermediates.noindex/PostHog.build/Debug-iphonesimulator/PostHog_PHPLCrashReporter-b.build/empty-PostHog_PHPLCrashReporter.plist (in target 'PostHog_PHPLCrashReporter' from project 'PostHog')
+    cd /tmp/dd-dogwalk-duo/SourcePackages/checkouts/posthog-ios
+    builtin-infoPlistUtility /tmp/dd-dogwalk-duo/Build/Intermediates.noindex/PostHog.build/Debug-iphonesimulator/PostHog_PHPLCrashReporter-b.build/empty-PostHog_PHPLCrashReporter.plist -producttype com.apple.product-type.bundle -expandbuildsettings -format binary -platform iphonesimulator -o /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/PostHog_PHPLCrashReporter.bundle/Info.plist
+
+ProcessInfoPlistFile /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app/Info.plist /Users/nicksoderstrom/Developer/claudecode/dogwalk/GoodWalk/Info.plist (in target 'GoodWalk' from project 'GoodWalk')
+    cd /Users/nicksoderstrom/Developer/claudecode/dogwalk
+    builtin-infoPlistUtility /Users/nicksoderstrom/Developer/claudecode/dogwalk/GoodWalk/Info.plist -producttype com.apple.product-type.application -genpkginfo /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /tmp/dd-dogwalk-duo/Build/Intermediates.noindex/GoodWalk.build/Debug-iphonesimulator/GoodWalk.build/assetcatalog_generated_info.plist -scanforprivacyfile /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app/PlugIns/GoodWalkWidgets.appex -scanforprivacyfile /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app/PostHog_PHPLCrashReporter.bundle -scanforprivacyfile /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app/PostHog_PostHog.bundle -o /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app/Info.plist
+
+CopySwiftLibs /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app (in target 'GoodWalk' from project 'GoodWalk')
+    cd /Users/nicksoderstrom/Developer/claudecode/dogwalk
+    builtin-swiftStdLibTool --copy --verbose --scan-executable /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app/GoodWalk.debug.dylib --scan-folder /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app/Frameworks --scan-folder /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app/PlugIns --scan-folder /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app/SystemExtensions --scan-folder /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app/Extensions --platform iphonesimulator --toolchain /Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /tmp/dd-dogwalk-duo/Build/Intermediates.noindex/GoodWalk.build/Debug-iphonesimulator/GoodWalk.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+Ignoring --strip-bitcode because --sign was not passed
+
+Validate /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app (in target 'GoodWalk' from project 'GoodWalk')
+    cd /Users/nicksoderstrom/Developer/claudecode/dogwalk
+    builtin-validationUtility /tmp/dd-dogwalk-duo/Build/Products/Debug-iphonesimulator/GoodWalk.app -shallow-bundle -infoplist-subpath Info.plist
+
+PruneExplicitPrecompiledModules /tmp/dd-dogwalk-duo/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /tmp/dd-dogwalk-duo/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /tmp/dd-dogwalk-duo/SDKExplicitPrecompiledModules
+
+2026-09-20 15:23:55.351 xcodebuild[37844:441592] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94403>, error = invalidDigitCount(94403).
+2026-09-20 15:23:55.351 xcodebuild[37844:441592] [MT] IDESchemeActionDeviceRecord: versionAndBuild = 27.1 (24A94401), error = invalidDigitCount(94401).
+2026-09-20 15:23:59.715985-0500 GoodWalk[37851:441901] [unspecified] container_create_or_lookup_app_group_path_by_app_group_identifier: client is not entitled
+2026-09-20 15:23:59.912983-0500 GoodWalk[37851:441901] [analytics] app_open
+2026-09-20 15:23:59.913213-0500 GoodWalk[37851:441901] [analytics] onboarding_started
+2026-09-20 15:24:01.013371-0500 GoodWalk[37851:441901] [analytics] store_load_failed ["error": "no products returned"]
+Test Suite 'All tests' started at 2026-09-20 15:24:01.045.
+Test Suite 'GoodWalkTests.xctest' started at 2026-09-20 15:24:01.054.
+Test Suite 'AppStateTests' started at 2026-09-20 15:24:01.054.
+Test Case '-[GoodWalkTests.AppStateTests testCrossingTheTargetFlagsGoalHitOnce]' started.
+2026-09-20 15:24:01.058481-0500 GoodWalk[37851:441901] [unspecified] container_create_or_lookup_app_group_path_by_app_group_identifier: client is not entitled
+2026-09-20 15:24:01.064053-0500 GoodWalk[37851:441901] [analytics] milestone_reached ["streak": 1]
+2026-09-20 15:24:01.064119-0500 GoodWalk[37851:441901] [analytics] walk_quick_logged ["minutes": 40, "source": "quickLog"]
+2026-09-20 15:24:01.064690-0500 GoodWalk[37851:441901] [analytics] goal_hit ["minutes": 60, "goal": 60]
+2026-09-20 15:24:01.064723-0500 GoodWalk[37851:441901] [analytics] walk_quick_logged ["minutes": 20, "source": "quickLog"]
+2026-09-20 15:24:01.065210-0500 GoodWalk[37851:441901] [analytics] walk_quick_logged ["minutes": 10, "source": "quickLog"]
+Test Case '-[GoodWalkTests.AppStateTests testCrossingTheTargetFlagsGoalHitOnce]' passed (0.013 seconds).
+Test Case '-[GoodWalkTests.AppStateTests testDeleteRemovesTheWalk]' started.
+2026-09-20 15:24:01.070182-0500 GoodWalk[37851:441901] [unspecified] container_create_or_lookup_app_group_path_by_app_group_identifier: client is not entitled
+2026-09-20 15:24:01.072605-0500 GoodWalk[37851:441901] [analytics] milestone_reached ["streak": 1]
+2026-09-20 15:24:01.072654-0500 GoodWalk[37851:441901] [analytics] walk_quick_logged ["minutes": 30, "source": "quickLog"]
+2026-09-20 15:24:01.073261-0500 GoodWalk[37851:441901] [analytics] walk_deleted
+Test Case '-[GoodWalkTests.AppStateTests testDeleteRemovesTheWalk]' passed (0.005 seconds).
+Test Case '-[GoodWalkTests.AppStateTests testMisTapUnderThirtySecondsIsDropped]' started.
+2026-09-20 15:24:01.074922-0500 GoodWalk[37851:441901] [unspecified] container_create_or_lookup_app_group_path_by_app_group_identifier: client is not entitled
+2026-09-20 15:24:01.092202-0500 GoodWalk[37851:441901] [analytics] walk_started ["source": "test"]
+Test Case '-[GoodWalkTests.AppStateTests testMisTapUnderThirtySecondsIsDropped]' passed (0.032 seconds).
+Test Case '-[GoodWalkTests.AppStateTests testQuickLogEstimatesDistanceAndStartsStreak]' started.
+2026-09-20 15:24:01.107712-0500 GoodWalk[37851:441901] [unspecified] container_create_or_lookup_app_group_path_by_app_group_identifier: client is not entitled
+2026-09-20 15:24:01.110226-0500 GoodWalk[37851:441901] [analytics] milestone_reached ["streak": 1]
+2026-09-20 15:24:01.110391-0500 GoodWalk[37851:441901] [analytics] walk_quick_logged ["source": "quickLog", "minutes": 30]
+Test Case '-[GoodWalkTests.AppStateTests testQuickLogEstimatesDistanceAndStartsStreak]' passed (0.004 seconds).
+Test Case '-[GoodWalkTests.AppStateTests testStartWalkIntentFlagIsConsumedOnce]' started.
+2026-09-20 15:24:01.112195-0500 GoodWalk[37851:441901] [unspecified] container_create_or_lookup_app_group_path_by_app_group_identifier: client is not entitled
+Test Case '-[GoodWalkTests.AppStateTests testStartWalkIntentFlagIsConsumedOnce]' passed (0.004 seconds).
+Test Case '-[GoodWalkTests.AppStateTests testTimerLogsAWalkAndSurvivesRelaunch]' started.
+2026-09-20 15:24:01.116792-0500 GoodWalk[37851:441901] [unspecified] container_create_or_lookup_app_group_path_by_app_group_identifier: client is not entitled
+2026-09-20 15:24:01.119177-0500 GoodWalk[37851:441901] [analytics] walk_started ["source": "test"]
+2026-09-20 15:24:01.119784-0500 GoodWalk[37851:441901] [unspecified] container_create_or_lookup_app_group_path_by_app_group_identifier: client is not entitled
+2026-09-20 15:24:01.121515-0500 GoodWalk[37851:441901] [analytics] milestone_reached ["streak": 1]
+2026-09-20 15:24:01.122401-0500 GoodWalk[37851:441901] [analytics] walk_finished ["measured": false, "minutes": 20]
+Test Case '-[GoodWalkTests.AppStateTests testTimerLogsAWalkAndSurvivesRelaunch]' passed (0.007 seconds).
+Test Suite 'AppStateTests' passed at 2026-09-20 15:24:01.123.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.066 (0.069) seconds
+Test Suite 'StatsTests' started at 2026-09-20 15:24:01.124.
+Test Case '-[GoodWalkTests.StatsTests testEmptyLogIsAllZeros]' started.
+Test Case '-[GoodWalkTests.StatsTests testEmptyLogIsAllZeros]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.StatsTests testFormatting]' started.
+Test Case '-[GoodWalkTests.StatsTests testFormatting]' passed (0.001 seconds).
+Test Case '-[GoodWalkTests.StatsTests testGapBreaksStreakButKeepsLongest]' started.
+Test Case '-[GoodWalkTests.StatsTests testGapBreaksStreakButKeepsLongest]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.StatsTests testGoalDaysOnlyCountFullTargets]' started.
+Test Case '-[GoodWalkTests.StatsTests testGoalDaysOnlyCountFullTargets]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.StatsTests testOneWalkTodayStartsStreak]' started.
+Test Case '-[GoodWalkTests.StatsTests testOneWalkTodayStartsStreak]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.StatsTests testSeededScreenshotDataIsThePitch]' started.
+Test Case '-[GoodWalkTests.StatsTests testSeededScreenshotDataIsThePitch]' passed (0.001 seconds).
+Test Case '-[GoodWalkTests.StatsTests testStreakIsZeroWhenYesterdayWasMissed]' started.
+Test Case '-[GoodWalkTests.StatsTests testStreakIsZeroWhenYesterdayWasMissed]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.StatsTests testStreakSurvivesTodayNotWalkedYet]' started.
+Test Case '-[GoodWalkTests.StatsTests testStreakSurvivesTodayNotWalkedYet]' passed (0.001 seconds).
+Test Case '-[GoodWalkTests.StatsTests testTotals]' started.
+Test Case '-[GoodWalkTests.StatsTests testTotals]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.StatsTests testTwoWalksInOneDayAddUpAndCountOneDay]' started.
+Test Case '-[GoodWalkTests.StatsTests testTwoWalksInOneDayAddUpAndCountOneDay]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.StatsTests testZeroMinuteWalksAreIgnored]' started.
+Test Case '-[GoodWalkTests.StatsTests testZeroMinuteWalksAreIgnored]' passed (0.000 seconds).
+Test Suite 'StatsTests' passed at 2026-09-20 15:24:01.132.
+	 Executed 11 tests, with 0 failures (0 unexpected) in 0.006 (0.008) seconds
+Test Suite 'WalkPlanTests' started at 2026-09-20 15:24:01.132.
+Test Case '-[GoodWalkTests.WalkPlanTests testBreedTypeMovesTheNumber]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testBreedTypeMovesTheNumber]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.WalkPlanTests testDailyGoalFallsBackToRecommendation]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testDailyGoalFallsBackToRecommendation]' passed (0.002 seconds).
+Test Case '-[GoodWalkTests.WalkPlanTests testDefaultDogMatchesThePitch]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testDefaultDogMatchesThePitch]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.WalkPlanTests testEstimatedDistanceAtDogPace]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testEstimatedDistanceAtDogPace]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.WalkPlanTests testEveryCombinationIsClampedAndAMultipleOfFive]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testEveryCombinationIsClampedAndAMultipleOfFive]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.WalkPlanTests testGapNeverGoesNegative]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testGapNeverGoesNegative]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.WalkPlanTests testGoalOptionsIncludeTheRecommendationAndStayInRange]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testGoalOptionsIncludeTheRecommendationAndStayInRange]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.WalkPlanTests testMockTrackerIsDeterministic]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testMockTrackerIsDeterministic]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.WalkPlanTests testNamedBreedsSitInTheirPublishedBands]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testNamedBreedsSitInTheirPublishedBands]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.WalkPlanTests testNamesAlwaysRead]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testNamesAlwaysRead]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.WalkPlanTests testPuppiesAndSeniorsGetLess]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testPuppiesAndSeniorsGetLess]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.WalkPlanTests testSmallestDogHitsTheFloor]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testSmallestDogHitsTheFloor]' passed (0.000 seconds).
+Test Case '-[GoodWalkTests.WalkPlanTests testYearlyGap]' started.
+Test Case '-[GoodWalkTests.WalkPlanTests testYearlyGap]' passed (0.000 seconds).
+Test Suite 'WalkPlanTests' passed at 2026-09-20 15:24:01.143.
+	 Executed 13 tests, with 0 failures (0 unexpected) in 0.006 (0.011) seconds
+Test Suite 'GoodWalkTests.xctest' passed at 2026-09-20 15:24:01.143.
+	 Executed 30 tests, with 0 failures (0 unexpected) in 0.079 (0.089) seconds
+Test Suite 'All tests' passed at 2026-09-20 15:24:01.143.
+	 Executed 30 tests, with 0 failures (0 unexpected) in 0.079 (0.099) seconds
+2026-09-20 15:24:01.163 xcodebuild[37844:441592] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94403>, error = invalidDigitCount(94403).
+2026-09-20 15:24:01.163 xcodebuild[37844:441592] [MT] IDESchemeActionDeviceRecord: versionAndBuild = 27.1 (24A94401), error = invalidDigitCount(94401).
+2026-09-20 15:24:01.163 xcodebuild[37844:441592] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94403>, error = invalidDigitCount(94403).
+2026-09-20 15:24:01.163 xcodebuild[37844:441592] [MT] IDESchemeActionDeviceRecord: versionAndBuild = 27.1 (24A94401), error = invalidDigitCount(94401).
+2026-09-20 15:24:01.165 xcodebuild[37844:441592] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94403>, error = invalidDigitCount(94403).
+2026-09-20 15:24:01.165 xcodebuild[37844:441592] [MT] IDESchemeActionDeviceRecord: versionAndBuild = 27.1 (24A94401), error = invalidDigitCount(94401).
+2026-09-20 15:24:01.437 xcodebuild[37844:441592] [MT] IDETestOperationsObserverDebug: 6.179 elapsed -- Testing started completed.
+2026-09-20 15:24:01.437 xcodebuild[37844:441592] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-20 15:24:01.437 xcodebuild[37844:441592] [MT] IDETestOperationsObserverDebug: 6.179 sec, +6.179 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/dd-dogwalk-duo/Logs/Test/Test-GoodWalk-2026.09.20_15-23-54--0500.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started
