@@ -46,6 +46,7 @@ targets:
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         NSSupportsLiveActivities: true
+        NSCameraUsageDescription: Good Walk uses the camera only when you add a photo to a walk card. The photo stays on your phone and is never uploaded.
         ITSAppUsesNonExemptEncryption: false
         NSMotionUsageDescription: Good Walk uses your phone's step counter to measure how far you and your dog walked. Nothing leaves your phone.
     settings:

@@ -88,6 +88,7 @@ private struct ScreenshotRouter: View {
         case .log:       HomeView(initialSheet: .quickLog)
         case .milestone: HomeView(initialSheet: .milestone(7))
         case .stats:     HomeView(showingStats: true)
+        case .walkcard:  HomeView(showingWalkCard: true)
         case .settings:  SettingsView()
         case .share:     HomeView(initialSheet: .share)
         }

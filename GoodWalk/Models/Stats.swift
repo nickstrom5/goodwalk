@@ -69,6 +69,14 @@ struct Stats: Equatable {
         value >= 10 ? String(Int(value.rounded())) : String(format: "%.1f", value)
     }
 
+    /// "1 mile", "1.8 miles", "12 miles". Exactly one mile drops the decimal, because
+    /// "1.0 mile" reads like a machine wrote it.
+    static func milesPhrase(_ value: Double) -> String {
+        let text = miles(value)
+        if text == "1.0" || text == "1" { return "1 mile" }
+        return "\(text) miles"
+    }
+
     /// "1h 05m" / "42 min".
     static func duration(minutes: Int) -> String {
         guard minutes >= 60 else { return "\(minutes) min" }
