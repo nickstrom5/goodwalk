@@ -46,9 +46,9 @@ HealthKit or anything location-related; the app uses neither.
 
 | Reference name | Product ID | Type | Price (US) | Intro offer |
 |---|---|---|---|---|
-| Yearly | `goodwalk.yearly` | Auto-renewable, 1 year | $24.99 | Free trial, 7 days, all territories, new subscribers |
-| Monthly | `goodwalk.monthly` | Auto-renewable, 1 month | $4.99 | none |
-| Lifetime | `goodwalk.lifetime` | Non-consumable | $39.99 | n/a |
+| Yearly | `goodwalk.yearly` | Auto-renewable, 1 year | $19.99 | Free trial, 7 days, all territories, new subscribers |
+| Monthly | `goodwalk.monthly` | Auto-renewable, 1 month | $3.99 | none |
+| Lifetime | `goodwalk.lifetime` | Non-consumable | $29.99 | n/a |
 
 Product IDs must match `GoodWalk/Services/StoreManager.swift` and
 `GoodWalk/Resources/Products.storekit` exactly.

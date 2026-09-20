@@ -52,7 +52,7 @@ Prices checked 18 Sep 2026 (`playbook/12-sources.md`). They move; check again on
 
 | Competitor | What they do well | What users hate | Good Walk's answer |
 |---|---|---|---|
-| Tractive ($79 + $108/yr) | GPS, escape alerts, activity minutes | Hardware plus subscription, battery; Dog Walk app shut down 1 Jan 2025 | No hardware. A quarter of the yearly price. A home for the people who only wanted to log walks. |
+| Tractive ($79 + $108/yr) | GPS, escape alerts, activity minutes | Hardware plus subscription, battery; Dog Walk app shut down 1 Jan 2025 | No hardware. Under a fifth of the yearly price. A home for the people who only wanted to log walks. |
 | Fi ($189/yr) | Nice collar, step goals, breed rankings | Price, collar required, US-centric | The phone already in your pocket counts the distance. |
 | Walky (free) | Map, streak, free, no account | Map-first, generic, no personal target, no notification loop | Same honesty, plus the dog's own number, the tap-to-log reminder and the card. |
 | TreatWalk, Amiko, Dog Walk Tracking & Playdates, onedog (free / small) | Simple, some social | Accounts, social features nobody asked for, small, no distribution | No account. We out-distribute on short-form; same simplicity. |
@@ -134,11 +134,11 @@ first walk and seen the first card with their dog on it).
 
 | Plan | Price | Notes |
 |---|---|---|
-| Yearly | **$24.99** with 7-day free trial | Default. "$2.08/mo" framing. Under a quarter of the cheapest collar subscription ($108). |
-| Monthly | $4.99 | Anchor to make yearly obvious. |
-| Lifetime | $39.99 | For the subscription-haters (a loud group in collar reviews). |
+| Yearly | **$19.99** with 7-day free trial | Default. "$1.67/mo" framing. Under a fifth of the cheapest collar subscription ($108). Set by Nick on 20 Sep 2026 (was $24.99 / $4.99 / $39.99). |
+| Monthly | $3.99 | Anchor to make yearly obvious. |
+| Lifetime | $29.99 | For the subscription-haters (a loud group in collar reviews). |
 
-Why these numbers: the paid reference points are collar subscriptions at $108–189/yr, so $24.99
+Why these numbers: the paid reference points are collar subscriptions at $108–189/yr, so $19.99
 reads as "the honest one" and still supports a business. The free trackers set the floor; the
 personal target, the loop and the card are what the money is for.
 
@@ -150,11 +150,11 @@ personal target, the loop and the card are what the money is for.
 | Onboarding complete → trial start | 25% |
 | Trial → paid | 40% |
 | Blended install → paid | ~6.5% |
-| Yearly ARPU after Apple's cut (small-business 15%) | ~$21 |
-| Break-even CPI at 6.5% install→paid | ~$1.35 |
+| Yearly ARPU after Apple's cut (small-business 15%) | ~$17 |
+| Break-even CPI at 6.5% install→paid | ~$1.10 |
 
 At 10,000 installs/mo from organic short-form plus a January spike, that is ~650 paying
-users/mo, ~$13.5k/mo run-rate by month 3, before January.
+users/mo, ~$11k/mo run-rate by month 3, before January.
 
 ## 8. Distribution plan (starts before the app is approved)
 

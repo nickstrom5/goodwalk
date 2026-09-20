@@ -36,7 +36,7 @@ deserves a good walk.").
 - TikTok (80 chars): `Every dog deserves a good walk. One tap a day. iPhone app, out this October.`
 - Instagram (150 chars): `Every dog deserves a good walk.\nA daily walk target for your dog, a streak with their face on it.\nNo collar, no map, no account ↓`
 - X (160 chars): `Your dog needs a walk every day. Good Walk makes it a streak. One-tap dog walk tracker for iPhone. No collar, no map, no account. Building in public.`
-- YouTube (1000 chars, use the short one): `Good Walk gives your dog a daily walk target and turns it into a streak. One tap from the reminder, your dog's photo in the ring, a card at every milestone, nothing leaves your phone. Walk targets are general guidelines, not veterinary advice. Free 7-day trial, then $24.99/yr. getgoodwalk.app`
+- YouTube (1000 chars, use the short one): `Good Walk gives your dog a daily walk target and turns it into a streak. One tap from the reminder, your dog's photo in the ring, a card at every milestone, nothing leaves your phone. Walk targets are general guidelines, not veterinary advice. Free 7-day trial, then $19.99/yr. getgoodwalk.app`
 - Threads: same as Instagram.
 - Reddit: `Building Good Walk, a one-tap dog walk streak app for iPhone. No collar, no GPS, no account.`
 

@@ -88,4 +88,4 @@ videos get views for free; views are not the goal.
 - $20/day per concept on TikTok Spark Ads first (boosting the organic post keeps social proof).
 - Creative policy: no health-outcome claims ("longer life", "weight loss", "calmer dog"), no
   off-leash dogs near roads, no competitor logos in paid creative.
-- Kill anything above $2.10 CPI after $100 spend. Scale anything under $1.35.
+- Kill anything above $1.75 CPI after $100 spend. Scale anything under $1.10.

@@ -33,8 +33,8 @@ in `playbook/01-strategy.md` section 6 and live in `GoodWalk/Models/WalkPlan.swi
   Timeline graphic: Today (full access) → Day 5 (reminder) → Day 7 (charged). The reminder toggle
   is on by default and actually schedules a local notification. Surprise charges are the most
   common one-star review on any subscription app; the toggle is the answer to that fear.
-- **Yearly preselected**, shown as "$2.08/mo, billed $24.99/yr". Monthly at $4.99 exists to make
-  yearly obvious. Lifetime at $39.99 catches subscription-haters.
+- **Yearly preselected**, shown as "$1.67/mo, billed $19.99/yr". Monthly at $3.99 exists to make
+  yearly obvious. Lifetime at $29.99 catches subscription-haters.
 - **Personal line above the plans:** "Rex's plan: 60 min a day. Reminder at 5:30 PM." with the
   photo. The thing being bought is already built and has their dog's name on it.
 - **Close button** appears after 2 seconds, top-left, low contrast. Apple requires dismissal;
@@ -54,6 +54,6 @@ in `playbook/01-strategy.md` section 6 and live in `GoodWalk/Models/WalkPlan.swi
 2. Reveal order (the dog's target first vs. "hours a year missing" first).
 3. First-walk screen: default to logging vs. asking.
 4. Paywall: trial reminder toggle on vs. off by default.
-5. Price: $24.99 vs. $29.99 yearly.
+5. Price: $19.99 vs. $24.99 yearly.
 
 Everything else waits until these five have a read.
