@@ -7,7 +7,7 @@ import UIKit
 enum ScreenshotMode {
     enum Screen: String, CaseIterable {
         case hook, dog, size, breed, usual, reveal, plan, first, result, paywall
-        case home, walking, log, milestone, settings, share
+        case home, walking, log, milestone, stats, settings, share
     }
 
     static let screen: Screen? = {
@@ -73,7 +73,7 @@ enum ScreenshotMode {
         }
         appState.hasCompletedOnboarding = {
             switch screen {
-            case .home, .walking, .log, .milestone, .settings, .share: return true
+            case .home, .walking, .log, .milestone, .stats, .settings, .share: return true
             default: return false
             }
         }()

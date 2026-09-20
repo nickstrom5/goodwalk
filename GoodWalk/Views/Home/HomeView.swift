@@ -24,10 +24,14 @@ struct HomeView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     @State private var sheet: Sheet?
+    /// Stats is a full-screen presentation, not a sheet: a sheet becomes a phone-width form sheet
+    /// on a wide screen, which is exactly where the stats screen has a wider layout to show.
+    @State private var showStats = false
     @State private var celebrate = false
 
-    init(initialSheet: Sheet? = nil) {
+    init(initialSheet: Sheet? = nil, showingStats: Bool = false) {
         _sheet = State(initialValue: initialSheet)
+        _showStats = State(initialValue: showingStats)
     }
 
     private var dog: DogProfile { appState.dog }
@@ -63,12 +67,21 @@ struct HomeView: View {
                     .fixedSize()   // iOS 26 glass capsule otherwise clips the text
                 }
                 ToolbarItem(placement: .topBarTrailing) {
+                    Button { showStats = true } label: {
+                        Image(systemName: "chart.bar.fill").foregroundStyle(Theme.textSecondary)
+                    }
+                    .accessibilityLabel("Stats")
+                }
+                ToolbarItem(placement: .topBarTrailing) {
                     Button { sheet = .settings } label: {
                         Image(systemName: "gearshape.fill").foregroundStyle(Theme.textSecondary)
                     }
                 }
             }
             .toolbarBackground(.hidden, for: .navigationBar)
+        }
+        .fullScreenCover(isPresented: $showStats) {
+            StatsView()
         }
         .sheet(item: $sheet) { sheet in
             switch sheet {
