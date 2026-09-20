@@ -147,9 +147,9 @@ struct PaywallView: View {
 
     private func sampleDetail(_ id: StoreManager.ProductID) -> String {
         switch id {
-        case .yearly: return "$2.08/mo · billed $24.99/yr after 7-day free trial"
-        case .monthly: return "$4.99/mo · cancel anytime"
-        case .lifetime: return "$39.99 once · no subscription"
+        case .yearly: return "$1.67/mo · billed $19.99/yr after 7-day free trial"
+        case .monthly: return "$3.99/mo · cancel anytime"
+        case .lifetime: return "$29.99 once · no subscription"
         }
     }
 
@@ -195,9 +195,9 @@ struct PaywallView: View {
     private var ctaSubtitle: String? {
         if ScreenshotMode.isActive {
             switch selectedID {
-            case .yearly: return "7 days free, then $24.99/year. Cancel anytime."
-            case .monthly: return "$4.99/month. Cancel anytime."
-            case .lifetime: return "$39.99 once. Yours forever."
+            case .yearly: return "7 days free, then $19.99/year. Cancel anytime."
+            case .monthly: return "$3.99/month. Cancel anytime."
+            case .lifetime: return "$29.99 once. Yours forever."
             }
         }
         guard let product = selectedProduct else { return nil }

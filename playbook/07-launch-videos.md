@@ -67,7 +67,7 @@ Rules for all ten:
 **Hook text:** "A GPS collar is $100+ a year."
 **Shots:**
 1. Dog on a walk, normal collar. Text: "I don't need to know where he is. He's right here."
-2. Cut: Good Walk paywall. "$24.99. No collar. One tap a day."
+2. Cut: Good Walk paywall. "$19.99. No collar. One tap a day."
 3. Home screen demo, 3s.
 4. End card.
 **Note:** Keep it factual. Collars solve a real problem (lost dogs); we solve a different one.
