@@ -66,16 +66,20 @@ struct HomeView: View {
                     .padding(.horizontal, 6)
                     .fixedSize()   // iOS 26 glass capsule otherwise clips the text
                 }
+                // One item holding both buttons: as two separate trailing items iOS stacks them
+                // vertically into a single tall capsule on the iPhone Duo's inner display.
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button { showStats = true } label: {
-                        Image(systemName: "chart.bar.fill").foregroundStyle(Theme.textSecondary)
+                    HStack(spacing: 14) {
+                        Button { showStats = true } label: {
+                            Image(systemName: "chart.bar.fill").foregroundStyle(Theme.textSecondary)
+                        }
+                        .accessibilityLabel("Stats")
+                        Button { sheet = .settings } label: {
+                            Image(systemName: "gearshape.fill").foregroundStyle(Theme.textSecondary)
+                        }
+                        .accessibilityLabel("Settings")
                     }
-                    .accessibilityLabel("Stats")
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { sheet = .settings } label: {
-                        Image(systemName: "gearshape.fill").foregroundStyle(Theme.textSecondary)
-                    }
+                    .fixedSize()
                 }
             }
             .toolbarBackground(.hidden, for: .navigationBar)

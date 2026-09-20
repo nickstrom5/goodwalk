@@ -54,6 +54,8 @@ struct WalkTimerView: View {
                         .padding(.bottom, 8)
                 }
                 .padding(.horizontal, Theme.horizontalPadding)
+                // Presented full screen, so RootView's width cap does not reach it.
+                .phoneWidthColumn()
             }
         }
         .confirmationDialog("Discard this walk?", isPresented: $confirmDiscard, titleVisibility: .visible) {
