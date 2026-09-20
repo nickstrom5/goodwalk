@@ -1,13 +1,14 @@
 #!/bin/bash
-# Build Good Walk for the iPhone Duo simulator, run the unit tests there, and capture every screen.
+# Build GoodWalk for the iPhone Duo simulator, run the unit tests there, and capture every screen.
 #
-#   scripts/duo-screenshots.sh                 # open (inner display): builds, tests, captures every screen
+#   scripts/duo-screenshots.sh                 # open (inner display): builds, tests, captures 13 screens
 #   scripts/duo-screenshots.sh --pose closed   # fold the simulator first (Device menu), then capture again
 #   scripts/duo-screenshots.sh --no-tests      # skip the test run
 #
-# Needs Xcode 27.1 or newer (Xcode-beta is fine) with the iOS 27.1 simulator runtime installed
+# Needs Xcode 27.1 or newer with the iOS 27.1 simulator runtime installed
 # (Xcode > Settings > Components). Writes docs/screenshots/duo/<screen>.png for the open pose and
 # docs/screenshots/duo/closed-<screen>.png for the closed pose, plus small-* thumbnails.
+# CI runs the same script (screenshots.yml, "duo" job) once the runner image ships Xcode 27.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -56,11 +57,11 @@ command -v xcodegen >/dev/null || { echo "brew install xcodegen first"; exit 1; 
 xcodegen generate >/dev/null
 DEST="platform=iOS Simulator,name=$DEVICE"
 set -o pipefail
-xcodebuild build -project GoodWalk.xcodeproj -scheme GoodWalk -destination "$DEST" -derivedDataPath /tmp/dd-dogwalk-duo \
+xcodebuild build -project GoodWalk.xcodeproj -scheme GoodWalk -destination "$DEST" -derivedDataPath DerivedData \
   -skipPackagePluginValidation CODE_SIGNING_ALLOWED=NO 2>&1 | tee duo-build.log | grep -E "error:|warning: .*deprecated|BUILD (SUCCEEDED|FAILED)" || true
 grep -q "BUILD SUCCEEDED" duo-build.log || { echo "Build failed, see duo-build.log"; exit 1; }
 if [ "$RUN_TESTS" = 1 ]; then
-  xcodebuild test -project GoodWalk.xcodeproj -scheme GoodWalk -destination "$DEST" -derivedDataPath /tmp/dd-dogwalk-duo \
+  xcodebuild test -project GoodWalk.xcodeproj -scheme GoodWalk -destination "$DEST" -derivedDataPath DerivedData \
     -only-testing:GoodWalkTests -skipPackagePluginValidation CODE_SIGNING_ALLOWED=NO 2>&1 | tee duo-test.log \
     | grep -E "error:|Test Case .* (passed|failed)|TEST (SUCCEEDED|FAILED)|Executed" || true
   grep -q "TEST SUCCEEDED" duo-test.log || { echo "Tests failed on the Duo simulator, see duo-test.log"; exit 1; }
@@ -69,20 +70,21 @@ fi
 # 4. Boot, install, capture.
 xcrun simctl boot "$DEVICE" >/dev/null 2>&1 || true
 xcrun simctl bootstatus "$DEVICE" -b >/dev/null
-[ "$CI_MODE" = 1 ] || open -a Simulator >/dev/null 2>&1 || true
+# Xcode 27 replaced Simulator.app with Device Hub; it also owns the fold (pose) control.
+[ "$CI_MODE" = 1 ] || open -b com.apple.dt.Devices >/dev/null 2>&1 || true
 xcrun simctl ui "$DEVICE" appearance dark >/dev/null 2>&1 || true
-APP=$(find /tmp/dd-dogwalk-duo/Build/Products -name "GoodWalk.app" -maxdepth 2 | head -1)
+APP=$(find DerivedData/Build/Products -name "GoodWalk.app" -maxdepth 2 | head -1)
 xcrun simctl install "$DEVICE" "$APP"
 
 if [ "$POSE" = closed ] && [ "$CI_MODE" = 0 ]; then
-  echo; echo "Fold the simulator now (Simulator app > Device menu, or the pose control on the window)."
+  echo; echo "Fold the simulator now: the pose control on the Device Hub window."
   read -r -p "Press Return when the outer display is showing... " _
 fi
 
 OUT=docs/screenshots/duo; mkdir -p "$OUT"
 PREFIX=""; [ "$POSE" = open ] || PREFIX="$POSE-"
 SCREENS="hook dog size breed usual reveal plan first result paywall home walking log milestone settings share"
-[ "$CI_MODE" = 1 ] && SCREENS="home walking paywall reveal share"
+[ "$CI_MODE" = 1 ] && SCREENS="hook dog size breed usual"
 
 brightness() {  # mean pixel value 0-255, or "fallback" when Pillow is missing
   python3 - "$1" 2>/dev/null <<'PYEOF' || echo "fallback"
@@ -105,12 +107,29 @@ looks_blank() {
   fi
 }
 
+
+# The Duo has two displays and only one is lit in a given pose. simctl's default
+# is not reliably the lit one (it changes after `simctl erase`), so find it once.
+pick_display() {
+  local d probe
+  probe=$(mktemp -t duoprobe).png
+  for d in primary internal; do
+    if xcrun simctl io "$DEVICE" screenshot --display "$d" "$probe" >/dev/null 2>&1; then
+      if ! looks_blank "$probe"; then rm -f "$probe"; echo "$d"; return; fi
+    fi
+  done
+  rm -f "$probe"
+  echo primary
+}
+DISPLAY_ARG=$(pick_display)
+echo "Capturing the lit display: $DISPLAY_ARG"
+
 for s in $SCREENS; do
   f="$OUT/$PREFIX$s.png"
   for attempt in 1 2 3; do
     xcrun simctl terminate "$DEVICE" app.getgoodwalk.goodwalk >/dev/null 2>&1 || true; sleep 1
     xcrun simctl launch "$DEVICE" app.getgoodwalk.goodwalk -screenshot "$s" >/dev/null; sleep 8
-    xcrun simctl io "$DEVICE" screenshot "$f" >/dev/null 2>&1
+    xcrun simctl io "$DEVICE" screenshot --display "$DISPLAY_ARG" "$f" >/dev/null 2>&1
     looks_blank "$f" || break
     echo "  $s: blank frame, relaunching ($attempt)"
   done
