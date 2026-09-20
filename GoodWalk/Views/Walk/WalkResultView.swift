@@ -88,6 +88,7 @@ struct WalkResultView: View {
 
     private var summary: String {
         let measured = walk.distanceEstimated ? " (est.)" : ""
-        return "\(Stats.duration(minutes: walk.minutes)) and \(Stats.milesPhrase(walk.miles))\(measured) with \(dog.displayName)."
+        let length = walk.minutes < 60 ? "\(walk.minutes) minute\(walk.minutes == 1 ? "" : "s")" : Stats.duration(minutes: walk.minutes)
+        return "\(length) and \(Stats.milesPhrase(walk.miles))\(measured) with \(dog.displayName)."
     }
 }
