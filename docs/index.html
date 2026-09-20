@@ -48,7 +48,8 @@
   .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; text-decoration: none; }
   .logo svg { width: 28px; height: 28px; }
   header.site nav { display: flex; flex-wrap: wrap; gap: 2px 18px; }
-  header.site nav a { color: var(--muted); text-decoration: none; font-size: 15px; padding: 6px 0; }
+  /* 44px tall, Apple's minimum tap target. */
+  header.site nav a { color: var(--muted); text-decoration: none; font-size: 15px; display: inline-flex; align-items: center; min-height: 44px; }
   header.site nav a:hover { color: var(--fg); text-decoration: underline; }
   h2 { font-size: 30px; letter-spacing: -.02em; margin: 0 0 8px; font-weight: 800; line-height: 1.15; }
   .btn { display: inline-flex; align-items: center; gap: 10px; background: var(--accent-ink); color: #fff; font-weight: 700; padding: 15px 22px; border-radius: 16px; text-decoration: none; font-size: 17px; border: 0; cursor: pointer; box-shadow: 0 6px 18px rgba(237,116,51,.3); }
@@ -359,6 +360,7 @@
       <li><figure><img src="screenshots/small-home.png" alt="Good Walk home screen: Rex&#x27;s photo inside a progress ring showing 25 of 60 minutes walked today, a 30-day streak and a Start a walk button" width="276" height="600" loading="lazy" decoding="async"><figcaption>Today's ring, around your dog</figcaption></figure></li>
       <li><figure><img src="screenshots/small-reveal.png" alt="Good Walk onboarding screen: a dog like Rex needs about 60 minutes a day as a general guideline, the typical dog gets about 23" width="276" height="600" loading="lazy" decoding="async"><figcaption>Your dog's daily target</figcaption></figure></li>
       <li><figure><img src="screenshots/small-walking.png" alt="Good Walk walk timer at 18 minutes 29 seconds with 0.63 estimated miles and 43 of 60 minutes for today" width="276" height="600" loading="lazy" decoding="async"><figcaption>Walk timer with distance</figcaption></figure></li>
+      <li><figure><img src="screenshots/small-stats.png" alt="Good Walk stats screen: 30 walks with Rex, a 30-day streak, a 30-day longest streak, and a September calendar with a filled dot on every day that met the target" width="276" height="600" loading="lazy" decoding="async"><figcaption>Every walk, every month</figcaption></figure></li>
       <li><figure><img src="screenshots/small-milestone.png" alt="Good Walk milestone card: 7 days in a row with Rex, 47 miles so far, with a Share the card button" width="276" height="600" loading="lazy" decoding="async"><figcaption>A card at every milestone</figcaption></figure></li>
     </ul>
   </section>
