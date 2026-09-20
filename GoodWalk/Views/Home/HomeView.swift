@@ -27,11 +27,14 @@ struct HomeView: View {
     /// Stats is a full-screen presentation, not a sheet: a sheet becomes a phone-width form sheet
     /// on a wide screen, which is exactly where the stats screen has a wider layout to show.
     @State private var showStats = false
+    /// Set when a timed walk ends, so its card (and the photo option) is offered once.
+    @State private var finishedWalk: Walk?
     @State private var celebrate = false
 
-    init(initialSheet: Sheet? = nil, showingStats: Bool = false) {
+    init(initialSheet: Sheet? = nil, showingStats: Bool = false, showingWalkCard: Bool = false) {
         _sheet = State(initialValue: initialSheet)
         _showStats = State(initialValue: showingStats)
+        _finishedWalk = State(initialValue: showingWalkCard ? ScreenshotMode.sampleWalk : nil)
     }
 
     private var dog: DogProfile { appState.dog }
@@ -106,6 +109,14 @@ struct HomeView: View {
         }
         .fullScreenCover(isPresented: walkingBinding) {
             WalkTimerView()
+        }
+        .sheet(item: $finishedWalk) { walk in
+            WalkResultView(walk: walk)
+        }
+        .onChange(of: appState.lastWalk) { _, walk in
+            // Only a walk that was actually timed; a quick log has no moment worth a photo.
+            guard let walk, walk.source == .timer else { return }
+            finishedWalk = walk
         }
         .onChange(of: appState.pendingMilestone) { _, milestone in
             guard let milestone else { return }

@@ -50,6 +50,11 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
   screenshot mode. The timer text is rendered by the system from the start date, so it never needs updates.
 - iPhone Duo: the inner display is a regular width class; `RootView` caps content at `Theme.regularWidthMax`. The Live
   Activity is what shows on the outer display while folded. No fold API is used anywhere.
+- The end-of-walk card is `WalkResultView` (presented when `lastWalk` is a `.timer` walk) plus
+  `ShareCardView.walk(...)`. The photo comes from `CameraPicker` (camera) or `PhotosPicker` (library) and is
+  held in view state only: it is never written to disk, which is what keeps the "nothing leaves your phone"
+  copy true. `NSCameraUsageDescription` is in `project.yml`; the camera is unavailable in the simulator, so
+  the picker falls back to the library there.
 - StoreKit uses `GoodWalk/Resources/Products.storekit`; product IDs `goodwalk.yearly`, `goodwalk.monthly`, `goodwalk.lifetime`.
   `SIMCTL_CHILD_GOODWALK_FORCE_PRO=1` unlocks Pro in debug builds.
 - All stats are derived (`Stats.compute`) from the walk log + the target. Never store a streak; recompute it.

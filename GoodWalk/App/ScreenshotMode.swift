@@ -7,7 +7,7 @@ import UIKit
 enum ScreenshotMode {
     enum Screen: String, CaseIterable {
         case hook, dog, size, breed, usual, reveal, plan, first, result, paywall
-        case home, walking, log, milestone, stats, settings, share
+        case home, walking, log, milestone, stats, walkcard, settings, share
     }
 
     static let screen: Screen? = {
@@ -15,6 +15,14 @@ enum ScreenshotMode {
         guard let i = args.firstIndex(of: "-screenshot"), i + 1 < args.count else { return nil }
         return Screen(rawValue: args[i + 1])
     }()
+
+
+    /// A finished 42-minute walk, for the `-screenshot walkcard` route.
+    static var sampleWalk: Walk {
+        Walk(start: Date().addingTimeInterval(-42 * 60), minutes: 42,
+             distanceMeters: WalkPlan.estimatedMeters(forMinutes: 42),
+             distanceEstimated: false, source: .timer)
+    }
 
     static var isActive: Bool { screen != nil }
 
@@ -73,7 +81,7 @@ enum ScreenshotMode {
         }
         appState.hasCompletedOnboarding = {
             switch screen {
-            case .home, .walking, .log, .milestone, .stats, .settings, .share: return true
+            case .home, .walking, .log, .milestone, .stats, .walkcard, .settings, .share: return true
             default: return false
             }
         }()

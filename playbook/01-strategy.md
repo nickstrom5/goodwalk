@@ -85,6 +85,12 @@ iPhone Duo in the outer display's status bar while the phone is folded in a pock
 `walk_finished / walk_started` (people forget a timer they can't see, then discard the walk), and it is the Duo
 launch-week demo. No new permission, no backend.
 
+**Added 20 Sep 2026: the end-of-walk photo card.** When a timed walk ends, the app offers a card
+with that walk's numbers and, optionally, a photo taken right then. Metric it moves:
+`share_tapped / walk_finished`. The milestone card only appears on 8 days out of a year, so there
+was no reason to share on an ordinary day. The photo is never stored, so the privacy promise is
+unchanged; the camera permission is only requested at the moment the user taps for it.
+
 **What is deliberately not in v1:** GPS maps, routes, multiple dogs, family sharing, social
 feed, playdates, HealthKit, Apple Watch, Android, training content. Each is a v1.x candidate
 only if reviews ask for it. (Multiple dogs will be the first ask; note it and wait.)
