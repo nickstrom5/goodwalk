@@ -2,7 +2,7 @@
 # One-shot Cloudflare setup for getgoodwalk.app: DNS for GitHub Pages + email forwarding.
 # Idempotent: re-running skips anything that already exists.
 #
-# Usage:  bash scripts/cloudflare-setup.sh        (asks for the token; or pass CF_TOKEN=...)
+# Usage:  bash scripts/cloudflare-setup.sh        (copy the token in Cloudflare first; it is read from the clipboard)
 # Token needs: Account:Email Routing Addresses:Edit, Zone:Email Routing Rules:Edit,
 #              Zone:DNS:Edit, Zone:Zone:Read, scoped to getgoodwalk.app.
 set -euo pipefail
@@ -10,12 +10,22 @@ set -euo pipefail
 DOMAIN="${DOMAIN:-getgoodwalk.app}"
 FORWARD_TO="${FORWARD_TO:-Nickstrom5@gmail.com}"
 GITHUB_USER="${GITHUB_USER:-nickstrom5}"
-GITHUB_TXT_VALUE="${GITHUB_TXT_VALUE:-}"   # optional: value from github.com/settings/pages_verified_domains
+GITHUB_TXT_DEFAULT=""   # from github.com/settings/pages_verified_domains (optional)
+GITHUB_TXT_VALUE="${GITHUB_TXT_VALUE:-$GITHUB_TXT_DEFAULT}"
 API="https://api.cloudflare.com/client/v4"
 
-case "${CF_TOKEN:-}" in ""|yourtoken|PASTE_TOKEN_HERE|"<token>")
-  printf "Paste your Cloudflare API token and press Return (it will not show on screen): "
-  read -rs CF_TOKEN; echo ;;
+# Placeholders left in a copied command count as "not set".
+case "${GITHUB_TXT_VALUE:-}" in PASTE_*|value_for*|"<"*) GITHUB_TXT_VALUE="$GITHUB_TXT_DEFAULT" ;; esac
+case "${CF_TOKEN:-}" in ""|yourtoken|PASTE_*|"<"*)
+  CLIP="$(pbpaste 2>/dev/null | tr -d '[:space:]')"
+  if [ "${#CLIP}" -ge 30 ] && [ "${#CLIP}" -le 120 ] && ! printf '%s' "$CLIP" | grep -q '[^A-Za-z0-9_-]'; then
+    CF_TOKEN="$CLIP"; echo "Using the Cloudflare token from your clipboard."
+  elif [ -t 0 ]; then
+    printf "Paste your Cloudflare API token and press Return (it will not show on screen): "
+    read -rs CF_TOKEN; echo
+  else
+    echo "No token found. In Cloudflare, click Copy next to your API token, then run this command again. Nothing was changed."; exit 1
+  fi ;;
 esac
 [ "${#CF_TOKEN}" -ge 30 ] || { echo "That does not look like a Cloudflare token (too short). Nothing was changed."; exit 1; }
 command -v jq >/dev/null || { echo "jq is required: brew install jq"; exit 1; }
