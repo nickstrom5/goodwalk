@@ -80,8 +80,11 @@ final class AppState: ObservableObject {
 
     func startWalk(source: String, at date: Date = Date()) {
         guard activeWalkStart == nil else { return }
+        let minutesBefore = todaysWalks.reduce(0) { $0 + $1.minutes }
         activeWalkStart = date
         tracker.begin(from: date)
+        WalkActivityController.start(dogName: dog.name, startDate: date,
+                                     minutesBeforeThisWalk: minutesBefore, goalMinutes: dog.dailyGoal)
         Analytics.track(.walkStarted, ["source": source])
     }
 
@@ -105,6 +108,7 @@ final class AppState: ObservableObject {
         let measured = tracker.currentMeters(at: now)
         tracker.end()
         activeWalkStart = nil
+        WalkActivityController.endAll()
         guard seconds >= 30 else { return nil }
         let minutes = max(1, Int((Double(seconds) / 60).rounded()))
         let walk = Walk(start: start, minutes: minutes,
@@ -118,6 +122,7 @@ final class AppState: ObservableObject {
     func cancelWalk() {
         tracker.end()
         activeWalkStart = nil
+        WalkActivityController.endAll()
     }
 
     // MARK: - Logging

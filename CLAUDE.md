@@ -42,6 +42,11 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
   share card, 300 px for the widget. Picked with `PhotosPicker`, so no photo-library permission.
 - The App Intent (`StartWalkIntent`, in both targets) sets `pendingStartWalk` in the App Group and opens the app;
   `HomeView` consumes it and starts the timer (behind the paywall like any other start).
+- The walk Live Activity (`Shared/WalkActivityAttributes.swift`, `WalkActivityController`, `GoodWalkWidgets/WalkLiveActivity.swift`)
+  starts in `AppState.startWalk` and ends in `finishWalk` / `cancelWalk`. It is best-effort and skipped in unit tests and
+  screenshot mode. The timer text is rendered by the system from the start date, so it never needs updates.
+- iPhone Duo: the inner display is a regular width class; `RootView` caps content at `Theme.regularWidthMax`. The Live
+  Activity is what shows on the outer display while folded. No fold API is used anywhere.
 - StoreKit uses `GoodWalk/Resources/Products.storekit`; product IDs `goodwalk.yearly`, `goodwalk.monthly`, `goodwalk.lifetime`.
   `SIMCTL_CHILD_GOODWALK_FORCE_PRO=1` unlocks Pro in debug builds.
 - All stats are derived (`Stats.compute`) from the walk log + the target. Never store a streak; recompute it.

@@ -45,6 +45,7 @@ targets:
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        NSSupportsLiveActivities: true
         ITSAppUsesNonExemptEncryption: false
         NSMotionUsageDescription: Good Walk uses your phone's step counter to measure how far you and your dog walked. Nothing leaves your phone.
     settings:
