@@ -105,6 +105,14 @@ costs nothing, because nobody has shipped data yet. The one-tap reminder is pres
 "Walked ✓" logs the usual walk for whoever hasn't been out, so it stays one tap however many
 dogs live in the house. This was also the predicted first ask, which it turned out to be.
 
+**Added 21 Sep 2026: breed search.** The onboarding breed step asked for a size band and one of
+eight types. Owners know their dog is a Beagle; they do not know whether a Beagle is small or
+medium, and getting it wrong moves the target by 20 minutes a day. A search box above the chips
+fills both in from 70 common breeds, nicknames included ("staffy", "sausage dog", "alsatian").
+Metric it moves: `onboarding_completed / onboarding_started`, at the step with the most thinking
+in it, and the accuracy of every number downstream of it. It adds no step to the funnel and no
+new figure to the app: the breed sets two editable chips, `WalkPlan` still does the arithmetic.
+
 **What is deliberately not in v1:** GPS maps, routes, family sharing, social feed, playdates,
 HealthKit, Apple Watch, Android, training content. Each is a v1.x candidate only if reviews
 ask for it.

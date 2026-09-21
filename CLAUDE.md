@@ -73,6 +73,12 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
   many dogs there are. `DogPhotoStore` keeps one full JPEG per dog (`dog-<uuid>.jpg`) and mirrors
   a 300 px copy of the shown dog to `dog-widget.jpg`.
 - All stats are derived (`Stats.compute`) from the walk log + the target. Never store a streak; recompute it.
+- `DogBreed` is a searchable list of 70 common breeds. Picking one only fills in `size` and
+  `breedType` (and stores `breedName` as a label); the minutes still come from `WalkPlan`, and both
+  chips stay editable afterwards. It adds no new number to the app, which is why it could ship
+  without a new sourced figure: see `playbook/12-sources.md` §6, including the note that the rows
+  are not verified card by card against the Kennel Club. `GoodWalkTests/BreedTests.swift` pins the
+  breeds that §1 already sources, so a factor change fails there instead of drifting.
 - The recommendation math is `WalkPlan` and nothing else. Its tables are mirrored in `playbook/01-strategy.md`
   and sourced in `playbook/12-sources.md`. A new number about dogs, owners or competitors needs a row there first.
 
