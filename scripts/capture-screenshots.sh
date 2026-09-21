@@ -5,7 +5,7 @@ set -euo pipefail
 DEVICE="${1:?simulator name or UDID}"
 OUT="$(cd "$(dirname "$0")/.." && pwd)/docs/screenshots"
 mkdir -p "$OUT"
-for s in hook dog size breed usual reveal plan first result paywall home dogs walking log milestone stats walkcard settings share; do
+for s in hook dog size breed usual reveal plan first result paywall home dogs walking log milestone stats day walkcard settings share; do
   xcrun simctl launch --terminate-running-process "$DEVICE" app.getgoodwalk.goodwalk -screenshot "$s" >/dev/null
   sleep 6
   xcrun simctl io "$DEVICE" screenshot "$OUT/$s.png" >/dev/null 2>&1

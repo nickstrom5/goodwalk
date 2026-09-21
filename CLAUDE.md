@@ -51,10 +51,17 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
 - iPhone Duo: the inner display is a regular width class; `RootView` caps content at `Theme.regularWidthMax`. The Live
   Activity is what shows on the outer display while folded. No fold API is used anywhere.
 - The end-of-walk card is `WalkResultView` (presented when `lastWalk` is a `.timer` walk) plus
-  `ShareCardView.walk(...)`. The photo comes from `CameraPicker` (camera) or `PhotosPicker` (library) and is
-  held in view state only: it is never written to disk, which is what keeps the "nothing leaves your phone"
-  copy true. `NSCameraUsageDescription` is in `project.yml`; the camera is unavailable in the simulator, so
-  the picker falls back to the library there.
+  `ShareCardView.walk(...)`. The photo comes from `CameraPicker` (camera) or `PhotosPicker` (library).
+  It is **kept with that walk** by `WalkPhotoStore` (`walk-<uuid>.jpg` plus a 300 px thumb in the App
+  Group container), so the day can be opened again months later; `Walk.hasPhoto` mirrors it so the month
+  grid never stats 31 files. Deleting the walk, or the last dog on it, deletes the photo. It is still
+  never uploaded, and that is the line the privacy copy makes: on the phone, yes; off it, only when the
+  user shares a card. `NSCameraUsageDescription` is in `project.yml`; the camera is unavailable in the
+  simulator, so the picker falls back to the library there.
+- The same `WalkResultView` is the walk's detail screen. `StatsView`'s month grid marks days that have a
+  photo, and tapping any day with walks opens `DayDetailView`, which lists that day's walks and opens one.
+  If you change what a photo promises, change `docs/privacy.html` in the same commit: it is a published
+  policy with an effective date, not just copy.
 - StoreKit uses `GoodWalk/Resources/Products.storekit`; product IDs `goodwalk.yearly`, `goodwalk.monthly`, `goodwalk.lifetime`.
   `SIMCTL_CHILD_GOODWALK_FORCE_PRO=1` unlocks Pro in debug builds.
 - **More than one dog.** `AppState.dogs` is the roster and `AppState.dog` is the one on screen;

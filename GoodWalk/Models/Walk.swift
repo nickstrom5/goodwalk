@@ -18,6 +18,9 @@ struct Walk: Codable, Equatable, Identifiable {
     /// miles are never double counted. Empty means "whoever lives here", which is what seeded
     /// and single-dog walks are.
     var dogIDs: [UUID] = []
+    /// True when a photo of this walk is stored on the phone (`WalkPhotoStore`). Kept on the walk
+    /// so the month grid can mark the days that have one without hitting the filesystem 31 times.
+    var hasPhoto: Bool = false
 
     var miles: Double { distanceMeters / WalkPlan.metersPerMile }
 
