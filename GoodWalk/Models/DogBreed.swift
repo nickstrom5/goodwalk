@@ -9,7 +9,7 @@ import Foundation
 /// kennel-club group. Where a breed straddles a band, the band chosen is the one whose result
 /// lands nearest the Royal Kennel Club exercise label for that breed: a Pembroke Welsh Corgi is
 /// filed small, not medium, because the Kennel Club says "up to 1 hour" and small gets there.
-/// `playbook/12-sources.md` §5 carries the full note, including what still needs checking.
+/// `playbook/12-sources.md` §6 carries the full note, including what still needs checking.
 struct DogBreed: Identifiable, Equatable, Hashable {
     let name: String
     let size: DogProfile.Size

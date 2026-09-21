@@ -83,7 +83,7 @@ fi
 
 OUT=docs/screenshots/duo; mkdir -p "$OUT"
 PREFIX=""; [ "$POSE" = open ] || PREFIX="$POSE-"
-SCREENS="hook dog size breed usual reveal plan first result paywall home walking log milestone settings share"
+SCREENS="hook dog size breed usual reveal plan first result paywall home dogs walking log milestone stats day walkcard settings share"
 [ "$CI_MODE" = 1 ] && SCREENS="hook dog size breed usual"
 
 brightness() {  # mean pixel value 0-255, or "fallback" when Pillow is missing

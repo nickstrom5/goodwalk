@@ -9,7 +9,7 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
 - Build: `xcodebuild build -project GoodWalk.xcodeproj -scheme GoodWalk -destination 'platform=iOS Simulator,name=<an iPhone>' CODE_SIGNING_ALLOWED=NO`
 - Tests: same with `test -only-testing:GoodWalkTests`.
 - CI (`.github/workflows/build.yml`) does exactly this on `macos-26`. Keep it green.
-- Screens: launch with `-screenshot <hook|dog|size|breed|usual|reveal|plan|first|result|paywall|home|dogs|walking|log|milestone|stats|walkcard|settings|share>`
+- Screens: launch with `-screenshot <hook|dog|size|breed|usual|reveal|plan|first|result|paywall|home|dogs|walking|log|milestone|stats|walkcard|day|settings|share>`
   to open one screen with seeded data (`GoodWalk/App/ScreenshotMode.swift`). `scripts/capture-screenshots.sh` and the
   `Screenshots` workflow capture all of them and write PNGs to `docs/screenshots/`. Look there before and after UI changes.
 - Brand images: `swift scripts/make-brand.swift` regenerates the app icon, the illustrated sample dog
