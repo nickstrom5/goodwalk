@@ -44,9 +44,10 @@ open GoodWalk.xcodeproj
 - Use the `GoodWalk` scheme; StoreKit testing is wired to `Products.storekit` so purchases work
   locally without App Store Connect.
 - Screenshots: launch with `-screenshot <name>` (hook, dog, size, breed, usual, reveal, plan,
-  first, result, paywall, home, walking, log, milestone, settings, share). Captures land in
-  `docs/screenshots/`. The seeded dog is Rex: medium adult mixed breed, 60 min target, 30-day
-  streak, 47 miles.
+  first, result, paywall, home, dogs, walking, log, milestone, stats, walkcard, day, settings,
+  share). Captures land in `docs/screenshots/`. The seeded dog is Rex: medium adult mixed breed,
+  60 min target, 30-day streak, 47 miles; `dogs` adds a second dog (Juno), and `day` opens
+  today's sheet on this morning's walk, which is the one carrying the photo.
 
 ## Before submission
 
