@@ -400,7 +400,7 @@ struct PlanScreen: View {
                     Text("The daily nudge")
                         .font(Theme.Font.headline)
                         .foregroundStyle(Theme.textPrimary)
-                    Text("One notification a day: \"\(ReminderManager.title(dogName: appState.dog.displayName))\" Tap Walked or Start a walk right from it.")
+                    Text("One notification a day: \"\(ReminderManager.title(dogNames: appState.dogNames))\" Tap Walked or Start a walk right from it.")
                         .font(Theme.Font.caption)
                         .foregroundStyle(Theme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -424,7 +424,7 @@ struct PlanScreen: View {
         requesting = true
         Task {
             let granted = await reminders.requestAuthorization()
-            if granted { reminders.schedule(minutesAfterMidnight: appState.reminderMinutes, dogName: appState.dog.displayName) }
+            if granted { reminders.schedule(minutesAfterMidnight: appState.reminderMinutes, dogNames: appState.dogNames) }
             requesting = false
             onNext()
         }

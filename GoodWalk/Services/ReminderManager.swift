@@ -4,6 +4,10 @@ import UserNotifications
 
 /// The daily walk reminder. One repeating local notification with two actions: "Walked" logs the
 /// usual walk without opening the app; "Start a walk" opens the app on the timer.
+///
+/// One notification however many dogs live here. The content is fixed when it's scheduled, so it
+/// names the whole household and "Walked" sorts out at tap time who still hadn't been out. A
+/// notification per dog would turn the one tap that makes this app work into a queue of them.
 @MainActor
 final class ReminderManager: NSObject, ObservableObject {
     static let categoryID = "goodwalk.reminder"
@@ -47,14 +51,17 @@ final class ReminderManager: NSObject, ObservableObject {
         }
     }
 
-    /// (Re)schedules the daily reminder at `minutesAfterMidnight` local time.
-    func schedule(minutesAfterMidnight: Int, dogName: String) {
+    /// (Re)schedules the daily reminder at `minutesAfterMidnight` local time. Call it again when
+    /// a dog is added, removed or renamed: the text is baked in when the request is made.
+    func schedule(minutesAfterMidnight: Int, dogNames: [String]) {
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: [Self.requestID])
 
         let content = UNMutableNotificationContent()
-        content.title = Self.title(dogName: dogName)
-        content.body = "One tap keeps the streak. Or grab the leash and start the timer."
+        content.title = Self.title(dogNames: dogNames)
+        content.body = dogNames.count > 1
+            ? "One tap logs everyone who hasn't been out. Or grab the leash and start the timer."
+            : "One tap keeps the streak. Or grab the leash and start the timer."
         content.sound = .default
         content.categoryIdentifier = Self.categoryID
 
@@ -65,8 +72,17 @@ final class ReminderManager: NSObject, ObservableObject {
         center.add(UNNotificationRequest(identifier: Self.requestID, content: content, trigger: trigger))
     }
 
-    static func title(dogName: String) -> String {
-        "Has \(dogName) had a walk today?"
+    /// "Has Rex had a walk today?" / "Have Rex and Juno had a walk today?"
+    static func title(dogNames: [String]) -> String {
+        let names = dogNames.filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
+        guard !names.isEmpty else { return "Has your dog had a walk today?" }
+        let subject: String
+        switch names.count {
+        case 1: subject = names[0]
+        case 2: subject = "\(names[0]) and \(names[1])"
+        default: subject = names.dropLast().joined(separator: ", ") + " and " + (names.last ?? "")
+        }
+        return "\(names.count == 1 ? "Has" : "Have") \(subject) had a walk today?"
     }
 
     static func label(forMinutes minutes: Int) -> String {

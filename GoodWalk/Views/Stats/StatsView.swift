@@ -18,8 +18,10 @@ struct StatsView: View {
     /// while only being phone-wide, and the layout should follow the pixels either way.
     private static let twoPaneWidth: CGFloat = 620
 
+    /// The grid is one dog's month; the switcher above it flips between them.
     private var summary: MonthSummary {
-        MonthSummary.build(walks: appState.walks, goalMinutes: appState.dog.dailyGoal, month: month)
+        MonthSummary.build(walks: appState.walks(forDog: appState.selectedDogID),
+                           goalMinutes: appState.dog.dailyGoal, month: month)
     }
 
     var body: some View {
@@ -33,6 +35,7 @@ struct StatsView: View {
                                 VStack(spacing: 12) { numbers(wide: true) }
                                     .frame(width: 260)
                                 VStack(spacing: 16) {
+                                    DogSwitcher()
                                     MonthCard(summary: summary, canGoForward: !summary.isCurrentMonth(),
                                               onBack: { step(-1) }, onForward: { step(1) })
                                     totals
@@ -41,6 +44,7 @@ struct StatsView: View {
                         } else {
                             VStack(spacing: 16) {
                                 HStack(spacing: 10) { numbers(wide: false) }
+                                DogSwitcher()
                                 MonthCard(summary: summary, canGoForward: !summary.isCurrentMonth(),
                                           onBack: { step(-1) }, onForward: { step(1) })
                                 totals
@@ -67,10 +71,12 @@ struct StatsView: View {
 
     // MARK: - Pieces
 
+    /// The streak here is the same household streak the home screen shows, so the two can never
+    /// disagree. The month grid below is the one place a single dog's own days are read.
     @ViewBuilder
     private func numbers(wide: Bool) -> some View {
-        let stats = appState.stats
-        let name = appState.dog.displayName
+        let stats = appState.household
+        let name = appState.hasMultipleDogs ? DogProfile.names(appState.dogs) : appState.dog.displayName
         StatBlock(value: "\(stats.walkCount)", label: stats.walkCount == 1 ? "walk with \(name)" : "walks with \(name)",
                   symbol: "figure.walk", tint: Theme.accent, wide: wide)
         StatBlock(value: "\(stats.streak)", label: stats.streak == 1 ? "day streak" : "day streak",
@@ -80,7 +86,7 @@ struct StatsView: View {
     }
 
     private var totals: some View {
-        let stats = appState.stats
+        let stats = appState.household
         return HStack(spacing: 10) {
             SmallTotal(value: Stats.miles(stats.totalMiles), label: "miles")
             SmallTotal(value: Stats.duration(minutes: stats.totalMinutes), label: "together")

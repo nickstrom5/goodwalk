@@ -31,6 +31,9 @@ enum AnalyticsEvent: String {
     case supportTapped = "support_tapped"
     case liveActivityFailed = "live_activity_failed"
     case reminderTimeChanged = "reminder_time_changed"
+    case dogAdded = "dog_added"
+    case dogRemoved = "dog_removed"
+    case dogSwitched = "dog_switched"
 }
 
 protocol AnalyticsSink {

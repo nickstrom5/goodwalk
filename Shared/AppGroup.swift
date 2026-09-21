@@ -20,6 +20,8 @@ enum AppGroup {
         static let minutesDay = "minutesDay"
         /// Current walk streak in days. Mirrored by the app for the widget.
         static let streak = "streak"
+        /// How many dogs live here, so the widget can say whose ring it is showing.
+        static let dogCount = "dogCount"
         /// Set by the widget / Siri intent; the app starts the walk timer on next foreground.
         static let pendingStartWalk = "pendingStartWalk"
     }
@@ -42,8 +44,13 @@ enum AppGroup {
             ?? FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
 
-    /// Full-size photo for the app and the share card (longest side 1,200 px).
-    static var photoURL: URL { photoDirectory.appendingPathComponent("dog.jpg") }
-    /// Small copy for the widget, which has a tight memory budget (longest side 300 px).
+    /// Full-size photo for the app and the share card (longest side 1,200 px), one per dog.
+    static func photoURL(for dogID: UUID) -> URL {
+        photoDirectory.appendingPathComponent("dog-\(dogID.uuidString).jpg")
+    }
+
+    /// Small copy of the *shown* dog for the widget, which has a tight memory budget
+    /// (longest side 300 px). One file, rewritten when the shown dog or their photo changes,
+    /// so the widget never has to know how many dogs live here.
     static var widgetPhotoURL: URL { photoDirectory.appendingPathComponent("dog-widget.jpg") }
 }

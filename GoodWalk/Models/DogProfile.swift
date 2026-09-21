@@ -1,7 +1,12 @@
 import Foundation
 
 /// What the user told us about their dog during onboarding. Drives every personalized number.
-struct DogProfile: Codable, Equatable {
+/// A household can have more than one; `id` is what ties a walk to the dogs it counted for.
+struct DogProfile: Codable, Equatable, Identifiable {
+    var id = UUID()
+    /// The day this dog joined. Days before it can't break the household streak: a dog adopted
+    /// on Tuesday was not missed on Monday.
+    var addedOn = Date()
     var name: String = ""
     var size: Size = .medium
     var breedType: BreedType = .mixed
@@ -22,6 +27,22 @@ struct DogProfile: Codable, Equatable {
 
     /// The target every screen uses.
     var dailyGoal: Int { goalMinutes > 0 ? goalMinutes : WalkPlan.recommendedMinutes(for: self) }
+
+    /// True when this dog had already joined the household on `day`.
+    func existed(on day: Date, calendar cal: Calendar = .current) -> Bool {
+        cal.startOfDay(for: addedOn) <= cal.startOfDay(for: day)
+    }
+
+    /// "Rex", "Rex and Juno", "Rex, Juno and Pip". Copy reads the same at any number of dogs.
+    static func names(_ dogs: [DogProfile]) -> String {
+        let names = dogs.map(\.displayName)
+        switch names.count {
+        case 0: return "your dog"
+        case 1: return names[0]
+        case 2: return "\(names[0]) and \(names[1])"
+        default: return names.dropLast().joined(separator: ", ") + " and " + (names.last ?? "")
+        }
+    }
 
     enum Size: String, Codable, CaseIterable, Identifiable {
         case toy, small, medium, large, giant

@@ -17,7 +17,7 @@ struct GoodWalkApp: App {
         let reminders = ReminderManager()
         reminders.onWalked = { [weak state] in
             guard let state, state.hasCompletedOnboarding else { return }
-            state.quickLog(minutes: max(5, state.dog.usualMinutes), source: .notification)
+            state.logUsualWalkForDogsNotWalkedToday()
         }
         _appState = StateObject(wrappedValue: state)
         _store = StateObject(wrappedValue: StoreManager())
@@ -84,6 +84,7 @@ private struct ScreenshotRouter: View {
         case .result:    OnboardingFlow(initialStep: .result)
         case .paywall:   PaywallView(context: .onboarding, onFinished: {})
         case .home:      HomeView()
+        case .dogs:      HomeView()
         case .walking:   HomeView()
         case .log:       HomeView(initialSheet: .quickLog)
         case .milestone: HomeView(initialSheet: .milestone(7))

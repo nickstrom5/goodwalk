@@ -14,8 +14,17 @@ struct Walk: Codable, Equatable, Identifiable {
     /// True when the distance is a pace-based guess rather than a pedometer reading.
     var distanceEstimated: Bool
     var source: Source
+    /// The dogs this walk counted for. Two dogs on one leash walk is one walk, not two, so the
+    /// miles are never double counted. Empty means "whoever lives here", which is what seeded
+    /// and single-dog walks are.
+    var dogIDs: [UUID] = []
 
     var miles: Double { distanceMeters / WalkPlan.metersPerMile }
+
+    /// Did this walk count for that dog?
+    func counted(for dogID: UUID) -> Bool {
+        dogIDs.isEmpty || dogIDs.contains(dogID)
+    }
 }
 
 /// One bar in the week chart on the home screen.
