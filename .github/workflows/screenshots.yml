@@ -2,6 +2,10 @@ name: Screenshots
 
 # Boots a simulator, launches the app on every screen with seeded data, and commits the PNGs
 # to docs/screenshots/. Run it from the Actions tab (workflow_dispatch) whenever the UI changes.
+#
+# Two jobs: `capture` on the largest iPhone (the 6.9-inch shots the App Store wants), then `duo`
+# on the iPhone Duo. The Duo job needs Xcode 27 with an iOS 27 runtime; when the runner image
+# doesn't have one it says so and passes, rather than failing a run that already has its shots.
 
 on:
   workflow_dispatch:
@@ -65,6 +69,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/screenshots
           git commit -m "Screenshots from simulator ($DEVICE) [skip ci]" || { echo "no changes"; exit 0; }
+          # The branch may have moved while the simulator was working; rebase rather than lose the run.
+          git pull --rebase origin ${{ github.ref_name }}
           git push origin HEAD:${{ github.ref_name }}
 
       - name: Upload artifact too
@@ -73,4 +79,65 @@ jobs:
         with:
           name: screenshots
           path: docs/screenshots
+          if-no-files-found: ignore
+
+  duo:
+    # Second, not in parallel: both jobs commit to the same branch.
+    needs: capture
+    if: always()
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Is there an Xcode 27 with an iOS 27 runtime on this runner?
+        id: probe
+        run: |
+          echo "Xcodes on the image:"; ls -d /Applications/Xcode*.app 2>/dev/null || echo "  none"
+          echo "Runtimes:"; xcrun simctl list runtimes available | tail -n +2
+          FOUND=""
+          for app in /Applications/Xcode-beta.app $(ls -d /Applications/Xcode_2[7-9]*.app /Applications/Xcode_[3-9][0-9]*.app 2>/dev/null | sort -V); do
+            [ -d "$app" ] || continue
+            V=$(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' "$app/Contents/Info.plist" 2>/dev/null || echo 0)
+            [ "${V%%.*}" -ge 27 ] 2>/dev/null || continue
+            # The runtime list is per-Xcode, so ask this one.
+            if DEVELOPER_DIR="$app/Contents/Developer" xcrun simctl list runtimes available | grep -q "iOS 27"; then
+              FOUND="$app"; echo "Using $app (Xcode $V)"; break
+            fi
+            echo "$app is Xcode $V but has no iOS 27 runtime"
+          done
+          if [ -n "$FOUND" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            echo "DEVELOPER_DIR=$FOUND/Contents/Developer" >> "$GITHUB_ENV"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No Xcode 27 with an iOS 27 runtime on this runner, so no Duo shots this run. Capture them locally with scripts/duo-screenshots.sh."
+          fi
+
+      - name: Install XcodeGen
+        if: steps.probe.outputs.ready == 'true'
+        run: brew install xcodegen
+
+      - name: Capture every screen on the iPhone Duo
+        if: steps.probe.outputs.ready == 'true'
+        run: bash scripts/duo-screenshots.sh --ci
+
+      - name: Commit Duo screenshots
+        if: steps.probe.outputs.ready == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/screenshots/duo
+          git commit -m "iPhone Duo screenshots from simulator [skip ci]" || { echo "no changes"; exit 0; }
+          git pull --rebase origin ${{ github.ref_name }}
+          git push origin HEAD:${{ github.ref_name }}
+
+      - name: Upload artifact too
+        if: always() && steps.probe.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-duo
+          path: docs/screenshots/duo
           if-no-files-found: ignore
