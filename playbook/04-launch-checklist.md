@@ -17,6 +17,10 @@
       tick "Enforce HTTPS" once the certificate appears.
 - [ ] Cloudflare Email Routing: `support@getgoodwalk.app` and `hello@getgoodwalk.app` → your inbox.
       Gmail "Send mail as" for replies. Gmail filter → label "Good Walk support", skip inbox.
+- [ ] Claim the handles in `playbook/11-social-kit.md` §1, Instagram included, and set
+      `Config.instagramHandle` in `GoodWalk/App/Config.swift` to the one you got. Until it is set,
+      the app's share sheets carry no tag, which is deliberate: never point users at a handle that
+      doesn't exist. The account's job and the reposting rules are §6b.
 - [ ] Search "Good Walk" on the App Store on a phone. It wasn't in the dog-walk-tracker results
       in a web search on 18 Sep 2026; confirm before anything is printed on it.
 

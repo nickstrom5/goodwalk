@@ -104,6 +104,63 @@ Hashtag set (pick 4–5 per post, don't paste all): `#walkyourdogweek #walkyourd
 - "Link?" → "getgoodwalk.app" (never "link in bio")
 - "When?" → "Before Oct 1. Early access at getgoodwalk.app."
 
+## 6b. Instagram: the wall of dogs
+
+The other accounts exist to reach people who have never heard of Good Walk. This one exists to
+show the app's own users to each other. A dog app that posts only its own marketing is a brochure;
+a dog app that posts its users' dogs every day is a place people check. It is also the cheapest
+content there is: every share card the app makes is already square, already branded, and already
+has the dog's face on it.
+
+**Account:** `@goodwalkapp` on Instagram, set up in section 1. Professional (Creator) account so
+it can carry the link and show insights. Same picture, bio and link as everywhere else.
+
+**The tag: `#agoodwalk`.** One tag, ours. The generic tags in section 5 are for reach; this one is
+for finding the dogs that actually use the app, and it is short enough that somebody types it with
+one hand while holding a leash. Not `#goodwalk` (a thousand unrelated posts) and not
+`#goodwalkapp` (nobody tags a product, they tag a moment).
+
+**Three ways a photo gets to you**
+
+1. **From the app.** Every share sheet appends ` #agoodwalk @goodwalkapp` once
+   `Config.instagramHandle` is set in `GoodWalk/App/Config.swift`. It is empty until the account
+   exists: the app must never point at a handle that isn't there. Set it, rebuild, done.
+2. **The tag.** Check `#agoodwalk` daily. Early on it will be quiet; every single post in the
+   first month is worth a comment and a repost ask.
+3. **DMs and `hello@getgoodwalk.app`.** Some people would rather send it than post it. Say so in
+   the bio once there is a feed to point at.
+
+**Reposting, and the rule that keeps this clean**
+
+Never repost a photo without a written yes, every time, even from someone who said yes before.
+Ask in a comment or a DM, in public where you can, so the permission is on the record:
+
+> Love this one. Can we share it on @goodwalkapp? We'll credit you. No worries if not.
+
+Wait for the reply. Then post it with the credit in the first line of the caption
+(`📸 @theirhandle`), and reply to their yes with a thank you and the link to the post.
+
+Three hard rules, because getting this wrong costs more than the content is worth:
+
+- **A no, or silence, is a no.** Silence is not permission. Move on; there are other dogs.
+- **No people's faces** unless the photo is only of the dog or the owner explicitly says yes to
+  their own face being in it. Never a child's face, with or without a yes.
+- **Never a screenshot of somebody's streak without permission**, even though the number is
+  theirs and the card is ours. Their streak is a diary entry, not a testimonial.
+
+If somebody asks for a post to come down, take it down the same day and don't ask why.
+
+**Cadence:** one user dog a day at 5:30pm local, the same time as the app's own nudge, so the feed
+and the notification reinforce each other. Stories for anything that doesn't earn a grid post.
+When there are no user photos yet (week one), post the milestone cards from `docs/brand/` and the
+sample dog, clearly labelled as the app's own, and say what the tag is for. Never pass the sample
+dog off as a user's.
+
+**What "good" looks like by the end of October:** 30 posts, at least 10 of them user dogs with
+permission, and one week where the tag brought more photos than you had slots for. That is the
+signal to keep going; a month of posting your own cards to nobody is the signal to stop and put
+the time into the videos instead.
+
 ## 7. Reddit (value first, product second)
 
 Post text, not links. Mention Good Walk only in a reply when asked. Read each sub's rules

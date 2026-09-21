@@ -156,7 +156,11 @@ final class AppState: ObservableObject {
             guard walk.dogIDs.contains(dogID) else { return walk }
             var trimmed = walk
             trimmed.dogIDs.removeAll { $0 == dogID }
-            return trimmed.dogIDs.isEmpty ? nil : trimmed
+            guard !trimmed.dogIDs.isEmpty else {
+                WalkPhotoStore.delete(for: walk.id)   // the walk goes, so does its photo
+                return nil
+            }
+            return trimmed
         }
         updated.sort { $0.start < $1.start }
         walks = updated
@@ -294,7 +298,42 @@ final class AppState: ObservableObject {
 
     func delete(_ walk: Walk) {
         walks.removeAll { $0.id == walk.id }
+        WalkPhotoStore.delete(for: walk.id)
         Analytics.track(.walkDeleted)
+    }
+
+    // MARK: - Walk photos
+
+    /// The photo taken on a particular walk, if there is one.
+    func walkPhoto(for walkID: UUID) -> UIImage? { WalkPhotoStore.load(for: walkID) }
+
+    /// The small copy, for the day list and the month grid.
+    func walkThumb(for walkID: UUID) -> UIImage? { WalkPhotoStore.loadThumb(for: walkID) }
+
+    /// Saves a photo against one walk. It stays on this phone; a card leaves only when shared.
+    func setWalkPhoto(_ image: UIImage, for walkID: UUID) {
+        guard WalkPhotoStore.save(image, for: walkID) != nil else { return }
+        setHasPhoto(true, for: walkID)
+        Analytics.track(.walkPhotoAdded)
+    }
+
+    func removeWalkPhoto(for walkID: UUID) {
+        WalkPhotoStore.delete(for: walkID)
+        setHasPhoto(false, for: walkID)
+        Analytics.track(.walkPhotoRemoved)
+    }
+
+    private func setHasPhoto(_ hasPhoto: Bool, for walkID: UUID) {
+        guard let index = walks.firstIndex(where: { $0.id == walkID }), walks[index].hasPhoto != hasPhoto else { return }
+        var updated = walks
+        updated[index].hasPhoto = hasPhoto
+        walks = updated
+        if lastWalk?.id == walkID { lastWalk?.hasPhoto = hasPhoto }
+    }
+
+    /// Every walk logged on a given day, newest first. What the calendar opens.
+    func walks(on day: Date) -> [Walk] {
+        walks.filter { cal.isDate($0.start, inSameDayAs: day) }.sorted { $0.start > $1.start }
     }
 
     private func add(_ walk: Walk) {

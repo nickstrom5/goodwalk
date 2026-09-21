@@ -34,6 +34,9 @@ enum AnalyticsEvent: String {
     case dogAdded = "dog_added"
     case dogRemoved = "dog_removed"
     case dogSwitched = "dog_switched"
+    case walkPhotoAdded = "walk_photo_added"
+    case walkPhotoRemoved = "walk_photo_removed"
+    case walkOpenedFromLog = "walk_opened_from_log"
 }
 
 protocol AnalyticsSink {
