@@ -10,6 +10,9 @@ struct DogProfile: Codable, Equatable, Identifiable {
     var name: String = ""
     var size: Size = .medium
     var breedType: BreedType = .mixed
+    /// The breed they picked from the search, if they did. A label only: `size` and `breedType`
+    /// are what the guideline is worked out from, and both stay editable after a breed is chosen.
+    var breedName: String = ""
     var age: Age = .adult
     /// Minutes of walking on a normal day right now, as stated in onboarding.
     var usualMinutes: Int = 20
@@ -27,6 +30,24 @@ struct DogProfile: Codable, Equatable, Identifiable {
 
     /// The target every screen uses.
     var dailyGoal: Int { goalMinutes > 0 ? goalMinutes : WalkPlan.recommendedMinutes(for: self) }
+
+    /// "Beagle" when they chose one, "Small hound" when they only set size and type.
+    var breedLabel: String {
+        breedName.isEmpty ? "\(size.label) \(breedType.label.lowercased())" : breedName
+    }
+
+    /// Takes the size and type from a breed, or clears the label for "not listed". The target is
+    /// reset to the recommendation, so a breed chosen after a target was set is actually felt.
+    mutating func apply(_ breed: DogBreed?) {
+        guard let breed else {
+            breedName = ""
+            return
+        }
+        breedName = breed.name
+        size = breed.size
+        breedType = breed.type
+        goalMinutes = 0
+    }
 
     /// True when this dog had already joined the household on `day`.
     func existed(on day: Date, calendar cal: Calendar = .current) -> Bool {

@@ -124,6 +124,31 @@ flat-faced 25 / 35 line must change with it. The site names no competitor and qu
 | Unit-economics targets (65% / 25% / 40%, $1.35 CPI, 10,000 installs) | `playbook/01-strategy.md` §7 | Targets, not facts. Labelled as targets. Kept |
 | "243 hours a year" | reveal, site, listing | Arithmetic: (60 − 20) × 365 ÷ 60. Tested |
 
+## 6. The breed list (`GoodWalk/Models/DogBreed.swift`, added 21 Sep 2026)
+
+70 common breeds the owner can search for instead of deciding what "medium" means. **The list
+adds no new number to the app.** Choosing a breed sets `size` and `breedType`; the minutes still
+come from `WalkPlan`, whose bases and factors are sourced in §1. Both chips stay editable after a
+breed is chosen, and the screens that show a breed's minutes also show `GuidelineFootnote`.
+
+| Field | How it was set |
+|---|---|
+| `size` | The app's own weight bands (`DogProfile.Size.detail`: toy <10 lb, small 10–25, medium 25–55, large 55–90, giant >90) applied to the breed's standard adult weight |
+| `type` | The nearest of our eight types to the breed's kennel-club group: Gundog → sporting, Pastoral → herding, Terrier → terrier, Hound → hound, Toy/Utility → companion, Working → working, brachycephalic breeds → flat-faced |
+| Breeds straddling a band | Filed in the band whose `WalkPlan` result lands nearest the Royal Kennel Club exercise label for that breed. A Pembroke Welsh Corgi (~28 lb) is filed small, not medium, because the Kennel Club says "up to 1 hour" and small reaches 60 min where medium would reach 90 |
+
+`GoodWalkTests/BreedTests.swift` pins the catalogue to the breeds already sourced in §1: Labrador
+and Golden Retriever 120, German Shepherd 120, Border Collie ≥90, Chihuahua 30, Pug and Dachshund
+≤60. If a factor in `WalkPlan` moves, those tests fail rather than the list quietly drifting.
+
+**Not verified breed by breed, and this matters.** The Royal Kennel Club's Breeds A to Z and the
+PDSA breed pages are both blocked by the network egress proxy in the environment this list was
+written in, so individual cards could not be opened the way §1's tables were in the 18 Sep pass.
+The groups and weight ranges used are stable published facts, and the pinned breeds match §1, but
+the remaining rows are classification by knowledge, not by citation. One pass with the RKC cards
+open would settle it. Until then the list is a convenience that fills in two editable chips, which
+is the reason it was built that way.
+
 ## Still open
 
 1. Puppy 0.6 / senior 0.7: our judgment; no published ratio exists in the sources checked.
@@ -131,3 +156,5 @@ flat-faced 25 / 35 line must change with it. The site names no competitor and qu
 3. Tractive Dog Walk deprecation wording: help page returned 403; snippet only.
 4. The four small free competitors and the Fi / collar-review characterisations: unchecked, internal only.
 5. Walk Your Dog Month: search results only.
+6. The 70 breed rows in §6: size band and type per breed are unverified against the RKC cards
+   (proxy-blocked). Re-check with the cards open; the pinned breeds in §1 are already covered.

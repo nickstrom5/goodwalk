@@ -184,6 +184,7 @@ struct BreedScreen: View {
     let onNext: () -> Void
 
     private let columns = [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)]
+    @State private var showBreedSearch = false
 
     var body: some View {
         OnboardingScreen(
@@ -192,6 +193,14 @@ struct BreedScreen: View {
             onCTA: onNext
         ) {
             VStack(alignment: .leading, spacing: 20) {
+                // Searching the breed is faster than deciding what "medium" means, and it fills
+                // in both chips below. Anyone who'd rather not is untouched: the chips are still
+                // the whole answer, and this adds no step to the flow.
+                if appState.dog.breedName.isEmpty {
+                    SecondaryButton(title: "Search your dog's breed") { showBreedSearch = true }
+                } else {
+                    BreedSummaryRow(dog: appState.dog) { showBreedSearch = true }
+                }
                 LazyVGrid(columns: columns, spacing: 10) {
                     ForEach(DogProfile.BreedType.allCases) { type in
                         Chip(label: type.label, symbol: type.symbol, selected: appState.dog.breedType == type) {
@@ -212,7 +221,11 @@ struct BreedScreen: View {
                         }
                     }
                 }
+                if !appState.dog.breedName.isEmpty { GuidelineFootnote() }
             }
+        }
+        .sheet(isPresented: $showBreedSearch) {
+            BreedPicker { breed in appState.dog.apply(breed) }
         }
     }
 }
