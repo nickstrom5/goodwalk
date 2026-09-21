@@ -10,6 +10,7 @@ struct DogFields: View {
     let onRemovePhoto: () -> Void
 
     @State private var pickerItem: PhotosPickerItem?
+    @State private var showBreedSearch = false
 
     var body: some View {
         Section {
@@ -27,6 +28,11 @@ struct DogFields: View {
                         .font(Theme.Font.caption)
                         .buttonStyle(.borderless)
                 }
+            }
+            if dog.breedName.isEmpty {
+                Button("Find the breed") { showBreedSearch = true }
+            } else {
+                BreedSummaryRow(dog: dog) { showBreedSearch = true }
             }
             Picker("Size", selection: $dog.size) {
                 ForEach(DogProfile.Size.allCases) { Text($0.label).tag($0) }
@@ -58,6 +64,9 @@ struct DogFields: View {
                     onPickPhoto(picked)
                 }
             }
+        }
+        .sheet(isPresented: $showBreedSearch) {
+            BreedPicker { breed in dog.apply(breed) }
         }
     }
 }
@@ -114,6 +123,7 @@ struct AddDogView: View {
     @State private var dog = DogProfile()
     @State private var pickerItem: PhotosPickerItem?
     @State private var photo: UIImage?
+    @State private var showBreedSearch = false
 
     var body: some View {
         NavigationStack {
@@ -127,6 +137,11 @@ struct AddDogView: View {
                             PhotosPicker(photo == nil ? "Add a photo" : "Change photo", selection: $pickerItem, matching: .images)
                                 .font(Theme.Font.caption)
                         }
+                    }
+                    if dog.breedName.isEmpty {
+                        Button("Find the breed") { showBreedSearch = true }
+                    } else {
+                        BreedSummaryRow(dog: dog) { showBreedSearch = true }
                     }
                     Picker("Size", selection: $dog.size) {
                         ForEach(DogProfile.Size.allCases) { Text($0.label).tag($0) }
@@ -163,6 +178,9 @@ struct AddDogView: View {
                         photo = picked
                     }
                 }
+            }
+            .sheet(isPresented: $showBreedSearch) {
+                BreedPicker { breed in dog.apply(breed) }
             }
         }
     }
