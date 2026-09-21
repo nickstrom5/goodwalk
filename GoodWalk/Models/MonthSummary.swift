@@ -8,6 +8,10 @@ struct MonthDay: Identifiable, Equatable {
     /// off `date` with `Calendar.current` would shift the number whenever the two disagree.
     let dayNumber: Int?
     let minutes: Int
+    /// How many walks were logged that day, so the day sheet can say "2 walks".
+    let walkCount: Int
+    /// True when at least one of that day's walks has a photo kept with it.
+    let hasPhoto: Bool
     let hitGoal: Bool
     let isToday: Bool
     let isFuture: Bool
@@ -49,8 +53,13 @@ struct MonthSummary: Equatable {
     static func build(walks: [Walk], goalMinutes: Int, month: Date = Date(),
                       today: Date = Date(), calendar cal: Calendar = .current) -> MonthSummary {
         var minutesByDay: [Date: Int] = [:]
+        var countByDay: [Date: Int] = [:]
+        var photoDays: Set<Date> = []
         for walk in walks where walk.minutes > 0 {
-            minutesByDay[cal.startOfDay(for: walk.start), default: 0] += walk.minutes
+            let day = cal.startOfDay(for: walk.start)
+            minutesByDay[day, default: 0] += walk.minutes
+            countByDay[day, default: 0] += 1
+            if walk.hasPhoto { photoDays.insert(day) }
         }
 
         let monthStart = cal.date(from: cal.dateComponents([.year, .month], from: month)) ?? cal.startOfDay(for: month)
@@ -61,7 +70,8 @@ struct MonthSummary: Equatable {
 
         var summary = MonthSummary(monthStart: monthStart, days: [])
         var cells: [MonthDay] = (0..<leading).map {
-            MonthDay(index: $0, date: nil, dayNumber: nil, minutes: 0, hitGoal: false, isToday: false, isFuture: false)
+            MonthDay(index: $0, date: nil, dayNumber: nil, minutes: 0, walkCount: 0, hasPhoto: false,
+                     hitGoal: false, isToday: false, isFuture: false)
         }
         for offset in 0..<dayCount {
             guard let date = cal.date(byAdding: .day, value: offset, to: monthStart) else { continue }
@@ -69,6 +79,7 @@ struct MonthSummary: Equatable {
             let hitGoal = goalMinutes > 0 && minutes >= goalMinutes
             cells.append(MonthDay(index: leading + offset, date: date,
                                   dayNumber: cal.component(.day, from: date), minutes: minutes,
+                                  walkCount: countByDay[date] ?? 0, hasPhoto: photoDays.contains(date),
                                   hitGoal: hitGoal, isToday: cal.isDate(date, inSameDayAs: todayStart),
                                   isFuture: date > todayStart))
             if minutes > 0 { summary.walkedDays += 1; summary.totalMinutes += minutes }

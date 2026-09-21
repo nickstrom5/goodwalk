@@ -113,6 +113,18 @@ Metric it moves: `onboarding_completed / onboarding_started`, at the step with t
 in it, and the accuracy of every number downstream of it. It adds no step to the funnel and no
 new figure to the app: the breed sets two editable chips, `WalkPlan` still does the arithmetic.
 
+**Added 21 Sep 2026: the photo stays with the walk.** The end-of-walk card already offered a photo,
+but it was thrown away when the card closed. It is now kept against that walk and reachable from the
+calendar: days with a photo are marked in the month grid, and tapping a day lists its walks and opens
+the card again. Metric it moves: `share_tapped / walk_finished` again, plus day-30 retention. A log of
+numbers is worth scrolling back through once; a log of the dog's face on a hundred specific evenings is
+worth keeping the app for, and it is the one thing a free tracker with no photo cannot copy.
+
+The privacy policy changed with it. It promised the photo was "not saved by the app, not attached to the
+walk"; it now says the photo is kept with the walk on the phone and still never uploaded. Effective date
+bumped to 21 Sep 2026. Storage is the user's own photos at 1,200 px, roughly a quarter of a megabyte a
+walk; deleting a walk deletes its photo.
+
 **What is deliberately not in v1:** GPS maps, routes, family sharing, social feed, playdates,
 HealthKit, Apple Watch, Android, training content. Each is a v1.x candidate only if reviews
 ask for it.

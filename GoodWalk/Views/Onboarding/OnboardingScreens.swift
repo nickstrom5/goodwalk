@@ -601,7 +601,7 @@ struct FirstResultScreen: View {
                 .padding(.bottom, 16)
         }
         .sheet(item: $shareImage) { image in
-            ShareSheet(items: [image, "Day 1 of daily walks with \(dog.displayName). getgoodwalk.app"])
+            ShareSheet(items: [image, "Day 1 of daily walks with \(dog.displayName). getgoodwalk.app\(Config.shareCredit)"])
         }
     }
 

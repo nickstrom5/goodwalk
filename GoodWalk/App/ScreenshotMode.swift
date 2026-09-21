@@ -10,6 +10,8 @@ enum ScreenshotMode {
         case home, walking, log, milestone, stats, walkcard, settings, share
         /// The home screen for a two-dog household.
         case dogs
+        /// A day opened from the calendar, with a walk that has a photo.
+        case day
     }
 
     static let screen: Screen? = {
@@ -91,6 +93,12 @@ enum ScreenshotMode {
         default:
             break
         }
+        // One walk with a photo kept against it, so the calendar shows its marker and the day
+        // sheet has something to open.
+        if let sample = UIImage(named: "SampleDog"), let index = walks.indices.last {
+            WalkPhotoStore.save(sample, for: walks[index].id)
+            walks[index].hasPhoto = true
+        }
         appState.replaceWalks(walks, celebrated: [1, 3, 7, 14, 30])
 
         if screen == .walking {
@@ -99,7 +107,7 @@ enum ScreenshotMode {
         }
         appState.hasCompletedOnboarding = {
             switch screen {
-            case .home, .walking, .log, .milestone, .stats, .walkcard, .settings, .share, .dogs: return true
+            case .home, .walking, .log, .milestone, .stats, .walkcard, .settings, .share, .dogs, .day: return true
             default: return false
             }
         }()

@@ -12,6 +12,8 @@ struct StatsView: View {
 
     /// First of the month being shown. Paged with the arrows, never stored.
     @State private var month = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Date())) ?? Date()
+    /// The day whose walks are open. Tapping a day in the grid sets it.
+    @State private var openDay: DayKey?
 
     /// Two panes once there is genuinely room for them. Measured, not guessed from the size class:
     /// on a wide screen this screen is presented full width, but a form sheet would report regular
@@ -37,7 +39,8 @@ struct StatsView: View {
                                 VStack(spacing: 16) {
                                     DogSwitcher()
                                     MonthCard(summary: summary, canGoForward: !summary.isCurrentMonth(),
-                                              onBack: { step(-1) }, onForward: { step(1) })
+                                              onBack: { step(-1) }, onForward: { step(1) },
+                                              onSelectDay: { openDay = DayKey(date: $0) })
                                     totals
                                 }
                             }
@@ -46,7 +49,8 @@ struct StatsView: View {
                                 HStack(spacing: 10) { numbers(wide: false) }
                                 DogSwitcher()
                                 MonthCard(summary: summary, canGoForward: !summary.isCurrentMonth(),
-                                          onBack: { step(-1) }, onForward: { step(1) })
+                                          onBack: { step(-1) }, onForward: { step(1) },
+                                          onSelectDay: { openDay = DayKey(date: $0) })
                                 totals
                             }
                         }
@@ -65,6 +69,9 @@ struct StatsView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Done") { dismiss() }
                 }
+            }
+            .sheet(item: $openDay) { selection in
+                DayDetailView(day: selection.date)
             }
         }
     }
@@ -189,6 +196,8 @@ private struct MonthCard: View {
     let canGoForward: Bool
     let onBack: () -> Void
     let onForward: () -> Void
+    /// Called with the start of a day that has walks to show.
+    let onSelectDay: (Date) -> Void
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 6), count: 7)
 
@@ -221,7 +230,7 @@ private struct MonthCard: View {
                         .foregroundStyle(Theme.textTertiary)
                 }
                 ForEach(summary.days) { day in
-                    DayCell(day: day)
+                    DayCell(day: day, onSelect: onSelectDay)
                 }
             }
 
@@ -229,6 +238,11 @@ private struct MonthCard: View {
                 Legend(filled: true, text: "Target met")
                 Legend(filled: false, text: "Shorter walk")
                 Spacer()
+                if summary.days.contains(where: { $0.hasPhoto }) {
+                    Image(systemName: "camera.fill")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(Theme.textTertiary)
+                }
                 Text("\(summary.walkedDays) of \(summary.days.filter { $0.date != nil }.count) days")
                     .font(Theme.Font.caption)
                     .foregroundStyle(Theme.textSecondary)
@@ -242,8 +256,24 @@ private struct MonthCard: View {
 
 private struct DayCell: View {
     let day: MonthDay
+    let onSelect: (Date) -> Void
 
     var body: some View {
+        Group {
+            if day.walked, let date = day.date {
+                Button { onSelect(date) } label: { face }
+                    .buttonStyle(PressScaleStyle())
+            } else {
+                face
+            }
+        }
+        .frame(height: 34)
+        .accessibilityElement()
+        .accessibilityLabel(label)
+        .accessibilityAddTraits(day.walked ? [.isButton] : [])
+    }
+
+    private var face: some View {
         ZStack {
             if day.date != nil {
                 if day.hitGoal {
@@ -259,17 +289,23 @@ private struct DayCell: View {
                 Text("\(day.dayNumber ?? 0)")
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
                     .foregroundStyle(day.hitGoal ? Theme.onAccent : Theme.textSecondary)
+                // A day with a photo gets a dot, so a month of walks shows where the pictures are.
+                if day.hasPhoto {
+                    Circle()
+                        .fill(day.hitGoal ? Theme.onAccent : Theme.accent)
+                        .frame(width: 5, height: 5)
+                        .offset(y: 11)
+                }
             }
         }
         .frame(height: 34)
-        .accessibilityElement()
-        .accessibilityLabel(label)
     }
 
     private var label: String {
         guard let number = day.dayNumber else { return "" }
-        if day.hitGoal { return "\(number): target met, \(day.minutes) minutes" }
-        if day.walked { return "\(number): \(day.minutes) minutes" }
+        let photo = day.hasPhoto ? ", has a photo" : ""
+        if day.hitGoal { return "\(number): target met, \(day.minutes) minutes\(photo)" }
+        if day.walked { return "\(number): \(day.minutes) minutes\(photo)" }
         return day.isFuture ? "\(number): still to come" : "\(number): no walk"
     }
 }
