@@ -86,11 +86,13 @@ struct StatsView: View {
     }
 
     private var totals: some View {
-        let stats = appState.household
+        let household = appState.household
         return HStack(spacing: 10) {
-            SmallTotal(value: Stats.miles(stats.totalMiles), label: "miles")
-            SmallTotal(value: Stats.duration(minutes: stats.totalMinutes), label: "together")
-            SmallTotal(value: "\(stats.goalDays)", label: "full days")
+            SmallTotal(value: Stats.miles(household.totalMiles), label: "miles")
+            SmallTotal(value: Stats.duration(minutes: household.totalMinutes), label: "together")
+            // Hitting the full target is one dog's business, so this one stays per dog, next to
+            // the month grid it belongs to.
+            SmallTotal(value: "\(appState.stats.goalDays)", label: "full days")
         }
     }
 
