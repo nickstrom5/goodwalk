@@ -62,6 +62,94 @@ struct Stats: Equatable {
         return stats
     }
 
+    // MARK: - The household
+
+    /// Stats for the whole house when there is more than one dog. The streak is the household's:
+    /// a day counts when every dog who lived here that day got a walk. One dog missed is a day
+    /// missed, which is the only reading that keeps the promise honest; "any dog walked" would
+    /// let a dog be skipped for a month behind a healthy-looking number.
+    ///
+    /// Totals count each walk once, however many dogs were on it. Walking two dogs around the
+    /// block is one mile, not two.
+    struct Household: Equatable {
+        var streak = 0
+        var longestStreak = 0
+        var walkCount = 0
+        var daysWalked = 0
+        var completeDays = 0
+        var totalMinutes = 0
+        var totalMeters: Double = 0
+        /// Dogs with at least one walk today, out of the dogs who live here.
+        var dogsWalkedToday = 0
+        var dogCount = 0
+
+        var totalMiles: Double { totalMeters / WalkPlan.metersPerMile }
+        var totalHours: Double { Double(totalMinutes) / 60 }
+        /// True when every dog has walked today.
+        var everyoneWalkedToday: Bool { dogCount > 0 && dogsWalkedToday >= dogCount }
+
+        static func compute(dogs: [DogProfile], walks: [Walk],
+                            today: Date = Date(), calendar cal: Calendar = .current) -> Household {
+            var household = Household()
+            household.dogCount = dogs.count
+            guard !dogs.isEmpty else { return household }
+
+            // Which dogs walked on each day, and the totals, in one pass.
+            var dogsByDay: [Date: Set<UUID>] = [:]
+            for walk in walks where walk.minutes > 0 {
+                let day = cal.startOfDay(for: walk.start)
+                let walked = walk.dogIDs.isEmpty ? dogs.map(\.id) : walk.dogIDs
+                dogsByDay[day, default: []].formUnion(walked)
+                household.walkCount += 1
+                household.totalMinutes += walk.minutes
+                household.totalMeters += max(0, walk.distanceMeters)
+            }
+            household.daysWalked = dogsByDay.count
+
+            let todayStart = cal.startOfDay(for: today)
+            let walkedToday = dogsByDay[todayStart] ?? []
+            household.dogsWalkedToday = dogs.filter { walkedToday.contains($0.id) }.count
+
+            /// Every dog who already lived here that day got a walk.
+            func complete(_ day: Date) -> Bool {
+                let expected = dogs.filter { $0.existed(on: day, calendar: cal) }
+                guard !expected.isEmpty else { return false }
+                let walked = dogsByDay[day] ?? []
+                return expected.allSatisfy { walked.contains($0.id) }
+            }
+
+            let completeDays = dogsByDay.keys.filter(complete).sorted()
+            household.completeDays = completeDays.count
+
+            // Longest run of consecutive complete days anywhere in the log.
+            var run = 0
+            var previous: Date?
+            for day in completeDays {
+                if let previous, let next = cal.date(byAdding: .day, value: 1, to: previous),
+                   cal.isDate(next, inSameDayAs: day) {
+                    run += 1
+                } else {
+                    run = 1
+                }
+                household.longestStreak = max(household.longestStreak, run)
+                previous = day
+            }
+
+            // Current streak, counting back. A day that isn't finished yet doesn't break it:
+            // if today is still short a dog, start from yesterday, same as the single-dog rule.
+            let completeSet = Set(completeDays)
+            var cursor = todayStart
+            if !completeSet.contains(cursor), let yesterday = cal.date(byAdding: .day, value: -1, to: cursor) {
+                cursor = yesterday
+            }
+            while completeSet.contains(cursor), let earlier = cal.date(byAdding: .day, value: -1, to: cursor) {
+                household.streak += 1
+                cursor = earlier
+            }
+            return household
+        }
+    }
+
     // MARK: - Formatting
 
     /// "47" above 10 miles, "4.7" below. Nobody brags in decimals.

@@ -100,7 +100,7 @@ Hashtag set (pick 4–5 per post, don't paste all): `#walkyourdogweek #walkyourd
 - "Android?" → "Not yet. Email hello@getgoodwalk.app and you'll be first to hear."
 - "Is 60 minutes right for my dog?" → "It's a general guideline from size, breed type and age, and you can change it. It's not vet advice; your vet knows your dog, especially puppies, seniors and flat-faced breeds."
 - "Does it track my location?" → "No. Distance comes from your phone's step sensor. No GPS, no map, no account, nothing leaves your phone."
-- "Multiple dogs?" → "One dog in v1. It's the most-asked thing already; noted."
+- "Multiple dogs?" → "Yes, two or three. One walk counts for whoever came along, each dog gets their own target, and the streak is the whole household's."
 - "Link?" → "getgoodwalk.app" (never "link in bio")
 - "When?" → "Before Oct 1. Early access at getgoodwalk.app."
 

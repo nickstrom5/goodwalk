@@ -7,43 +7,48 @@ struct SettingsView: View {
     @EnvironmentObject private var reminders: ReminderManager
     @Environment(\.dismiss) private var dismiss
     @State private var showPaywall = false
-    @State private var pickerItem: PhotosPickerItem?
+    @State private var showAddDog = false
 
     var body: some View {
         NavigationStack {
             List {
-                Section {
-                    HStack(spacing: 14) {
-                        DogAvatar(image: appState.dogImage, size: 56)
-                        VStack(alignment: .leading, spacing: 4) {
-                            TextField("Dog's name", text: $appState.dog.name)
-                                .font(Theme.Font.headline)
-                            PhotosPicker(appState.dogImage == nil ? "Add a photo" : "Change photo", selection: $pickerItem, matching: .images)
-                                .font(Theme.Font.caption)
+                // One dog: the fields sit right here, exactly as they always have. Several:
+                // a roster, and each dog gets their own screen.
+                if appState.hasMultipleDogs {
+                    Section {
+                        ForEach(appState.dogs) { dog in
+                            NavigationLink {
+                                DogEditorView(dogID: dog.id)
+                            } label: {
+                                HStack(spacing: 12) {
+                                    DogAvatar(image: appState.image(for: dog.id), size: 40)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(dog.displayName).font(Theme.Font.headline)
+                                        Text("\(appState.minutesToday(for: dog.id)) of \(dog.dailyGoal) min today")
+                                            .font(Theme.Font.caption)
+                                            .foregroundStyle(Theme.textTertiary)
+                                    }
+                                }
+                            }
                         }
+                        Button("Add another dog") { showAddDog = true }
+                    } header: {
+                        Text("Your dogs")
+                    } footer: {
+                        Text("Walking them together is one walk on every ring. Tap a dog to change their target or remove them.")
                     }
-                    Picker("Size", selection: $appState.dog.size) {
-                        ForEach(DogProfile.Size.allCases) { Text($0.label).tag($0) }
+                } else {
+                    if let binding = appState.binding(for: appState.selectedDogID) {
+                        DogFields(dog: binding,
+                                  image: appState.dogImage,
+                                  onPickPhoto: { appState.setDogPhoto($0) },
+                                  onRemovePhoto: { appState.removeDogPhoto() })
                     }
-                    Picker("Type", selection: $appState.dog.breedType) {
-                        ForEach(DogProfile.BreedType.allCases) { Text($0.label).tag($0) }
+                    Section {
+                        Button("Add another dog") { showAddDog = true }
+                    } footer: {
+                        Text("Two or three dogs in the house? Add them and one walk counts for everyone who came along.")
                     }
-                    Picker("Age", selection: $appState.dog.age) {
-                        ForEach(DogProfile.Age.allCases) { Text($0.label).tag($0) }
-                    }
-                } header: {
-                    Text("Your dog")
-                }
-
-                Section {
-                    Stepper("Daily target: \(appState.dog.dailyGoal) min",
-                            value: Binding(get: { appState.dog.dailyGoal }, set: { appState.dog.goalMinutes = $0 }),
-                            in: WalkPlan.minimumMinutes...180, step: 5)
-                    Stepper("\"Walked\" logs: \(appState.dog.usualMinutes) min", value: $appState.dog.usualMinutes, in: 5...120, step: 5)
-                } header: {
-                    Text("Target")
-                } footer: {
-                    Text("Guideline for a dog like \(appState.dog.displayName): about \(WalkPlan.recommendedMinutes(for: appState.dog)) min a day. General guidance, not veterinary advice.")
                 }
 
                 Section {
@@ -52,7 +57,7 @@ struct SettingsView: View {
                         Button("Turn on notifications") {
                             Task {
                                 let granted = await reminders.requestAuthorization()
-                                if granted { reminders.schedule(minutesAfterMidnight: appState.reminderMinutes, dogName: appState.dog.displayName) }
+                                if granted { reminders.schedule(minutesAfterMidnight: appState.reminderMinutes, dogNames: appState.dogNames) }
                                 else if let url = URL(string: UIApplication.openSettingsURLString) { await UIApplication.shared.open(url) }
                             }
                         }
@@ -65,12 +70,18 @@ struct SettingsView: View {
                          : "Notifications are off, so the nudge can't reach you. The widget and Siri still work.")
                 }
 
-                Section("So far") {
-                    LabeledContent("Current streak", value: "\(appState.stats.streak) days")
-                    LabeledContent("Longest streak", value: "\(appState.stats.longestStreak) days")
+                Section {
+                    LabeledContent("Current streak", value: "\(appState.household.streak) days")
+                    LabeledContent("Longest streak", value: "\(appState.household.longestStreak) days")
                     LabeledContent("Full-target days", value: "\(appState.stats.goalDays) of \(appState.stats.daysWalked) walked")
-                    LabeledContent("Distance", value: "\(Stats.miles(appState.stats.totalMiles)) miles")
-                    LabeledContent("Time together", value: Stats.duration(minutes: appState.stats.totalMinutes))
+                    LabeledContent("Distance", value: "\(Stats.miles(appState.household.totalMiles)) miles")
+                    LabeledContent("Time together", value: Stats.duration(minutes: appState.household.totalMinutes))
+                } header: {
+                    Text("So far")
+                } footer: {
+                    if appState.hasMultipleDogs {
+                        Text("The streak is the whole household's: a day counts once every dog has had their walk. Full-target days are \(appState.dog.possessive).")
+                    }
                 }
 
                 if !appState.todaysWalks.isEmpty {
@@ -125,19 +136,19 @@ struct SettingsView: View {
             .sheet(isPresented: $showPaywall) {
                 PaywallView(context: .home, onFinished: { showPaywall = false })
             }
+            .sheet(isPresented: $showAddDog) {
+                AddDogView()
+            }
             .onChange(of: appState.reminderMinutes) { _, minutes in
                 Analytics.track(.reminderTimeChanged, ["minutes": minutes])
-                if reminders.isAuthorized { reminders.schedule(minutesAfterMidnight: minutes, dogName: appState.dog.displayName) }
+                if reminders.isAuthorized { reminders.schedule(minutesAfterMidnight: minutes, dogNames: appState.dogNames) }
             }
             .onChange(of: appState.dog.name) { _, _ in
-                if reminders.isAuthorized { reminders.schedule(minutesAfterMidnight: appState.reminderMinutes, dogName: appState.dog.displayName) }
+                if reminders.isAuthorized { reminders.schedule(minutesAfterMidnight: appState.reminderMinutes, dogNames: appState.dogNames) }
             }
-            .onChange(of: pickerItem) { _, item in
-                guard let item else { return }
-                Task {
-                    if let data = try? await item.loadTransferable(type: Data.self), let image = UIImage(data: data) {
-                        appState.setDogPhoto(image)
-                    }
+            .onChange(of: appState.dogs.count) { _, _ in
+                if reminders.isAuthorized {
+                    reminders.schedule(minutesAfterMidnight: appState.reminderMinutes, dogNames: appState.dogNames)
                 }
             }
         }

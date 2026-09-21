@@ -108,11 +108,12 @@ private struct BrandMark: View {
 extension ShareCardView {
 
     /// The card offered at the end of a walk: "42 minutes with Rex", the distance and the day.
+    /// `dogName` is whoever was actually on it, so a two-dog walk says both names.
     /// `image` is the photo just taken, falling back to the dog's profile photo.
-    static func walk(dog: DogProfile, image: UIImage?, walk: Walk, streak: Int,
+    static func walk(dogName: String, image: UIImage?, walk: Walk, streak: Int,
                      now: Date = Date(), calendar cal: Calendar = .current) -> ShareCardView {
-        ShareCardView(dogName: dog.displayName, image: image,
-                      headline: headline(minutes: walk.minutes, dog: dog.displayName),
+        ShareCardView(dogName: dogName, image: image,
+                      headline: headline(minutes: walk.minutes, dog: dogName),
                       detail: detail(walk: walk, now: now, calendar: cal),
                       streak: streak)
     }
@@ -136,12 +137,13 @@ extension ShareCardView {
         return "\(Stats.milesPhrase(walk.miles)) · \(when)"
     }
 
-    /// The totals card: "47 miles walked with Rex · 30-day streak".
-    static func totals(dog: DogProfile, image: UIImage?, stats: Stats) -> ShareCardView {
-        return ShareCardView(dogName: dog.displayName, image: image,
-                             headline: "\(Stats.milesPhrase(stats.totalMiles)) walked with \(dog.displayName)",
-                             detail: stats.streak > 0 ? "\(stats.streak)-day streak" : "\(stats.walkCount) walk\(stats.walkCount == 1 ? "" : "s") so far",
-                             streak: stats.streak)
+    /// The totals card: "47 miles walked with Rex · 30-day streak". With more than one dog the
+    /// numbers are the household's, because that is the streak on the home screen.
+    static func totals(dogName: String, image: UIImage?, miles: Double, streak: Int, walkCount: Int) -> ShareCardView {
+        return ShareCardView(dogName: dogName, image: image,
+                             headline: "\(Stats.milesPhrase(miles)) walked with \(dogName)",
+                             detail: streak > 0 ? "\(streak)-day streak" : "\(walkCount) walk\(walkCount == 1 ? "" : "s") so far",
+                             streak: streak)
     }
 }
 
