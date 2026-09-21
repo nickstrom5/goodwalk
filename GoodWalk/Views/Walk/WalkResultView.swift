@@ -105,7 +105,7 @@ struct WalkResultView: View {
         }
         .onAppear { photo = appState.walkPhoto(for: walk.id) }
         .sheet(item: $shareImage) { image in
-            ShareSheet(items: [image, "\(ShareCardView.headline(minutes: walk.minutes, dog: walkedWith)). Every dog deserves a good walk."])
+            ShareSheet(items: [image, "\(ShareCardView.headline(minutes: walk.minutes, dog: walkedWith)). Every dog deserves a good walk.\(Config.shareCredit)"])
         }
     }
 
