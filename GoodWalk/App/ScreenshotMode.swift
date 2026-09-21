@@ -8,6 +8,8 @@ enum ScreenshotMode {
     enum Screen: String, CaseIterable {
         case hook, dog, size, breed, usual, reveal, plan, first, result, paywall
         case home, walking, log, milestone, stats, walkcard, settings, share
+        /// The home screen for a two-dog household.
+        case dogs
     }
 
     static let screen: Screen? = {
@@ -39,15 +41,31 @@ enum ScreenshotMode {
         UIView.setAnimationsEnabled(false)
         appState.cancelWalk()
 
-        var dog = DogProfile()
-        dog.name = "Rex"
-        dog.size = .medium
-        dog.breedType = .mixed
-        dog.age = .adult
-        dog.usualMinutes = 20
-        dog.goalMinutes = 60
-        appState.dog = dog
-        appState.seedPhoto(UIImage(named: "SampleDog"))
+        var rex = DogProfile()
+        rex.name = "Rex"
+        rex.size = .medium
+        rex.breedType = .mixed
+        rex.age = .adult
+        rex.usualMinutes = 20
+        rex.goalMinutes = 60
+        // Days before a dog arrived are not theirs to miss, so a sample second dog has to have
+        // been here all along or the seeded 30-day streak would read as 0.
+        rex.addedOn = Date().addingTimeInterval(-400 * 24 * 3600)
+
+        var roster = [rex]
+        if screen == .dogs {
+            var juno = DogProfile()
+            juno.name = "Juno"
+            juno.size = .small
+            juno.breedType = .terrier
+            juno.age = .adult
+            juno.usualMinutes = 20
+            juno.goalMinutes = 40
+            juno.addedOn = rex.addedOn
+            roster.append(juno)
+        }
+        appState.replaceDogs(roster)
+        for dog in roster { appState.seedPhoto(UIImage(named: "SampleDog"), for: dog.id) }
 
         let cal = Calendar.current
         let today = cal.startOfDay(for: Date())
@@ -81,7 +99,7 @@ enum ScreenshotMode {
         }
         appState.hasCompletedOnboarding = {
             switch screen {
-            case .home, .walking, .log, .milestone, .stats, .walkcard, .settings, .share: return true
+            case .home, .walking, .log, .milestone, .stats, .walkcard, .settings, .share, .dogs: return true
             default: return false
             }
         }()

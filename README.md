@@ -34,7 +34,7 @@ National Walk Your Dog Week (1–7 Oct 2026), built to peak in Walk Your Dog Mon
 
 | Target | What it is |
 |---|---|
-| `GoodWalk` | SwiftUI app: 10-step onboarding (dog's name + photo, size, breed type + age, the reveal, target + reminder, first-walk "taste"), StoreKit 2 paywall, home (dog in a progress ring, streak, week bars, totals), walk timer with live distance, quick-log sheet, milestone cards + a totals card with the dog's photo, settings, daily reminder notification with "Walked ✓" / "Start a walk" actions, Siri/Action Button intent |
+| `GoodWalk` | SwiftUI app: 10-step onboarding (dog's name + photo, size, breed type + age, the reveal, target + reminder, first-walk "taste"), StoreKit 2 paywall, home (dog in a progress ring, streak, week bars, totals), walk timer with live distance, quick-log sheet, milestone cards + a totals card with the dog's photo, settings, daily reminder notification with "Walked ✓" / "Start a walk" actions, Siri/Action Button intent. Two or three dogs share one walk log: each has their own target and ring, the streak is the household's |
 | `GoodWalkWidgets` | Home Screen widget: the dog's photo in today's ring, minutes vs. target, streak, one-tap "Start a walk" |
 | `GoodWalkTests` | Unit tests for the recommendation math, streak/totals, the timer, the mock distance tracker and the seeded pitch numbers |
 | `Shared` | App Group constants and the dog-photo store, shared by app and widget |

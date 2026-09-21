@@ -18,8 +18,14 @@ struct WalkResultView: View {
     @State private var shareImage: UIImage?
 
     private var dog: DogProfile { appState.dog }
+    /// Whoever was actually on this walk, so a walk with both dogs says both names.
+    private var walkedWith: String {
+        let dogs = appState.dogs.filter { walk.counted(for: $0.id) }
+        return dogs.isEmpty ? dog.displayName : DogProfile.names(dogs)
+    }
     private var card: ShareCardView {
-        ShareCardView.walk(dog: dog, image: photo ?? appState.dogImage, walk: walk, streak: appState.stats.streak)
+        ShareCardView.walk(dogName: walkedWith, image: photo ?? appState.dogImage, walk: walk,
+                           streak: appState.household.streak)
     }
 
     var body: some View {
@@ -40,7 +46,7 @@ struct WalkResultView: View {
                     card.frame(maxWidth: .infinity)
 
                     VStack(spacing: 10) {
-                        SecondaryButton(title: photo == nil ? "Add a photo of \(dog.displayName)" : "Use a different photo") {
+                        SecondaryButton(title: photo == nil ? "Add a photo of \(walkedWith)" : "Use a different photo") {
                             if CameraPicker.isAvailable { showSourceChoice = true } else { showLibrary = true }
                         }
                         if photo != nil {
@@ -82,13 +88,13 @@ struct WalkResultView: View {
             }
         }
         .sheet(item: $shareImage) { image in
-            ShareSheet(items: [image, "\(ShareCardView.headline(minutes: walk.minutes, dog: dog.displayName)). Every dog deserves a good walk."])
+            ShareSheet(items: [image, "\(ShareCardView.headline(minutes: walk.minutes, dog: walkedWith)). Every dog deserves a good walk."])
         }
     }
 
     private var summary: String {
         let measured = walk.distanceEstimated ? " (est.)" : ""
         let length = walk.minutes < 60 ? "\(walk.minutes) minute\(walk.minutes == 1 ? "" : "s")" : Stats.duration(minutes: walk.minutes)
-        return "\(length) and \(Stats.milesPhrase(walk.miles))\(measured) with \(dog.displayName)."
+        return "\(length) and \(Stats.milesPhrase(walk.miles))\(measured) with \(walkedWith)."
     }
 }

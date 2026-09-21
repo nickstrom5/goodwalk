@@ -7,6 +7,8 @@ struct WalkTimerView: View {
     @State private var confirmDiscard = false
 
     private var dog: DogProfile { appState.dog }
+    /// The dogs actually on this walk, in roster order.
+    private var walkingDogs: [DogProfile] { appState.dogs.filter { appState.isOnActiveWalk($0.id) } }
 
     var body: some View {
         ZStack {
@@ -19,11 +21,20 @@ struct WalkTimerView: View {
                 VStack(spacing: 0) {
                     HStack(spacing: 8) {
                         Circle().fill(Theme.danger).frame(width: 8, height: 8)
-                        Text("Walking with \(dog.displayName)")
+                        Text("Walking with \(DogProfile.names(walkingDogs))")
                             .font(Theme.Font.headline)
                             .foregroundStyle(Theme.textSecondary)
                     }
                     .padding(.top, 28)
+
+                    // Who came along can change at the door, so it stays editable mid-walk.
+                    if appState.hasMultipleDogs {
+                        DogToggleRow(dogs: appState.dogs,
+                                     isOn: { appState.isOnActiveWalk($0) },
+                                     toggle: { appState.setWalking($0, on: !appState.isOnActiveWalk($0)) },
+                                     image: { appState.image(for: $0) })
+                            .padding(.top, 12)
+                    }
 
                     Spacer()
 
@@ -47,7 +58,7 @@ struct WalkTimerView: View {
 
                     Spacer()
 
-                    PrimaryButton(title: "End walk", subtitle: "Logs it to \(dog.possessive) streak") {
+                    PrimaryButton(title: "End walk", subtitle: endSubtitle) {
                         appState.finishWalk()
                     }
                     TertiaryButton(title: "Discard this walk") { confirmDiscard = true }
@@ -62,5 +73,12 @@ struct WalkTimerView: View {
             Button("Discard", role: .destructive) { appState.cancelWalk() }
             Button("Keep walking", role: .cancel) {}
         }
+    }
+
+    /// "Logs it to Rex's streak" / "Logs it to Rex and Juno's streak".
+    private var endSubtitle: String {
+        let dogs = walkingDogs
+        guard dogs.count != 1 else { return "Logs it to \(dogs[0].possessive) streak" }
+        return "Logs it to \(DogProfile.names(dogs))'s streak"
     }
 }
