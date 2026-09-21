@@ -1,14 +1,17 @@
 #!/bin/bash
 # Build GoodWalk for the iPhone Duo simulator, run the unit tests there, and capture every screen.
 #
-#   scripts/duo-screenshots.sh                 # open (inner display): builds, tests, captures 13 screens
+#   scripts/duo-screenshots.sh                 # open (inner display): builds, tests, captures every screen
 #   scripts/duo-screenshots.sh --pose closed   # fold the simulator first (Device menu), then capture again
 #   scripts/duo-screenshots.sh --no-tests      # skip the test run
+#   scripts/duo-screenshots.sh --ci            # no tests, no Device Hub, no prompts
 #
 # Needs Xcode 27.1 or newer with the iOS 27.1 simulator runtime installed
 # (Xcode > Settings > Components). Writes docs/screenshots/duo/<screen>.png for the open pose and
 # docs/screenshots/duo/closed-<screen>.png for the closed pose, plus small-* thumbnails.
-# CI runs the same script (screenshots.yml, "duo" job) once the runner image ships Xcode 27.
+# CI runs the same script (screenshots.yml, "duo" job) with --ci. That job captures the open
+# pose only: folding is a Device Hub gesture with no simctl equivalent, so the closed pose is
+# always a local run. The job skips itself when the runner image has no Xcode 27.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -84,7 +87,6 @@ fi
 OUT=docs/screenshots/duo; mkdir -p "$OUT"
 PREFIX=""; [ "$POSE" = open ] || PREFIX="$POSE-"
 SCREENS="hook dog size breed usual reveal plan first result paywall home dogs walking log milestone stats day walkcard settings share"
-[ "$CI_MODE" = 1 ] && SCREENS="hook dog size breed usual"
 
 brightness() {  # mean pixel value 0-255, or "fallback" when Pillow is missing
   python3 - "$1" 2>/dev/null <<'PYEOF' || echo "fallback"
