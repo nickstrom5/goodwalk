@@ -46,6 +46,7 @@ struct HomeView: View {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 16) {
                         header
+                        DogSwitcher()
                         ring
                         actions
                         WeekBars(days: appState.thisWeek, goal: dog.dailyGoal)
@@ -97,10 +98,12 @@ struct HomeView: View {
             case .paywall:
                 PaywallView(context: .home, onFinished: { self.sheet = nil })
             case .quickLog:
-                QuickLogSheet(dogName: dog.displayName, suggested: dog.usualMinutes) { minutes in
-                    appState.quickLog(minutes: minutes, source: .quickLog)
+                QuickLogSheet(dogs: appState.dogs,
+                              image: { appState.image(for: $0) },
+                              suggested: dog.usualMinutes) { minutes, dogIDs in
+                    appState.quickLog(minutes: minutes, source: .quickLog, dogIDs: dogIDs)
                 }
-                .presentationDetents([.height(390)])
+                .presentationDetents([.height(appState.hasMultipleDogs ? 500 : 390)])
             case .share:
                 ShareTotalsView()
             case .milestone(let streak):
@@ -157,16 +160,16 @@ struct HomeView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: 8)
-            if appState.stats.streak > 0 {
+            if appState.household.streak > 0 {
                 VStack(spacing: 0) {
                     HStack(spacing: 4) {
                         Image(systemName: "flame.fill")
-                        Text("\(appState.stats.streak)")
+                        Text("\(appState.household.streak)")
                             .contentTransition(.numericText())
                     }
                     .font(Theme.Font.display(26))
                     .foregroundStyle(Theme.accent)
-                    Text(appState.stats.streak == 1 ? "day" : "days")
+                    Text(appState.household.streak == 1 ? "day" : "days")
                         .font(Theme.Font.caption)
                         .foregroundStyle(Theme.textTertiary)
                 }
@@ -187,9 +190,19 @@ struct HomeView: View {
 
     private var subline: String {
         let left = max(0, dog.dailyGoal - appState.stats.minutesToday)
-        if appState.todayProgress >= 1 { return "Target hit. Tail up. See you tomorrow." }
+        // With more than one dog the streak is the household's, so the nudge is about whoever
+        // is still waiting by the door, not only the dog currently on screen.
+        let waiting = appState.dogsNotWalkedToday
+        if appState.hasMultipleDogs, !waiting.isEmpty, appState.todayProgress >= 1 {
+            return "\(DogProfile.names(waiting)) hasn't been out yet."
+        }
+        if appState.todayProgress >= 1 {
+            return appState.hasMultipleDogs
+                ? "Everyone's walked. Tail up. See you tomorrow."
+                : "Target hit. Tail up. See you tomorrow."
+        }
         if appState.walkedToday { return "\(left) min to fill today's ring." }
-        if appState.stats.streak > 0 { return "Any walk today keeps the streak." }
+        if appState.household.streak > 0 { return "Any walk today keeps the streak." }
         return "One walk starts the streak."
     }
 
@@ -223,7 +236,7 @@ struct HomeView: View {
     }
 
     private var totals: some View {
-        let s = appState.stats
+        let s = appState.household
         return HStack(spacing: 10) {
             StatTile(value: Stats.miles(s.totalMiles), label: "miles")
             StatTile(value: s.totalHours >= 10 ? "\(Int(s.totalHours.rounded()))" : String(format: "%.1f", s.totalHours), label: "hours")
@@ -236,10 +249,10 @@ struct HomeView: View {
             HStack(spacing: 12) {
                 DogAvatar(image: appState.dogImage, size: 40)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("\(dog.possessive.capitalizedFirst) card")
+                    Text("\(appState.hasMultipleDogs ? DogProfile.names(appState.dogs) + "'s" : dog.possessive.capitalizedFirst) card")
                         .font(Theme.Font.headline)
                         .foregroundStyle(Theme.textPrimary)
-                    Text("\(Stats.miles(appState.stats.totalMiles)) miles together. Worth a post.")
+                    Text("\(Stats.miles(appState.household.totalMiles)) miles together. Worth a post.")
                         .font(Theme.Font.caption)
                         .foregroundStyle(Theme.textTertiary)
                 }

@@ -1,10 +1,10 @@
 import UIKit
 
-/// The dog's photo lives in two JPEGs in the App Group container: a full one for the app and the
-/// share card, and a small one the widget can afford to decode. Nothing is uploaded anywhere.
+/// Dog photos live as JPEGs in the App Group container: a full one per dog for the app and the
+/// share card, plus a small copy of the dog the widget is showing. Nothing is uploaded anywhere.
 enum DogPhotoStore {
-    static func load() -> UIImage? {
-        UIImage(contentsOfFile: AppGroup.photoURL.path)
+    static func load(for dogID: UUID) -> UIImage? {
+        UIImage(contentsOfFile: AppGroup.photoURL(for: dogID).path)
     }
 
     static func loadForWidget() -> UIImage? {
@@ -12,23 +12,30 @@ enum DogPhotoStore {
     }
 
     @discardableResult
-    static func save(_ image: UIImage) -> UIImage? {
+    static func save(_ image: UIImage, for dogID: UUID) -> UIImage? {
         let full = image.squareCropped().resized(longestSide: 1_200)
-        let small = full.resized(longestSide: 300)
-        guard let fullData = full.jpegData(compressionQuality: 0.85),
-              let smallData = small.jpegData(compressionQuality: 0.8) else { return nil }
+        guard let fullData = full.jpegData(compressionQuality: 0.85) else { return nil }
         do {
-            try fullData.write(to: AppGroup.photoURL, options: .atomic)
-            try smallData.write(to: AppGroup.widgetPhotoURL, options: .atomic)
+            try fullData.write(to: AppGroup.photoURL(for: dogID), options: .atomic)
             return full
         } catch {
             return nil
         }
     }
 
-    static func delete() {
-        try? FileManager.default.removeItem(at: AppGroup.photoURL)
-        try? FileManager.default.removeItem(at: AppGroup.widgetPhotoURL)
+    static func delete(for dogID: UUID) {
+        try? FileManager.default.removeItem(at: AppGroup.photoURL(for: dogID))
+    }
+
+    /// Writes the small copy the widget reads, or clears it when the shown dog has no photo.
+    static func mirrorToWidget(_ image: UIImage?) {
+        guard let image else {
+            try? FileManager.default.removeItem(at: AppGroup.widgetPhotoURL)
+            return
+        }
+        let small = image.squareCropped().resized(longestSide: 300)
+        guard let data = small.jpegData(compressionQuality: 0.8) else { return }
+        try? data.write(to: AppGroup.widgetPhotoURL, options: .atomic)
     }
 }
 

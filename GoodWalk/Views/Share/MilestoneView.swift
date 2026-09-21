@@ -8,11 +8,13 @@ struct MilestoneView: View {
     @State private var shareImage: UIImage?
 
     private var dog: DogProfile { appState.dog }
+    /// The milestone belongs to the household, so the card names everyone.
+    private var names: String { DogProfile.names(appState.dogs) }
 
     private var card: ShareCardView {
-        ShareCardView(dogName: dog.displayName, image: appState.dogImage,
-                      headline: "\(streak) day\(streak == 1 ? "" : "s") in a row with \(dog.displayName)",
-                      detail: "\(Stats.miles(appState.stats.totalMiles)) miles so far", streak: streak)
+        ShareCardView(dogName: names, image: appState.dogImage,
+                      headline: "\(streak) day\(streak == 1 ? "" : "s") in a row with \(names)",
+                      detail: "\(Stats.miles(appState.household.totalMiles)) miles so far", streak: streak)
     }
 
     var body: some View {
@@ -32,7 +34,7 @@ struct MilestoneView: View {
                             .font(Theme.Font.title)
                             .foregroundStyle(Theme.textPrimary)
                     }
-                    Text("\(dog.displayName) doesn't know what a streak is. \(dog.displayName) knows the leash came out \(streak) day\(streak == 1 ? "" : "s") running: \(Stats.miles(appState.stats.totalMiles)) miles and \(Stats.duration(minutes: appState.stats.totalMinutes)) together so far.")
+                    Text("\(names) \(appState.hasMultipleDogs ? "don't" : "doesn't") know what a streak is. \(appState.hasMultipleDogs ? "They know" : "\(dog.displayName) knows") the leash came out \(streak) day\(streak == 1 ? "" : "s") running: \(Stats.miles(appState.household.totalMiles)) miles and \(Stats.duration(minutes: appState.household.totalMinutes)) together so far.")
                         .font(Theme.Font.body)
                         .foregroundStyle(Theme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -57,7 +59,7 @@ struct MilestoneView: View {
             ConfettiView().ignoresSafeArea()
         }
         .sheet(item: $shareImage) { image in
-            ShareSheet(items: [image, "\(streak) days of walks in a row with \(dog.displayName). getgoodwalk.app"])
+            ShareSheet(items: [image, "\(streak) days of walks in a row with \(names). getgoodwalk.app"])
         }
     }
 
@@ -83,14 +85,17 @@ struct ShareTotalsView: View {
     @State private var shareImage: UIImage?
 
     private var card: ShareCardView {
-        ShareCardView.totals(dog: appState.dog, image: appState.dogImage, stats: appState.stats)
+        ShareCardView.totals(dogName: DogProfile.names(appState.dogs), image: appState.dogImage,
+                             miles: appState.household.totalMiles,
+                             streak: appState.household.streak,
+                             walkCount: appState.household.walkCount)
     }
 
     var body: some View {
         ZStack {
             Theme.background.ignoresSafeArea()
             VStack(alignment: .leading, spacing: 8) {
-                Text("\(appState.dog.possessive.capitalizedFirst) card")
+                Text("\(appState.hasMultipleDogs ? DogProfile.names(appState.dogs) + "'s" : appState.dog.possessive.capitalizedFirst) card")
                     .font(Theme.Font.title)
                     .foregroundStyle(Theme.textPrimary)
                 Text("Every mile you've walked together, on one square. Made for Stories, group chats and the fridge.")

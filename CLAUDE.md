@@ -9,7 +9,7 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
 - Build: `xcodebuild build -project GoodWalk.xcodeproj -scheme GoodWalk -destination 'platform=iOS Simulator,name=<an iPhone>' CODE_SIGNING_ALLOWED=NO`
 - Tests: same with `test -only-testing:GoodWalkTests`.
 - CI (`.github/workflows/build.yml`) does exactly this on `macos-26`. Keep it green.
-- Screens: launch with `-screenshot <hook|dog|size|breed|usual|reveal|plan|first|result|paywall|home|walking|log|milestone|settings|share>`
+- Screens: launch with `-screenshot <hook|dog|size|breed|usual|reveal|plan|first|result|paywall|home|dogs|walking|log|milestone|stats|walkcard|settings|share>`
   to open one screen with seeded data (`GoodWalk/App/ScreenshotMode.swift`). `scripts/capture-screenshots.sh` and the
   `Screenshots` workflow capture all of them and write PNGs to `docs/screenshots/`. Look there before and after UI changes.
 - Brand images: `swift scripts/make-brand.swift` regenerates the app icon, the illustrated sample dog
@@ -57,6 +57,21 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
   the picker falls back to the library there.
 - StoreKit uses `GoodWalk/Resources/Products.storekit`; product IDs `goodwalk.yearly`, `goodwalk.monthly`, `goodwalk.lifetime`.
   `SIMCTL_CHILD_GOODWALK_FORCE_PRO=1` unlocks Pro in debug builds.
+- **More than one dog.** `AppState.dogs` is the roster and `AppState.dog` is the one on screen;
+  every walk carries `dogIDs`, the dogs it counted for. One leash walk with both dogs is *one*
+  walk on both rings, so miles are never double counted; an empty `dogIDs` means "everyone",
+  which is what seeded and single-dog walks are. Each dog keeps their own `dailyGoal`.
+  The home-screen streak is `Stats.Household`: a day counts when every dog who had already
+  arrived (`DogProfile.addedOn`) walked that day, so adding a dog can't wipe an existing streak.
+  Milestones fire on the household streak, the one actually on screen. A second dog is added in
+  Settings, never in onboarding: the funnel before the paywall stays exactly 10 steps.
+- One notification however many dogs: its text is fixed when scheduled, so it names the whole
+  household, and "Walked ✓" logs the usual walk for whoever hasn't been out at tap time
+  (`AppState.logUsualWalkForDogsNotWalkedToday`). Reschedule it whenever a dog is added,
+  removed or renamed.
+- The widget shows the dog currently on screen plus the household streak, so it needs no idea how
+  many dogs there are. `DogPhotoStore` keeps one full JPEG per dog (`dog-<uuid>.jpg`) and mirrors
+  a 300 px copy of the shown dog to `dog-widget.jpg`.
 - All stats are derived (`Stats.compute`) from the walk log + the target. Never store a streak; recompute it.
 - The recommendation math is `WalkPlan` and nothing else. Its tables are mirrored in `playbook/01-strategy.md`
   and sourced in `playbook/12-sources.md`. A new number about dogs, owners or competitors needs a row there first.

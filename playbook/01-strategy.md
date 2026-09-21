@@ -91,9 +91,23 @@ with that walk's numbers and, optionally, a photo taken right then. Metric it mo
 was no reason to share on an ordinary day. The photo is never stored, so the privacy promise is
 unchanged; the camera permission is only requested at the moment the user taps for it.
 
-**What is deliberately not in v1:** GPS maps, routes, multiple dogs, family sharing, social
-feed, playdates, HealthKit, Apple Watch, Android, training content. Each is a v1.x candidate
-only if reviews ask for it. (Multiple dogs will be the first ask; note it and wait.)
+**Added 21 Sep 2026: households with two or three dogs.** A walk records which dogs were on it,
+so one leash walk with both dogs is one walk on both their rings, never two logged separately.
+Each dog keeps their own guideline number, because a Chihuahua and a Border Collie are not the
+same dog. The streak on the home screen is the household's: a day counts when every dog who
+lived here that day got a walk. Metric it moves: `first_walk_logged / onboarding_completed`
+and day-7 retention for multi-dog homes, who otherwise hit a wall on day one and churn. A second
+dog is added in Settings, never in onboarding, so the funnel before the paywall stays 10 steps.
+
+Why it went in before launch rather than after: a walk needs to carry the dogs it counted for.
+Adding that column to an installed base means writing and testing a migration; adding it now
+costs nothing, because nobody has shipped data yet. The one-tap reminder is preserved exactly:
+"Walked ✓" logs the usual walk for whoever hasn't been out, so it stays one tap however many
+dogs live in the house. This was also the predicted first ask, which it turned out to be.
+
+**What is deliberately not in v1:** GPS maps, routes, family sharing, social feed, playdates,
+HealthKit, Apple Watch, Android, training content. Each is a v1.x candidate only if reviews
+ask for it.
 
 ## 6. Where the numbers come from
 
