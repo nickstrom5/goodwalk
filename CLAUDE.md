@@ -91,7 +91,10 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
 
 - iPhone Duo: `scripts/duo-screenshots.sh` builds, tests and captures every screen on the iPhone Duo simulator
   (Xcode 27.1+, iOS 27.1 runtime). The `Screenshots` workflow's `duo` job runs the same script with `--ci`
-  and skips itself, with a notice, when the runner image has no Xcode 27; the closed pose is always local. Xcode 27 replaced Simulator.app with **Device Hub**, which also owns the fold
+  and skips itself, with a notice, when the runner image has no Xcode 27; the closed pose is always local.
+  On 21 Sep 2026 `macos-26` carried Xcode 26.0–26.6 and iOS runtimes 26.2/26.4/26.5 and no Xcode 27, so
+  that job is a no-op until GitHub ships one. It needs no change when they do; don't re-probe to find out,
+  read the `duo` job's log of the last run. Xcode 27 replaced Simulator.app with **Device Hub**, which also owns the fold
   (pose) control; there is no simctl API for posture, so `--pose closed` waits for you to fold it by hand. With
   Device Hub closed the device reports the outer display; a screenshot that comes back near-black means the app
   had not drawn yet, which is why the script retries.
