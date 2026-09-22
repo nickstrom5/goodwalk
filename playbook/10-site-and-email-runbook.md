@@ -50,6 +50,8 @@ branch with `docs/` at the root).
   getgoodwalk.app). Delete the API token afterwards.
 
 ## 5. Inbound email (Cloudflare → DOMAIN → Email → Email Routing)
+- `bash scripts/cloudflare-setup.sh` does this whole section, idempotently, and is the quickest route
+  back if mail is bouncing. The dashboard steps below are the same thing by hand.
 - Enable Email Routing; accept the MX/SPF/DKIM records it adds.
 - Destination addresses → add GMAIL → click the verification link Cloudflare emails you.
 - Routing rules → `support@DOMAIN` → GMAIL; same for `hello@DOMAIN`. Enable catch-all → GMAIL.
@@ -97,3 +99,14 @@ Do these once the site is live on DOMAIN over HTTPS. None of them can be done fr
 - Too many failed Send-as attempts locks that dialog for about an hour.
 - Cloudflare forwarding is inactive until the destination address is verified by email.
 - A bounce saying "DNS type mx lookup had no relevant answers" means Email Routing isn't enabled.
+- The **other** shape of that same bounce is the dangerous one, because it does not read like a failure:
+  "Delivery incomplete. There was a temporary problem delivering your message to hello@DOMAIN.
+  Gmail will retry for 46 more hours." With no MX record at all, a sender falls back to the A record,
+  which is GitHub Pages; GitHub runs no mail server, so the connection is refused. A refused connection
+  is a *retryable* error, so the sender queues the message for about two days before giving up. Nothing
+  is wrong at GitHub's end and nothing self-heals: it means the same thing as the bounce above.
+  Seen on 21 Sep 2026, on a real message to `hello@getgoodwalk.app` from someone who wanted the app.
+  Fix it inside the retry window and the queued message still lands.
+- Check it from anywhere, without a Cloudflare login, before trusting any mailto on the site:
+  `dig +short MX DOMAIN` (or `nslookup -type=MX DOMAIN`). No output means no MX means every address
+  on the site is dead. Routing is working when it lists Cloudflare's `route1/2/3.mx.cloudflare.net`.
