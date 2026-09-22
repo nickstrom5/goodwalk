@@ -86,6 +86,15 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
   without a new sourced figure: see `playbook/12-sources.md` §6, including the note that the rows
   are not verified card by card against the Kennel Club. `GoodWalkTests/BreedTests.swift` pins the
   breeds that §1 already sources, so a factor change fails there instead of drifting.
+- `DogTips` (`GoodWalk/Models/DogTip.swift`) is the list of tips and facts shown by `TipCard`: under the
+  walk timer, rotating once a minute or on tap, and inside `LoadingTip` on the paywall while plans load
+  (after a one-second delay, so a fast load never flashes it). The walk timer puts it inside
+  `ViewThatFits`, so on a phone too short for it the screen is unchanged. Each card is filtered to the
+  dog on screen (age, size, breed type, one dog or several) and the ones written for that dog come first.
+  A `.fact` has a figure and a source line on the card, and a row in `playbook/12-sources.md` §7 reusing
+  §1 or §2; a `.tip` has neither. `GoodWalkTests/DogTipTests.swift` fails the build on a tip with a digit,
+  a fact without a source, a Kennel Club / PDSA line without "not veterinary advice", or any health word.
+  Add a card there, never as a string in a view.
 - The recommendation math is `WalkPlan` and nothing else. Its tables are mirrored in `playbook/01-strategy.md`
   and sourced in `playbook/12-sources.md`. A new number about dogs, owners or competitors needs a row there first.
 
