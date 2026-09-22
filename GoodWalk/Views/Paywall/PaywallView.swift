@@ -139,7 +139,10 @@ struct PaywallView: View {
                             .frame(maxWidth: .infinity)
                             .padding()
                     } else {
-                        ProgressView().frame(maxWidth: .infinity).padding()
+                        // The one real wait in the app. If StoreKit is slow, a tip about their dog
+                        // replaces a bare spinner; a quick load never shows it.
+                        LoadingTip(dog: appState.dog, householdSize: appState.dogs.count)
+                            .padding(.vertical, 8)
                     }
                 }
                 ForEach(store.products, id: \.id) { product in
