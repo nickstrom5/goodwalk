@@ -91,10 +91,25 @@ struct OnboardingScreen<Content: View>: View {
                 .padding(.top, 36)
                 .padding(.bottom, 24)
             }
+            .fadesUnderPinnedButton()
             PrimaryButton(title: cta, isEnabled: ctaEnabled, isLoading: ctaLoading, action: onCTA)
                 .padding(.horizontal, Theme.horizontalPadding)
                 .padding(.bottom, 16)
         }
+    }
+}
+
+extension View {
+    /// For a ScrollView sitting directly above a pinned button: the last few points fade out, so
+    /// content that runs on reads as "scroll for more" instead of being sliced off at the button.
+    func fadesUnderPinnedButton() -> some View {
+        mask(
+            VStack(spacing: 0) {
+                Rectangle()
+                LinearGradient(colors: [.black, .black.opacity(0)], startPoint: .top, endPoint: .bottom)
+                    .frame(height: 20)
+            }
+        )
     }
 }
 
