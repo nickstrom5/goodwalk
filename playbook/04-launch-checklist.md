@@ -17,6 +17,12 @@
       tick "Enforce HTTPS" once the certificate appears.
 - [ ] Cloudflare Email Routing: `support@getgoodwalk.app` and `hello@getgoodwalk.app` → your inbox.
       Gmail "Send mail as" for replies. Gmail filter → label "Good Walk support", skip inbox.
+      **This one is overdue, not pending.** The site is already live and publishes both addresses in
+      every footer, in the "Send me the TestFlight link" button, and inside the JSON-LD. On 22 Sep 2026
+      the domain still had no MX record, so all of it bounces; a real message to `hello@` was already
+      lost that way. `bash scripts/cloudflare-setup.sh` fixes it in one go, then click Cloudflare's
+      verification email. See the gotchas in `playbook/10-site-and-email-runbook.md` for the bounce
+      that looks temporary but isn't.
 - [ ] Claim the handles in `playbook/11-social-kit.md` §1, Instagram included, and set
       `Config.instagramHandle` in `GoodWalk/App/Config.swift` to the one you got. Until it is set,
       the app's share sheets carry no tag, which is deliberate: never point users at a handle that
