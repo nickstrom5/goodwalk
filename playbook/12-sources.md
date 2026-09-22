@@ -149,6 +149,48 @@ the remaining rows are classification by knowledge, not by citation. One pass wi
 open would settle it. Until then the list is a convenience that fills in two editable chips, which
 is the reason it was built that way.
 
+## 7. Tips and facts on waiting screens (`GoodWalk/Models/DogTip.swift`, added 22 Sep 2026)
+
+Short cards shown under the walk timer and on the paywall while plans load. **They add no new
+number to the app.** Every figure below is one §1 or §2 already sources, opened on 18 Sep; this
+section only records where each one now also appears. Kennel Club and PDSA lines carry "a general
+guideline, not veterinary advice" on the card itself, the same caveat `GuidelineFootnote` gives.
+
+| Card (`id`) | Figure or position | Source, as already recorded |
+|---|---|---|
+| `fact.kc-top-band` | 85 of 227 breeds "More than 2 hours per day" | §2 row 1 (RKC label counts from §1's parse) |
+| `fact.pdsa-walks` | "Most dogs need at least 1-2 walks per day" | §1, PDSA overview `.../how-much-exercise-does-your-dog-need` |
+| `fact.typical-week` | median 4 walks and 160 min a week among owners who walked; 160 ÷ 7 = 23 | §2, Christian et al. 2013 |
+| `fact.owners-who-walk` | "Approximately 60% of DO walked their dog" | §2, Christian et al. 2013 |
+| `fact.toy-band` | 18 of 24 Toy breeds "Up to 30 minutes per day" | §1, toy row |
+| `fact.small-band` | 47 of 49 small breeds outside Toy "Up to 1 hour per day" | §1, small row |
+| `fact.medium-band` | 37 of 55 medium "Up to 1 hour", 17 "More than 2 hours" | §1, medium row |
+| `fact.large-band` | 56 of 79 large "More than 2 hours per day" | §1, large row |
+| `fact.giant-band` | St Bernard, Mastiff, Newfoundland "Up to 1 hour"; Great Dane "More than 2 hours" | §1, giant row |
+| `fact.terrier-band` | all 27 terrier breeds "Up to 1 hour" | §1, terrier row |
+| `fact.hound-band` | small and medium hounds mostly "Up to 1 hour"; large hounds 14 of 17 "More than 2 hours" | §1, terrier / hound row |
+| `fact.gundog-band` | 21 of 24 large Gundog breeds "More than 2 hours" | §1, sporting row |
+| `fact.herding-pdsa` | PDSA Border Collie "a minimum of two hours exercise every day"; German Shepherd "a minimum of two hours" | §1, herding row |
+| `fact.flat-faced-band` | Pug, French Bulldog, Bulldog "Up to 1 hour" | §1, flat-faced row |
+| `fact.puppy-short` | PDSA puppies: "keep sessions short" | §1, puppy / senior row |
+| `fact.puppy-rule` | KC: 5 minutes per month is "a good rule of thumb"; PDSA: "there's no scientific evidence behind this rule" | §1, puppy / senior row. Both positions are given, and the card ends on "your vet can tell you" |
+| `fact.senior-routes` | PDSA "shorter, flatter walking routes"; RSPCA "little and often" | §1, puppy / senior row |
+
+**Tips** (`kind: .tip`) carry no figure and no source, and a test fails the build if one gains a
+digit. They are of two kinds. *About the app:* each describes behaviour that exists today (the
+reminder's Walked ✓ action, walks summing into the ring, one walk counting for every dog on it,
+the walk photo on the calendar, the editable target, step-counter distance, the widget, the Siri
+phrase "Start a walk in Good Walk"). *Practical:* sniffing still fills the ring, water and bags,
+a light after dark, cooler hours on hot days, the leash near roads and livestock, the tag's phone
+number, a new route, a paw wipe. None states a health effect.
+
+What the tips deliberately do not say: anything about weight, lifespan, joints, behaviour or
+anxiety, and anything telling an owner what their dog "needs". `GoodWalkTests/DogTipTests.swift`
+checks the whole list against those words. Heat-and-flat-faced-breed advice, the hot-pavement
+hand test and tick checks were left out: all widely given, but each is a claim about a dog's
+health that would need its own row here, and the welfare charities' pages are blocked by the
+egress proxy in the environment this was written in.
+
 ## Still open
 
 1. Puppy 0.6 / senior 0.7: our judgment; no published ratio exists in the sources checked.
