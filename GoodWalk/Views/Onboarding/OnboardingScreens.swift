@@ -284,15 +284,19 @@ struct RevealScreen: View {
     let onNext: () -> Void
     @State private var showSecond = false
     @State private var showThird = false
+    /// Measured, because the guideline footnote has to be on screen with the numbers, and on an
+    /// iPhone SE it only fits if the numbers and spacing shrink a little.
+    @State private var availableHeight: CGFloat = 900
 
     private var dog: DogProfile { appState.dog }
     private var recommended: Int { WalkPlan.recommendedMinutes(for: dog) }
     private var gapHours: Int { WalkPlan.yearlyGapHours(for: dog) }
+    private var compact: Bool { availableHeight < 700 }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 26) {
+                VStack(alignment: .leading, spacing: compact ? 14 : 26) {
                     HStack(spacing: 12) {
                         DogAvatar(image: appState.dogImage, size: 52)
                         Text("\(dog.size.label) · \(dog.breedType.label) · \(dog.age.label)")
@@ -306,7 +310,7 @@ struct RevealScreen: View {
                             .foregroundStyle(Theme.textSecondary)
                         HStack(alignment: .firstTextBaseline, spacing: 8) {
                             CountUpText(target: recommended)
-                                .font(Theme.Font.display(80))
+                                .font(Theme.Font.display(compact ? 64 : 80))
                                 .foregroundStyle(Theme.accent)
                             Text("min a day.")
                                 .font(Theme.Font.title)
@@ -320,7 +324,7 @@ struct RevealScreen: View {
                             .foregroundStyle(Theme.textSecondary)
                         HStack(alignment: .firstTextBaseline, spacing: 8) {
                             CountUpText(target: WalkPlan.typicalMinutes, delay: 0.9)
-                                .font(Theme.Font.display(56))
+                                .font(Theme.Font.display(compact ? 44 : 56))
                                 .foregroundStyle(Theme.warning)
                             Text("min. You said \(dog.usualMinutes).")
                                 .font(Theme.Font.title)
@@ -338,7 +342,7 @@ struct RevealScreen: View {
                                 .foregroundStyle(Theme.textSecondary)
                             HStack(alignment: .firstTextBaseline, spacing: 8) {
                                 CountUpText(target: gapHours, delay: 1.8)
-                                    .font(Theme.Font.display(72))
+                                    .font(Theme.Font.display(compact ? 60 : 72))
                                     .foregroundStyle(Theme.danger)
                                     .lineLimit(1)
                                 Text("hours")
@@ -366,13 +370,19 @@ struct RevealScreen: View {
                         .opacity(showThird ? 1 : 0)
                 }
                 .padding(.horizontal, Theme.horizontalPadding)
-                .padding(.top, 28)
+                .padding(.top, compact ? 16 : 28)
                 .padding(.bottom, 24)
             }
+            .fadesUnderPinnedButton()
             PrimaryButton(title: "Make \(dog.possessive) plan", action: onNext)
                 .padding(.horizontal, Theme.horizontalPadding)
                 .padding(.bottom, 16)
         }
+        .background(GeometryReader { geo in
+            Color.clear
+                .onAppear { availableHeight = geo.size.height }
+                .onChange(of: geo.size.height) { _, h in availableHeight = h }
+        })
         .onAppear {
             withAnimation(.easeOut(duration: 0.5).delay(0.9)) { showSecond = true }
             withAnimation(.easeOut(duration: 0.5).delay(1.8)) { showThird = true }
@@ -426,6 +436,8 @@ struct PlanScreen: View {
                 .padding(16)
                 .background(Theme.surface)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+
+                GuidelineFootnote()
             }
         }
         .onAppear {
@@ -596,6 +608,7 @@ struct FirstResultScreen: View {
                 .padding(.top, 36)
                 .padding(.bottom, 24)
             }
+            .fadesUnderPinnedButton()
             PrimaryButton(title: "Keep it going", action: onNext)
                 .padding(.horizontal, Theme.horizontalPadding)
                 .padding(.bottom, 16)
