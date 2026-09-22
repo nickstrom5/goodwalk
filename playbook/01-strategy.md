@@ -125,6 +125,17 @@ walk"; it now says the photo is kept with the walk on the phone and still never 
 bumped to 21 Sep 2026. Storage is the user's own photos at 1,200 px, roughly a quarter of a megabyte a
 walk; deleting a walk deletes its photo.
 
+**Added 22 Sep 2026: tips and facts while you wait.** A card under the walk timer, about this dog
+where there is something to say (a puppy gets the PDSA's "keep sessions short", a terrier gets the
+Kennel Club band every terrier sits in) and about the app otherwise (Walked ✓ from the reminder, the
+widget, one walk for every dog on it). It changes once a minute or on a tap. The same card replaces the
+paywall's bare spinner if StoreKit takes more than a second. There is no launch or loading screen to
+put it on and one was not added: nothing in the app is slow, and a fake wait would tax the one-tap loop.
+Metrics it moves: `walk_finished / walk_started` (a walk ended rather than discarded), day-7 walks per
+trial through feature discovery (`walk_quick_logged`, `dog_added`, `walk_photo_added`), and
+`paywall_dismissed` before plans load. Facts only reuse figures §6 of this file already sources, and it
+is not the "training content" ruled out below: no behaviour advice, no health outcomes.
+
 **What is deliberately not in v1:** GPS maps, routes, family sharing, social feed, playdates,
 HealthKit, Apple Watch, Android, training content. Each is a v1.x candidate only if reviews
 ask for it.
