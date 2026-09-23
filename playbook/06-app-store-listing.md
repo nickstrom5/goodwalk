@@ -41,6 +41,8 @@ WHY GOOD WALK
   any time.
 • The streak belongs to the dog. Their name and photo are on the home screen, the widget and
   every card.
+• More than one dog. Each dog has their own target and ring, and one walk with both counts
+  once, so the miles are never doubled.
 • A missed day is just a missed day. Your streak resets. Your miles, hours and history don't.
 • Cards worth posting. 1, 3, 7, 14, 30, 60, 100 and 365 days each get one, with your dog on it.
 • No collar, no map, no account. Distance comes from your phone's step sensor. Nothing leaves
