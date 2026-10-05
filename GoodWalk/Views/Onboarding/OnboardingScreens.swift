@@ -594,6 +594,8 @@ struct FirstResultScreen: View {
                         .padding(.top, 4)
 
                     if walked {
+                        GuidelineFootnote(compact: true)
+                            .padding(.top, 4)
                         card
                             .frame(maxWidth: .infinity)
                             .padding(.top, 20)

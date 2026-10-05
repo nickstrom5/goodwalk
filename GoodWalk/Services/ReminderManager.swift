@@ -104,7 +104,13 @@ extension ReminderManager: UNUserNotificationCenterDelegate {
             case Self.walkedActionID:
                 onWalked?()
             case Self.startActionID:
-                onStartWalk?()
+                if let onStartWalk {
+                    onStartWalk()
+                } else {
+                    // A cold launch: the home screen isn't up to hear it yet. Leave the same flag
+                    // the widget and Siri leave; Home starts the walk when it appears.
+                    AppGroup.defaults.set(true, forKey: AppGroup.Key.pendingStartWalk)
+                }
             default:
                 break
             }

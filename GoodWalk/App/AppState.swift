@@ -209,9 +209,10 @@ final class AppState: ObservableObject {
         activeWalkDogIDs = walking
         activeWalkStart = date
         tracker.begin(from: date)
+        let filling = self.ringDog(for: walking)
         WalkActivityController.start(dogName: DogProfile.names(dogs.filter { walking.contains($0.id) }),
                                      startDate: date,
-                                     minutesBeforeThisWalk: stats.minutesToday, goalMinutes: dog.dailyGoal)
+                                     minutesBeforeThisWalk: minutesToday(for: filling.id), goalMinutes: filling.dailyGoal)
         Analytics.track(.walkStarted, ["source": source, "dogs": walking.count])
     }
 
@@ -229,6 +230,14 @@ final class AppState: ObservableObject {
     }
 
     func isOnActiveWalk(_ dogID: UUID) -> Bool { activeWalkDogIDs.contains(dogID) }
+
+    /// The dog whose ring the walk is filling: the one on screen if they came along, otherwise
+    /// the first dog who did. A walk never fills the ring of a dog who stayed home.
+    func ringDog(for walking: [UUID]? = nil) -> DogProfile {
+        let ids = walking ?? activeWalkDogIDs
+        if ids.isEmpty || ids.contains(selectedDogID) { return dog }
+        return dogs.first { ids.contains($0.id) } ?? dog
+    }
 
     func elapsedSeconds(at now: Date = Date()) -> Int {
         guard let activeWalkStart else { return 0 }
@@ -338,11 +347,15 @@ final class AppState: ObservableObject {
 
     private func add(_ walk: Walk) {
         let goal = dog.dailyGoal
-        let before = stats.minutesToday
+        let before = minutesToday(for: selectedDogID)
         var updated = walks
         updated.append(walk)
         updated.sort { $0.start < $1.start }
-        if updated.count > 5_000 { updated.removeFirst(updated.count - 5_000) }
+        if updated.count > 5_000 {
+            let dropped = updated.prefix(updated.count - 5_000)
+            dropped.filter(\.hasPhoto).forEach { WalkPhotoStore.delete(for: $0.id) }
+            updated.removeFirst(dropped.count)
+        }
         walks = updated
         lastWalk = walk
 
@@ -439,6 +452,10 @@ final class AppState: ObservableObject {
 
     // MARK: - Derived
 
+    /// Re-derives today's numbers. The log hasn't changed, but the date may have: an app left
+    /// open overnight must not keep showing yesterday's ring or a streak that has since lapsed.
+    func refreshForToday() { recompute() }
+
     private func recompute() {
         stats = Stats.compute(walks: walks(forDog: selectedDogID), goalMinutes: dog.dailyGoal)
         household = Stats.Household.compute(dogs: dogs, walks: walks)
@@ -451,9 +468,16 @@ final class AppState: ObservableObject {
         defaults.set(stats.minutesToday, forKey: AppGroup.Key.minutesToday)
         defaults.set(AppGroup.dayFormatter.string(from: Date()), forKey: AppGroup.Key.minutesDay)
         defaults.set(household.streak, forKey: AppGroup.Key.streak)
+        defaults.set(household.everyoneWalkedToday ? AppGroup.dayFormatter.string(from: Date()) : yesterdayKey,
+                     forKey: AppGroup.Key.streakThrough)
         defaults.set(dogs.count, forKey: AppGroup.Key.dogCount)
         DogPhotoStore.mirrorToWidget(dogImages[selectedDogID])
         WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    /// The streak as computed counts through yesterday when today isn't complete yet.
+    private var yesterdayKey: String {
+        AppGroup.dayFormatter.string(from: cal.date(byAdding: .day, value: -1, to: Date()) ?? Date())
     }
 
     // MARK: - Persistence helpers
