@@ -53,11 +53,13 @@ struct Stats: Equatable {
         // so a morning with no walk yet doesn't zero the number before the evening walk.
         var cursor = todayStart
         if minutesByDay[cursor] == nil, let yesterday = cal.date(byAdding: .day, value: -1, to: cursor) {
-            cursor = yesterday
+            cursor = cal.startOfDay(for: yesterday)
         }
+        // startOfDay again on each step: where a clock change happens at midnight, a day starts
+        // at 01:00, and "a day earlier" would miss the key it was looking for.
         while minutesByDay[cursor] != nil, let earlier = cal.date(byAdding: .day, value: -1, to: cursor) {
             stats.streak += 1
-            cursor = earlier
+            cursor = cal.startOfDay(for: earlier)
         }
         return stats
     }
@@ -140,11 +142,11 @@ struct Stats: Equatable {
             let completeSet = Set(completeDays)
             var cursor = todayStart
             if !completeSet.contains(cursor), let yesterday = cal.date(byAdding: .day, value: -1, to: cursor) {
-                cursor = yesterday
+                cursor = cal.startOfDay(for: yesterday)
             }
             while completeSet.contains(cursor), let earlier = cal.date(byAdding: .day, value: -1, to: cursor) {
                 household.streak += 1
-                cursor = earlier
+                cursor = cal.startOfDay(for: earlier)
             }
             return household
         }

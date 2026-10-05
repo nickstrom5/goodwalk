@@ -131,8 +131,14 @@ struct NoteCard: View {
 
 /// The line that keeps us honest wherever a guideline number is shown.
 struct GuidelineFootnote: View {
+    /// One line for screens that repeat a target already explained in full during onboarding:
+    /// home, the walk timer, the paywall.
+    var compact = false
+
     var body: some View {
-        Text("A general guideline, not veterinary advice, drawn from published Kennel Club and PDSA breed exercise guidance. Your vet knows your dog best, especially for puppies, seniors, flat-faced breeds and dogs with health conditions. Typical figure: Christian et al., 2013.")
+        Text(compact
+             ? "Targets are a general guideline, not veterinary advice. Your vet knows your dog best."
+             : "A general guideline, not veterinary advice, drawn from published Kennel Club and PDSA breed exercise guidance. Your vet knows your dog best, especially for puppies, seniors, flat-faced breeds and dogs with health conditions. Typical figure: Christian et al., 2013.")
             .font(Theme.Font.caption)
             .foregroundStyle(Theme.textTertiary)
             .fixedSize(horizontal: false, vertical: true)

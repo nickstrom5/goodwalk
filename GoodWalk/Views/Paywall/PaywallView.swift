@@ -32,12 +32,21 @@ struct PaywallView: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 20) {
                     header
-                    timeline
+                    if offersTrial { timeline }
                     plans
-                    if selectedProduct.map(store.hasTrial) == true || (ScreenshotMode.isActive && selectedID == .yearly) { reminderToggle }
+                    if offersTrial { reminderToggle }
                     if let error = store.purchaseError, !ScreenshotMode.isActive {
                         Text(error).font(Theme.Font.caption).foregroundStyle(Theme.danger)
                     }
+                    VStack(alignment: .leading, spacing: 8) {
+                        if selectedID != .lifetime {
+                            Text("Subscriptions renew automatically at the price shown unless cancelled at least 24 hours before the end of the period. Manage or cancel any time in your Apple ID settings.")
+                        }
+                        GuidelineFootnote(compact: true)
+                    }
+                    .font(Theme.Font.caption)
+                    .foregroundStyle(Theme.textTertiary)
+                    .fixedSize(horizontal: false, vertical: true)
                 }
                 .padding(.horizontal, Theme.horizontalPadding)
                 .padding(.top, 56)
@@ -65,9 +74,12 @@ struct PaywallView: View {
                         .frame(width: 32, height: 32)
                         .background(Theme.surface)
                         .clipShape(Circle())
+                        .frame(width: 44, height: 44)   // the tap target, larger than the circle
+                        .contentShape(Rectangle())
                 }
-                .padding(.leading, 16)
-                .padding(.top, 12)
+                .accessibilityLabel("Close")
+                .padding(.leading, 10)
+                .padding(.top, 6)
                 .transition(.opacity)
             }
         }
@@ -85,7 +97,7 @@ struct PaywallView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Try Good Walk free for 7 days")
+            Text(offersTrial ? "Try Good Walk free for 7 days" : "Unlock Good Walk")
                 .font(Theme.Font.title)
                 .foregroundStyle(Theme.textPrimary)
             Text("**\(appState.dog.dailyGoal) minutes a day** for \(appState.dog.displayName). A timer, a nudge that shows up, a streak with their face on it and a card at every milestone.")
@@ -213,6 +225,14 @@ struct PaywallView: View {
 
     private var selectedProduct: Product? { store.product(selectedID) }
 
+    /// The 7-day trial is only promised when buying the chosen plan really starts one for this
+    /// person. Apple gives it once per Apple ID, and only on the yearly plan.
+    private var offersTrial: Bool {
+        if ScreenshotMode.isActive { return selectedID == .yearly }
+        guard let product = selectedProduct else { return selectedID == .yearly && store.isEligibleForTrial }
+        return store.hasTrial(product)
+    }
+
     private var ctaTitle: String {
         if ScreenshotMode.isActive { return selectedID == .yearly ? "Start my free trial" : "Continue" }
         guard let product = selectedProduct else {
@@ -224,24 +244,27 @@ struct PaywallView: View {
     private var ctaSubtitle: String? {
         if ScreenshotMode.isActive {
             switch selectedID {
-            case .yearly: return "7 days free, then $19.99/year. Cancel anytime."
-            case .monthly: return "$3.99/month. Cancel anytime."
+            case .yearly: return "7 days free, then $19.99/year. Auto-renews, cancel anytime."
+            case .monthly: return "$3.99/month. Auto-renews, cancel anytime."
             case .lifetime: return "$29.99 once. Yours forever."
             }
         }
         guard let product = selectedProduct else { return nil }
-        if store.hasTrial(product) {
-            return "7 days free, then \(product.displayPrice)/year. Cancel anytime."
-        }
         if product.type == .nonConsumable { return "\(product.displayPrice) once. Yours forever." }
-        return "\(product.displayPrice)/month. Cancel anytime."
+        let period = product.subscription?.subscriptionPeriod.unit == .year ? "year" : "month"
+        if store.hasTrial(product) {
+            return "7 days free, then \(product.displayPrice)/\(period). Auto-renews, cancel anytime."
+        }
+        return "\(product.displayPrice)/\(period). Auto-renews, cancel anytime."
     }
 
     private func planDetail(_ product: Product, id: StoreManager.ProductID) -> String {
         switch id {
         case .yearly:
             let perMonth = store.perMonthEquivalent(product) ?? ""
-            return "\(perMonth) · billed \(product.displayPrice)/yr after 7-day free trial"
+            return store.hasTrial(product)
+                ? "\(perMonth) · billed \(product.displayPrice)/yr after 7-day free trial"
+                : "\(perMonth) · billed \(product.displayPrice)/yr"
         case .monthly:
             return "\(product.displayPrice)/mo · cancel anytime"
         case .lifetime:

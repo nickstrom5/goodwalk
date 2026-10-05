@@ -80,6 +80,15 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
   many dogs there are. `DogPhotoStore` keeps one full JPEG per dog (`dog-<uuid>.jpg`) and mirrors
   a 300 px copy of the shown dog to `dog-widget.jpg`.
 - All stats are derived (`Stats.compute`) from the walk log + the target. Never store a streak; recompute it.
+  "Today" moves on its own: Home recomputes on foreground and at midnight (`AppState.refreshForToday`), and the
+  widget drops a streak whose `streakThrough` day is older than yesterday.
+- Saved data must survive an update. `Walk` and `DogProfile` decode by hand with `decodeIfPresent` (the synthesized
+  decoder throws on a missing key, and `AppState` loads with `try?`, so one new field used to wipe the log). A new
+  stored field gets a line in that decoder and a case in `GoodWalkTests/PersistenceTests.swift`.
+- `StoreManager.isPro` starts from a cached value and is re-checked at launch and on every foreground, so a subscriber
+  opening the app from the widget, Siri or the reminder never meets the paywall. The paywall promises the 7-day trial
+  only when `hasTrial` (the product has one *and* `isEligibleForIntroOffer`), and every subscription CTA says it
+  auto-renews.
 - `DogBreed` is a searchable list of 70 common breeds. Picking one only fills in `size` and
   `breedType` (and stores `breedName` as a label); the minutes still come from `WalkPlan`, and both
   chips stay editable afterwards. It adds no new number to the app, which is why it could ship

@@ -138,3 +138,27 @@ struct DogProfile: Codable, Equatable, Identifiable {
         }
     }
 }
+
+// Decoded by hand so a profile saved by an older build still loads. The synthesized decoder
+// throws on any missing key, defaults or not, and `AppState` loads with `try?`: one field added
+// in an update would otherwise replace the dog with a blank one and orphan every walk.
+extension DogProfile {
+    enum CodingKeys: String, CodingKey {
+        case id, addedOn, name, size, breedType, breedName, age, usualMinutes, goalMinutes
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        self.init()
+        id = try c.decodeIfPresent(UUID.self, forKey: .id) ?? id
+        // A dog saved before arrival dates existed has always lived here: their history counts.
+        addedOn = try c.decodeIfPresent(Date.self, forKey: .addedOn) ?? .distantPast
+        name = try c.decodeIfPresent(String.self, forKey: .name) ?? name
+        size = (try? c.decodeIfPresent(Size.self, forKey: .size)) ?? size
+        breedType = (try? c.decodeIfPresent(BreedType.self, forKey: .breedType)) ?? breedType
+        breedName = try c.decodeIfPresent(String.self, forKey: .breedName) ?? breedName
+        age = (try? c.decodeIfPresent(Age.self, forKey: .age)) ?? age
+        usualMinutes = try c.decodeIfPresent(Int.self, forKey: .usualMinutes) ?? usualMinutes
+        goalMinutes = try c.decodeIfPresent(Int.self, forKey: .goalMinutes) ?? goalMinutes
+    }
+}
