@@ -8,7 +8,9 @@ struct WalkTimerView: View {
     /// Tapping the tip moves it on. The clock moves it on too, once a minute.
     @State private var tipNudge = 0
 
-    private var dog: DogProfile { appState.dog }
+    /// The dog whose ring this walk fills. If the dog on screen stayed home, it's the first dog
+    /// who came along, so a walk never shows up on the ring of a dog who didn't go.
+    private var dog: DogProfile { appState.ringDog() }
     /// The dogs actually on this walk, in roster order.
     private var walkingDogs: [DogProfile] { appState.dogs.filter { appState.isOnActiveWalk($0.id) } }
     /// Where today's walks start in the tip deck. Fixed in screenshot mode so the capture is stable.
@@ -36,7 +38,7 @@ struct WalkTimerView: View {
     }
 
     private func walk(at date: Date, seconds: Int, tip: DogTip?) -> some View {
-        let minutesNow = appState.stats.minutesToday + seconds / 60
+        let minutesNow = appState.minutesToday(for: dog.id) + seconds / 60
         let progress = min(1, Double(minutesNow) / Double(max(1, dog.dailyGoal)))
 
         return VStack(spacing: 0) {
@@ -60,7 +62,7 @@ struct WalkTimerView: View {
             Spacer()
 
             ProgressRing(progress: progress, lineWidth: 18) {
-                DogAvatar(image: appState.dogImage, size: 172)
+                DogAvatar(image: appState.image(for: dog.id), size: 172)
             }
             .frame(width: 232, height: 232)
 
@@ -76,6 +78,10 @@ struct WalkTimerView: View {
                 StatTile(value: "\(minutesNow)", label: "of \(dog.dailyGoal) min today")
             }
             .padding(.top, 20)
+
+            GuidelineFootnote(compact: true)
+                .multilineTextAlignment(.center)
+                .padding(.top, 10)
 
             if let tip {
                 Button { tipNudge += 1 } label: { TipCard(tip: tip, dog: dog) }

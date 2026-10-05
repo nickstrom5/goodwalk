@@ -20,6 +20,9 @@ enum AppGroup {
         static let minutesDay = "minutesDay"
         /// Current walk streak in days. Mirrored by the app for the widget.
         static let streak = "streak"
+        /// "yyyy-MM-dd" of the last day `streak` counts. Older than yesterday means a day was
+        /// missed since the app last ran, and the widget shows no streak rather than a stale one.
+        static let streakThrough = "streakThrough"
         /// How many dogs live here, so the widget can say whose ring it is showing.
         static let dogCount = "dogCount"
         /// Set by the widget / Siri intent; the app starts the walk timer on next foreground.

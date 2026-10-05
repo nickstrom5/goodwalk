@@ -58,11 +58,15 @@ struct TodayProvider: TimelineProvider {
         let today = AppGroup.dayFormatter.string(from: Date())
         let isToday = defaults.string(forKey: AppGroup.Key.minutesDay) == today
         let goal = defaults.integer(forKey: AppGroup.Key.goalMinutes)
+        let yesterday = AppGroup.dayFormatter.string(from: Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? Date())
+        let through = defaults.string(forKey: AppGroup.Key.streakThrough)
+        // A streak last counted before yesterday has lapsed; the app will say so when it opens.
+        let streakIsCurrent = through == nil || through == today || through == yesterday
         return TodayEntry(date: Date(),
                           dogName: defaults.string(forKey: AppGroup.Key.dogName) ?? "Your dog",
                           minutes: isToday ? defaults.integer(forKey: AppGroup.Key.minutesToday) : 0,
                           goal: goal > 0 ? goal : 60,
-                          streak: defaults.integer(forKey: AppGroup.Key.streak),
+                          streak: streakIsCurrent ? defaults.integer(forKey: AppGroup.Key.streak) : 0,
                           photo: DogPhotoStore.loadForWidget())
     }
 }

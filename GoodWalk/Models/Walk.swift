@@ -38,3 +38,25 @@ struct WeekDay: Identifiable, Equatable {
     let isFuture: Bool
     var id: Date { date }
 }
+
+// Decoded by hand so walks saved by an older build still load. The synthesized decoder throws
+// on a missing key even when the property has a default, and one bad walk fails the whole log.
+extension Walk {
+    enum CodingKeys: String, CodingKey {
+        case id, start, minutes, distanceMeters, distanceEstimated, source, dogIDs, hasPhoto
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let minutes = try c.decode(Int.self, forKey: .minutes)
+        self.init(id: try c.decodeIfPresent(UUID.self, forKey: .id) ?? UUID(),
+                  start: try c.decode(Date.self, forKey: .start),
+                  minutes: minutes,
+                  distanceMeters: try c.decodeIfPresent(Double.self, forKey: .distanceMeters)
+                      ?? WalkPlan.estimatedMeters(forMinutes: minutes),
+                  distanceEstimated: try c.decodeIfPresent(Bool.self, forKey: .distanceEstimated) ?? true,
+                  source: (try? c.decodeIfPresent(Source.self, forKey: .source)) ?? .quickLog,
+                  dogIDs: try c.decodeIfPresent([UUID].self, forKey: .dogIDs) ?? [],
+                  hasPhoto: try c.decodeIfPresent(Bool.self, forKey: .hasPhoto) ?? false)
+    }
+}
