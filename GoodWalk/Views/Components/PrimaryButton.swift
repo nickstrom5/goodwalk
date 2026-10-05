@@ -17,6 +17,9 @@ struct PrimaryButton: View {
                         Text(subtitle)
                             .font(Theme.Font.caption)
                             .opacity(0.85)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)   // the button is 58 pt; a wrap would clip
+                            .padding(.horizontal, 12)
                     }
                 }
                 .opacity(isLoading ? 0 : 1)

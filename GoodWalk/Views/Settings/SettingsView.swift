@@ -71,8 +71,8 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    LabeledContent("Current streak", value: "\(appState.household.streak) days")
-                    LabeledContent("Longest streak", value: "\(appState.household.longestStreak) days")
+                    LabeledContent("Current streak", value: Self.days(appState.household.streak))
+                    LabeledContent("Longest streak", value: Self.days(appState.household.longestStreak))
                     LabeledContent("Full-target days", value: "\(appState.stats.goalDays) of \(appState.stats.daysWalked) walked")
                     LabeledContent("Distance", value: "\(Stats.miles(appState.household.totalMiles)) miles")
                     LabeledContent("Time together", value: Stats.duration(minutes: appState.household.totalMinutes))
@@ -143,14 +143,13 @@ struct SettingsView: View {
                 Analytics.track(.reminderTimeChanged, ["minutes": minutes])
                 if reminders.isAuthorized { reminders.schedule(minutesAfterMidnight: minutes, dogNames: appState.dogNames) }
             }
-            .onChange(of: appState.dog.name) { _, _ in
-                if reminders.isAuthorized { reminders.schedule(minutesAfterMidnight: appState.reminderMinutes, dogNames: appState.dogNames) }
-            }
-            .onChange(of: appState.dogs.count) { _, _ in
-                if reminders.isAuthorized {
-                    reminders.schedule(minutesAfterMidnight: appState.reminderMinutes, dogNames: appState.dogNames)
-                }
+            // Every dog's name, not only the one on screen: renaming the second dog has to
+            // reach the reminder too. Covers adding and removing a dog as well.
+            .onChange(of: appState.dogNames) { _, names in
+                if reminders.isAuthorized { reminders.schedule(minutesAfterMidnight: appState.reminderMinutes, dogNames: names) }
             }
         }
     }
+
+    private static func days(_ count: Int) -> String { count == 1 ? "1 day" : "\(count) days" }
 }

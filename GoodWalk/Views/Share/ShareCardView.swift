@@ -134,7 +134,8 @@ extension ShareCardView {
             f.setLocalizedDateFormatFromTemplate("MMMd")
             when = f.string(from: walk.start)
         }
-        return "\(Stats.milesPhrase(walk.miles)) · \(when)"
+        // A pace-based guess says so, on the card as on the walk screen.
+        return "\(Stats.milesPhrase(walk.miles))\(walk.distanceEstimated ? " (est.)" : "") · \(when)"
     }
 
     /// The totals card: "47 miles walked with Rex · 30-day streak". With more than one dog the

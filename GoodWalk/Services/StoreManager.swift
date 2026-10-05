@@ -12,15 +12,27 @@ final class StoreManager: ObservableObject {
     }
 
     @Published private(set) var products: [Product] = []
-    @Published private(set) var isPro: Bool = false
+    /// Starts from the last answer StoreKit gave, so a subscriber who opens the app from the
+    /// widget, Siri or the reminder isn't shown the paywall while entitlements are re-checked.
+    @Published private(set) var isPro = false
+    /// True once entitlements have been checked this launch. Until then a "no" from `isPro` is
+    /// only the cached answer, and the paywall waits for the real one.
+    @Published private(set) var hasCheckedEntitlements = false
+    /// Apple gives the free trial once per subscription group. Someone who already had it is
+    /// charged on day one, so the paywall must not promise it to them.
+    @Published private(set) var isEligibleForTrial = true
     @Published private(set) var isLoading = false
     /// True once `load()` has finished at least once, whether or not it found any products.
     @Published private(set) var hasLoaded = false
     @Published var purchaseError: String?
 
+    private static let cachedProKey = "isProCached"
     private var updatesTask: Task<Void, Never>?
 
     init() {
+        isPro = UserDefaults.standard.bool(forKey: Self.cachedProKey)
+        // Entitlements need no network and no product list; check them straight away.
+        Task { [weak self] in await self?.refreshEntitlements() }
         updatesTask = Task { [weak self] in
             for await result in Transaction.updates {
                 if case .verified(let transaction) = result {
@@ -48,6 +60,10 @@ final class StoreManager: ObservableObject {
             if products.isEmpty {
                 purchaseError = "Couldn't load plans. Check your connection."
                 Analytics.track(.storeLoadFailed, ["error": "no products returned"])
+            }
+            // Every subscription here is in one group, so any of them answers for all.
+            if let subscription = products.compactMap(\.subscription).first {
+                isEligibleForTrial = await subscription.isEligibleForIntroOffer
             }
         } catch {
             purchaseError = "Couldn't load plans. Check your connection."
@@ -99,6 +115,7 @@ final class StoreManager: ObservableObject {
     }
 
     func refreshEntitlements() async {
+        defer { hasCheckedEntitlements = true }
         #if DEBUG
         // QA hook: `SIMCTL_CHILD_GOODWALK_FORCE_PRO=1 xcrun simctl launch …` unlocks Pro without a purchase.
         if ProcessInfo.processInfo.environment["GOODWALK_FORCE_PRO"] == "1" {
@@ -115,12 +132,15 @@ final class StoreManager: ObservableObject {
             }
         }
         isPro = pro
+        UserDefaults.standard.set(pro, forKey: Self.cachedProKey)
     }
 
     // MARK: - Display helpers
 
+    /// True when buying this product starts a free trial for this person, not merely when the
+    /// product has one: the trial is once per Apple ID.
     func hasTrial(_ product: Product) -> Bool {
-        product.subscription?.introductoryOffer?.paymentMode == .freeTrial
+        isEligibleForTrial && product.subscription?.introductoryOffer?.paymentMode == .freeTrial
     }
 
     /// Monthly-equivalent price string for a yearly plan, e.g. "$2.50/mo".

@@ -38,7 +38,7 @@ struct MilestoneView: View {
                                 .font(Theme.Font.title)
                                 .foregroundStyle(Theme.textPrimary)
                         }
-                        Text("\(names) \(appState.hasMultipleDogs ? "don't" : "doesn't") know what a streak is. \(appState.hasMultipleDogs ? "They know" : "\(dog.displayName) knows") the leash came out \(streak) day\(streak == 1 ? "" : "s") running: \(Stats.miles(appState.household.totalMiles)) miles and \(Stats.duration(minutes: appState.household.totalMinutes)) together so far.")
+                        Text("\(names.capitalizedFirst) \(appState.hasMultipleDogs ? "don't" : "doesn't") know what a streak is. \(appState.hasMultipleDogs ? "They know" : "\(dog.displayName.capitalizedFirst) knows") the leash came out \(streak) day\(streak == 1 ? "" : "s") running: \(Stats.miles(appState.household.totalMiles)) miles and \(Stats.duration(minutes: appState.household.totalMinutes)) together so far.")
                             .font(Theme.Font.body)
                             .foregroundStyle(Theme.textSecondary)
                             .fixedSize(horizontal: false, vertical: true)

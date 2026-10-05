@@ -1,3 +1,4 @@
+import Combine
 import SwiftUI
 
 /// The dog in a ring and one button. Everything else on this screen exists to get the leash
@@ -29,6 +30,9 @@ struct HomeView: View {
     @State private var showStats = false
     /// Set when a timed walk ends, so its card (and the photo option) is offered once.
     @State private var finishedWalk: Walk?
+    /// A milestone waiting for the screen to be free. SwiftUI shows one presentation at a time,
+    /// and a milestone often lands on the same walk that opens the walk card.
+    @State private var queuedMilestone: Int?
     @State private var celebrate = false
 
     init(initialSheet: Sheet? = nil, showingStats: Bool = false, showingWalkCard: Bool = false) {
@@ -52,6 +56,9 @@ struct HomeView: View {
                         WeekBars(days: appState.thisWeek, goal: dog.dailyGoal)
                         totals
                         shareRow
+                        GuidelineFootnote(compact: true)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top, 4)
                     }
                     .padding(.horizontal, Theme.horizontalPadding)
                     .padding(.top, 8)
@@ -91,7 +98,7 @@ struct HomeView: View {
         .fullScreenCover(isPresented: $showStats) {
             StatsView()
         }
-        .sheet(item: $sheet) { sheet in
+        .sheet(item: $sheet, onDismiss: presentQueuedMilestone) { sheet in
             switch sheet {
             case .settings:
                 SettingsView()
@@ -113,7 +120,7 @@ struct HomeView: View {
         .fullScreenCover(isPresented: walkingBinding) {
             WalkTimerView()
         }
-        .sheet(item: $finishedWalk) { walk in
+        .sheet(item: $finishedWalk, onDismiss: presentQueuedMilestone) { walk in
             WalkResultView(walk: walk)
         }
         .onChange(of: appState.lastWalk) { _, walk in
@@ -122,9 +129,7 @@ struct HomeView: View {
             finishedWalk = walk
         }
         .onChange(of: appState.pendingMilestone) { _, milestone in
-            guard let milestone else { return }
-            appState.pendingMilestone = nil
-            sheet = .milestone(milestone)
+            queueMilestone(milestone)
         }
         .onChange(of: appState.goalJustHit) { _, hit in
             guard hit else { return }
@@ -132,10 +137,23 @@ struct HomeView: View {
             throwConfetti()
         }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .active { startFromIntentIfAsked() }
+            guard phase == .active else { return }
+            // Coming back the next morning: yesterday's ring and streak must not still be up.
+            appState.refreshForToday()
+            Task { await store.refreshEntitlements() }
+            startFromIntentIfAsked()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged).receive(on: RunLoop.main)) { _ in
+            appState.refreshForToday()
         }
         .onAppear {
             reminders.onStartWalk = { gated { appState.startWalk(source: "notification") } }
+            // Set before this screen existed, so onChange never saw it. Day 1 comes from the
+            // onboarding walk, which already showed its own card; anything bigger (a "Walked ✓"
+            // tapped before the app finished launching) still gets one.
+            if let pending = appState.pendingMilestone, pending > 1 { queueMilestone(pending) }
+            appState.pendingMilestone = nil
+            appState.goalJustHit = false
             startFromIntentIfAsked()
         }
     }
@@ -194,7 +212,7 @@ struct HomeView: View {
         // is still waiting by the door, not only the dog currently on screen.
         let waiting = appState.dogsNotWalkedToday
         if appState.hasMultipleDogs, !waiting.isEmpty, appState.todayProgress >= 1 {
-            return "\(DogProfile.names(waiting)) hasn't been out yet."
+            return "\(DogProfile.names(waiting)) \(waiting.count == 1 ? "hasn't" : "haven't") been out yet."
         }
         if appState.todayProgress >= 1 {
             return appState.hasMultipleDogs
@@ -270,14 +288,40 @@ struct HomeView: View {
 
     // MARK: - Actions
 
-    /// The core action is behind the paywall. Nothing else is.
-    private func gated(_ action: () -> Void) {
-        guard store.isPro || ScreenshotMode.isActive else {
-            Analytics.track(.paywallShown, ["from": "home"])
-            sheet = .paywall
+    /// The core action is behind the paywall. Nothing else is. Right after launch `isPro` may
+    /// still be the cached answer, so a "no" waits for StoreKit before showing the paywall.
+    private func gated(_ action: @escaping () -> Void) {
+        if store.isPro || ScreenshotMode.isActive {
+            action()
             return
         }
-        action()
+        guard !store.hasCheckedEntitlements else {
+            sheet = .paywall   // PaywallView logs paywall_shown itself
+            return
+        }
+        Task {
+            await store.refreshEntitlements()
+            if store.isPro { action() } else { sheet = .paywall }
+        }
+    }
+
+    private func queueMilestone(_ milestone: Int?) {
+        guard let milestone else { return }
+        appState.pendingMilestone = nil
+        queuedMilestone = milestone
+        // Give a walk card opened by the same walk the chance to claim the screen first.
+        Task {
+            try? await Task.sleep(nanoseconds: 700_000_000)
+            presentQueuedMilestone()
+        }
+    }
+
+    /// Shows a waiting milestone once nothing else is on screen; the walk card calls this again
+    /// when it closes.
+    private func presentQueuedMilestone() {
+        guard let milestone = queuedMilestone, finishedWalk == nil, !appState.isWalking, sheet == nil else { return }
+        queuedMilestone = nil
+        sheet = .milestone(milestone)
     }
 
     private func startFromIntentIfAsked() {

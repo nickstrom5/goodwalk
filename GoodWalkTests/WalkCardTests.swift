@@ -28,6 +28,12 @@ final class WalkCardTests: XCTestCase {
         XCTAssertEqual(d, "1.8 miles · today")
     }
 
+    func testDetailSaysWhenTheDistanceIsAnEstimate() {
+        var estimated = walk(minutes: 42, meters: WalkPlan.metersPerMile * 1.8)
+        estimated.distanceEstimated = true
+        XCTAssertEqual(ShareCardView.detail(walk: estimated, calendar: cal), "1.8 miles (est.) · today")
+    }
+
     func testDetailUsesSingularMileWithoutADecimal() {
         let d = ShareCardView.detail(walk: walk(minutes: 20, meters: WalkPlan.metersPerMile), calendar: cal)
         XCTAssertTrue(d.hasPrefix("1 mile ·"), d)
