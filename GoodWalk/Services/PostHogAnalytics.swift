@@ -11,6 +11,9 @@ struct PostHogAnalytics: AnalyticsSink {
         config.captureScreenViews = false
         config.sessionReplay = false
         PostHogSDK.shared.setup(config)
+        // No location derived from the IP address, on every event. The privacy policy says
+        // Good Walk never stores where you are, and this is what keeps that true.
+        PostHogSDK.shared.register(["$geoip_disable": true])
         return PostHogAnalytics()
     }
 

@@ -19,7 +19,8 @@ case "${GITHUB_TXT_VALUE:-}" in PASTE_*|value_for*|"<"*) GITHUB_TXT_VALUE="$GITH
 case "${CF_TOKEN:-}" in ""|yourtoken|PASTE_*|"<"*)
   CLIP="$(pbpaste 2>/dev/null | tr -d '[:space:]')"
   if [ "${#CLIP}" -ge 30 ] && [ "${#CLIP}" -le 120 ] && ! printf '%s' "$CLIP" | grep -q '[^A-Za-z0-9_-]'; then
-    CF_TOKEN="$CLIP"; echo "Using the Cloudflare token from your clipboard."
+    CF_TOKEN="$CLIP"; echo "Using the Cloudflare token from your clipboard (now cleared)."
+    pbcopy </dev/null 2>/dev/null || true
   elif [ -t 0 ]; then
     printf "Paste your Cloudflare API token and press Return (it will not show on screen): "
     read -rs CF_TOKEN; echo
@@ -30,11 +31,14 @@ esac
 [ "${#CF_TOKEN}" -ge 30 ] || { echo "That does not look like a Cloudflare token (too short). Nothing was changed."; exit 1; }
 command -v jq >/dev/null || { echo "jq is required: brew install jq"; exit 1; }
 
+# The token goes to curl on stdin as a header file, never as an argument: arguments are
+# visible to every process on the machine through `ps`.
 cf() { # METHOD PATH [JSON]
   if [ $# -ge 3 ]; then
-    curl -sS -X "$1" "$API$2" -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" --data "$3"
+    printf 'Authorization: Bearer %s\n' "$CF_TOKEN" |
+      curl -sS -X "$1" "$API$2" -H @- -H "Content-Type: application/json" --data "$3"
   else
-    curl -sS -X "$1" "$API$2" -H "Authorization: Bearer $CF_TOKEN"
+    printf 'Authorization: Bearer %s\n' "$CF_TOKEN" | curl -sS -X "$1" "$API$2" -H @-
   fi
 }
 ok() { jq -e '.success == true' >/dev/null; }

@@ -215,7 +215,7 @@ do {
     ctx.fill(CGRect(x: 0, y: 0, width: 1200, height: 18))
     drawMark(ctx, center: CGPoint(x: 160, y: 490), diameter: 150, track: oat, arc: terracotta, paw: terracotta)
     drawText(ctx, "Good Walk", at: CGPoint(x: 262, y: 460), size: 88, color: brown)
-    drawTextFitted(ctx, "Your dog needs a walk every day.", at: CGPoint(x: 84, y: 300), size: 70, maxWidth: 1032, color: brown)
+    drawTextFitted(ctx, "Every dog deserves a daily walk.", at: CGPoint(x: 84, y: 300), size: 70, maxWidth: 1032, color: brown)
     drawTextFitted(ctx, "Good Walk makes it a streak.", at: CGPoint(x: 84, y: 212), size: 70, maxWidth: 1032, color: terracottaDeep)
     drawTextFitted(ctx, "Dog walk streak tracker for iPhone  ·  getgoodwalk.app", at: CGPoint(x: 86, y: 92), size: 38, maxWidth: 1032,
                    color: rgb(0.180, 0.133, 0.098, 0.68), weight: .semibold)
