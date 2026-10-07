@@ -68,8 +68,10 @@ Price: choose the US price and let Apple's pricing equalize other territories.
 ## 6. App Privacy (App Store Connect → Good Walk → App Privacy)
 
 Answer honestly for the analytics setup in `GoodWalk/App/Config.swift`:
-- Data collected: **Product Interaction** and **Crash Data** (PostHog lifecycle + funnel events)
-  → "Analytics" purpose, **not** linked to identity, **not** used for tracking.
+- Data collected: **Product Interaction** (PostHog lifecycle + funnel events) and **Purchase History**
+  (the `trial_started` / `paid` events name the plan) → "Analytics" purpose, **not** linked to
+  identity, **not** used for tracking. No crash data: nothing in the app captures crashes. These
+  match `GoodWalk/PrivacyInfo.xcprivacy`; change both together.
 - Location: **not collected.** The app never requests location. Distance comes from the
   pedometer.
 - Fitness / Health: **not collected.** Pedometer distance is read on-device, stored on-device

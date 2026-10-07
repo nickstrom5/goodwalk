@@ -18,7 +18,12 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
 
 ## Public vs private
 - `docs/` is the **public** website: GitHub Pages serves every file in it at getgoodwalk.app. Only site files go
-  there (HTML, `robots.txt`, `sitemap.xml`, `site.webmanifest`, images, `CNAME`, `.nojekyll`). Never put notes in it.
+  there (HTML, `robots.txt`, `sitemap.xml`, `site.webmanifest`, images, `CNAME`, `.nojekyll`,
+  `.well-known/security.txt`, and the IndexNow key file `7cf7bcd0….txt`, which must contain its own name).
+  Never put notes in it.
+- Every page carries the same Content-Security-Policy and referrer `<meta>` right after the viewport tag (GitHub Pages
+  can't send headers). It allows inline script and style, same-origin images/`data:`/`blob:` and nothing from any
+  other origin. A new page copies it; a third-party anything would have to change it, which is the point.
 - Internal notes (strategy, launch, outreach, sources: the numbered `NN-*.md` files) live in `playbook/`, which is
   not served. Links from a note to a site asset are `../docs/...`.
 - The site's "See your dog in it" section (`#your-dog` in `docs/index.html`) previews a visitor's own photo inside the
@@ -33,6 +38,12 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
 
 ## Runtime notes
 - No restricted entitlements. Only App Groups (`group.app.getgoodwalk.goodwalk`) for the widget.
+- Privacy manifests: `GoodWalk/PrivacyInfo.xcprivacy` and `GoodWalkWidgets/PrivacyInfo.xcprivacy` (UserDefaults
+  reasons; analytics as Product Interaction + Purchase History, not linked, not tracking). They must agree with the
+  App Privacy answers in `playbook/09-app-store-connect.md` and with `docs/privacy.html`. A new required-reason API
+  or a new analytics property means updating all three.
+- `-screenshot` works in Debug builds only; a Release build ignores it, since it seeds over the saved log and skips
+  the paywall.
 - The daily nudge is a repeating `UNCalendarNotificationTrigger` with two actions (`ReminderManager`).
   "Walked ✓" logs the user's usual walk length without opening the app via the delegate → `AppState.quickLog`.
   "Start a walk" opens the app on the timer.
