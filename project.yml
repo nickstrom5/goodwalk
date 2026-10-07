@@ -28,6 +28,9 @@ targets:
     platform: iOS
     sources:
       - path: GoodWalk
+        excludes: [PrivacyInfo.xcprivacy]
+      - path: GoodWalk/PrivacyInfo.xcprivacy
+        buildPhase: resources
       - path: Shared
     dependencies:
       - target: GoodWalkWidgets
@@ -77,6 +80,9 @@ targets:
     platform: iOS
     sources:
       - path: GoodWalkWidgets
+        excludes: [PrivacyInfo.xcprivacy]
+      - path: GoodWalkWidgets/PrivacyInfo.xcprivacy
+        buildPhase: resources
       - path: Shared
       - path: GoodWalk/Intents/StartWalkIntent.swift
     entitlements:
