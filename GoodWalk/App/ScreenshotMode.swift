@@ -14,7 +14,12 @@ enum ScreenshotMode {
         case day
     }
 
+    /// Debug builds only. It seeds over the saved walk log and skips the paywall, so a
+    /// release build ignores the argument.
     static let screen: Screen? = {
+        #if !DEBUG
+        return nil
+        #endif
         let args = ProcessInfo.processInfo.arguments
         guard let i = args.firstIndex(of: "-screenshot"), i + 1 < args.count else { return nil }
         return Screen(rawValue: args[i + 1])

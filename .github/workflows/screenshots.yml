@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: screenshots-${{ github.ref }}
@@ -21,6 +21,10 @@ jobs:
   capture:
     runs-on: macos-26
     timeout-minutes: 45
+    permissions:
+      contents: write   # commits the PNGs
+    env:
+      REF: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -70,8 +74,8 @@ jobs:
           git add docs/screenshots
           git commit -m "Screenshots from simulator ($DEVICE) [skip ci]" || { echo "no changes"; exit 0; }
           # The branch may have moved while the simulator was working; rebase rather than lose the run.
-          git pull --rebase origin ${{ github.ref_name }}
-          git push origin HEAD:${{ github.ref_name }}
+          git pull --rebase origin "$REF"
+          git push origin "HEAD:$REF"
 
       - name: Upload artifact too
         if: always()
@@ -87,6 +91,10 @@ jobs:
     if: always()
     runs-on: macos-26
     timeout-minutes: 45
+    permissions:
+      contents: write   # commits the PNGs
+    env:
+      REF: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -131,8 +139,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/screenshots/duo
           git commit -m "iPhone Duo screenshots from simulator [skip ci]" || { echo "no changes"; exit 0; }
-          git pull --rebase origin ${{ github.ref_name }}
-          git push origin HEAD:${{ github.ref_name }}
+          git pull --rebase origin "$REF"
+          git push origin "HEAD:$REF"
 
       - name: Upload artifact too
         if: always() && steps.probe.outputs.ready == 'true'
