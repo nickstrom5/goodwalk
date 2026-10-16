@@ -1,0 +1,69 @@
+name: Brand images
+
+# Runs scripts/make-brand.swift on a Mac runner and commits the result to the branch it ran on.
+# By default only the site's link-preview image (docs/og.png) is committed, so a font or
+# rendering difference on the runner can't quietly change the app icon. Run it from the Actions
+# tab with "all" to commit every image the script writes.
+#
+# It also runs on a push to a branch other than main that changes the script, so a copy change
+# on og.png can ride the same pull request.
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: "og = docs/og.png only; all = every image make-brand.swift writes"
+        default: og
+        type: choice
+        options: [og, all]
+  push:
+    branches-ignore: [main]
+    paths:
+      - scripts/make-brand.swift
+      - .github/workflows/brand.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: brand-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: macos-26
+    timeout-minutes: 20
+    permissions:
+      contents: write   # commits the PNGs
+    env:
+      REF: ${{ github.ref_name }}
+      SCOPE: ${{ inputs.scope || 'og' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Render
+        run: swift scripts/make-brand.swift
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ "$SCOPE" = "all" ]; then
+            git add docs GoodWalk/Resources/Assets.xcassets
+          else
+            git add docs/og.png
+            git checkout -- . 2>/dev/null || true   # leave every other image as it was
+          fi
+          git commit -m "Brand images from make-brand.swift ($SCOPE) [skip ci]" || { echo "no changes"; exit 0; }
+          git pull --rebase origin "$REF"
+          git push origin "HEAD:$REF"
+
+      - name: Upload artifact too
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: og
+          path: docs/og.png
+          if-no-files-found: ignore
