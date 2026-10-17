@@ -23,6 +23,9 @@ struct DogAvatar: View {
         }
         .frame(width: size, height: size)
         .clipShape(Circle())
+        .accessibilityElement()
+        .accessibilityLabel(image == nil ? "No photo yet" : "Your dog's photo")
+        .accessibilityAddTraits(.isImage)
     }
 }
 

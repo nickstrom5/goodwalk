@@ -14,7 +14,9 @@ iOS app (SwiftUI, iOS 17+). Read `README.md` and `playbook/01-strategy.md` first
   `Screenshots` workflow capture all of them and write PNGs to `docs/screenshots/`. Look there before and after UI changes.
 - Brand images: `swift scripts/make-brand.swift` regenerates the app icon, the illustrated sample dog
   (`SampleDog`, used only by screenshot mode), `docs/brand/`, and the site's `docs/og.png`, `favicon-32.png`,
-  `apple-touch-icon.png`, `icon-192.png` and `icon-512.png`.
+  `apple-touch-icon.png`, `icon-192.png` and `icon-512.png`. Without a Mac, the `Brand images` workflow runs it
+  on `macos-26`: it fires on a branch push that changes the script and commits `docs/og.png` only (dispatch it with
+  `all` to commit every image).
 
 ## Public vs private
 - `docs/` is the **public** website: GitHub Pages serves every file in it at getgoodwalk.app. Only site files go

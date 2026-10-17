@@ -104,5 +104,6 @@ private struct StepButton: View {
                 .clipShape(Circle())
         }
         .buttonStyle(PressScaleStyle())
+        .accessibilityLabel(symbol == "minus" ? "Five minutes less" : "Five minutes more")
     }
 }

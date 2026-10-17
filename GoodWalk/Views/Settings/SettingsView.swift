@@ -121,7 +121,7 @@ struct SettingsView: View {
                     Link("Privacy policy", destination: Config.privacyURL)
                     Link("Terms", destination: Config.termsURL)
                 } footer: {
-                    Text("Good Walk \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") · Everything stays on your phone, including the photo. Walk targets are general guidelines, not veterinary advice. Ask your vet what's right for your dog, especially puppies, seniors, flat-faced breeds and dogs with health conditions.")
+                    Text("Good Walk \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") · Your walks and photos stay on your phone; only anonymous usage counts are sent. Walk targets are general guidelines, not veterinary advice. Ask your vet what's right for your dog, especially puppies, seniors, flat-faced breeds and dogs with health conditions.")
                 }
             }
             .scrollContentBackground(.hidden)

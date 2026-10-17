@@ -195,6 +195,8 @@ struct HomeView: View {
                 .padding(.vertical, 8)
                 .background(Theme.surface)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("\(appState.household.streak)-day streak")
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -242,6 +244,10 @@ struct HomeView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 4)
+        // One element for VoiceOver: the photo, ring and number are a single reading.
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(dog.displayName.capitalizedFirst), \(appState.stats.minutesToday) of \(dog.dailyGoal) minutes today")
+        .accessibilityValue(appState.todayProgress >= 1 ? "Target hit" : "\(Int(appState.todayProgress * 100)) percent")
     }
 
     private var actions: some View {
