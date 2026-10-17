@@ -21,12 +21,33 @@ struct Walk: Codable, Equatable, Identifiable {
     /// True when a photo of this walk is stored on the phone (`WalkPhotoStore`). Kept on the walk
     /// so the month grid can mark the days that have one without hitting the filesystem 31 times.
     var hasPhoto: Bool = false
+    /// The time zone the walk was logged in, so it stays on the day it was walked after the phone
+    /// changes zone. Nil on walks logged before it was kept; those follow the phone's zone.
+    var timeZoneID: String?
 
     var miles: Double { distanceMeters / WalkPlan.metersPerMile }
 
     /// Did this walk count for that dog?
     func counted(for dogID: UUID) -> Bool {
         dogIDs.isEmpty || dogIDs.contains(dogID)
+    }
+
+    /// The day this walk belongs to, as the start of that day in `cal`: the calendar day where it
+    /// was walked, not the one the phone is in now.
+    func day(in cal: Calendar) -> Date {
+        guard let timeZoneID, timeZoneID != cal.timeZone.identifier,
+              let zone = TimeZone(identifier: timeZoneID) else { return cal.startOfDay(for: start) }
+        let walked = cal.dateComponents(in: zone, from: start)
+        var day = DateComponents(era: walked.era, year: walked.year, month: walked.month, day: walked.day)
+        day.isLeapMonth = walked.isLeapMonth   // Chinese and Korean years can repeat a month; keep which one
+        return cal.date(from: day).map(cal.startOfDay(for:)) ?? cal.startOfDay(for: start)
+    }
+
+    /// The start time as the clock read where the walk was logged, so after a flight it agrees
+    /// with the day the walk is filed under. Walks with no stored zone show the phone's time.
+    var startTime: String {
+        let zone = timeZoneID.flatMap(TimeZone.init(identifier:)) ?? .autoupdatingCurrent
+        return start.formatted(Date.FormatStyle(date: .omitted, time: .shortened, timeZone: zone))
     }
 }
 

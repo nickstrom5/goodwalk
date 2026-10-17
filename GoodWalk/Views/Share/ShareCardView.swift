@@ -127,12 +127,13 @@ extension ShareCardView {
 
     static func detail(walk: Walk, now: Date = Date(), calendar cal: Calendar = .current) -> String {
         let when: String
-        if cal.isDateInToday(walk.start) { when = "today" }
-        else if cal.isDateInYesterday(walk.start) { when = "yesterday" }
+        let day = walk.day(in: cal)
+        if cal.isDateInToday(day) { when = "today" }
+        else if cal.isDateInYesterday(day) { when = "yesterday" }
         else {
-            let f = DateFormatter(); f.calendar = cal; f.locale = .current
+            let f = DateFormatter(); f.calendar = cal; f.timeZone = cal.timeZone; f.locale = .current
             f.setLocalizedDateFormatFromTemplate("MMMd")
-            when = f.string(from: walk.start)
+            when = f.string(from: day)
         }
         // A pace-based guess says so, on the card as on the walk screen.
         return "\(Stats.milesPhrase(walk.miles))\(walk.distanceEstimated ? " (est.)" : "") · \(when)"

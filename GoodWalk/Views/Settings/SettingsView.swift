@@ -87,7 +87,7 @@ struct SettingsView: View {
                 if !appState.todaysWalks.isEmpty {
                     Section {
                         ForEach(appState.todaysWalks.reversed()) { walk in
-                            LabeledContent(walk.start.formatted(date: .omitted, time: .shortened),
+                            LabeledContent(walk.startTime,
                                            value: "\(walk.minutes) min · \(String(format: "%.2f", walk.miles)) mi\(walk.distanceEstimated ? " est." : "")")
                         }
                         .onDelete { offsets in

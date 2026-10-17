@@ -10,7 +10,8 @@ import WidgetKit
 @MainActor
 final class AppState: ObservableObject {
     private let defaults: UserDefaults
-    private let cal = Calendar.current
+    /// Fresh each time, like every other caller, so a new time zone is picked up while the app stays in memory.
+    private var cal: Calendar { Calendar.current }
     private let tracker: DistanceTracker
 
     @Published var hasCompletedOnboarding: Bool {
@@ -267,7 +268,7 @@ final class AppState: ObservableObject {
         let walk = Walk(start: start, minutes: minutes,
                         distanceMeters: measured ?? WalkPlan.estimatedMeters(forMinutes: minutes),
                         distanceEstimated: measured == nil || !tracker.isMeasured, source: .timer,
-                        dogIDs: walking)
+                        dogIDs: walking, timeZoneID: cal.timeZone.identifier)
         add(walk)
         Analytics.track(.walkFinished, ["minutes": minutes, "measured": !walk.distanceEstimated, "dogs": walking.count])
         return walk
@@ -289,7 +290,7 @@ final class AppState: ObservableObject {
         let walked = resolve(dogIDs)
         let walk = Walk(start: date, minutes: clamped,
                         distanceMeters: WalkPlan.estimatedMeters(forMinutes: clamped),
-                        distanceEstimated: true, source: source, dogIDs: walked)
+                        distanceEstimated: true, source: source, dogIDs: walked, timeZoneID: cal.timeZone.identifier)
         add(walk)
         Analytics.track(.walkQuickLogged, ["minutes": clamped, "source": source.rawValue, "dogs": walked.count])
         return walk
@@ -342,7 +343,7 @@ final class AppState: ObservableObject {
 
     /// Every walk logged on a given day, newest first. What the calendar opens.
     func walks(on day: Date) -> [Walk] {
-        walks.filter { cal.isDate($0.start, inSameDayAs: day) }.sorted { $0.start > $1.start }
+        walks.filter { cal.isDate($0.day(in: cal), inSameDayAs: day) }.sorted { $0.start > $1.start }
     }
 
     private func add(_ walk: Walk) {
@@ -359,7 +360,7 @@ final class AppState: ObservableObject {
         walks = updated
         lastWalk = walk
 
-        if cal.isDateInToday(walk.start), before < goal, stats.minutesToday >= goal {
+        if cal.isDateInToday(walk.day(in: cal)), before < goal, stats.minutesToday >= goal {
             goalJustHit = true
             Analytics.track(.goalHit, ["minutes": stats.minutesToday, "goal": goal])
         }
@@ -386,7 +387,7 @@ final class AppState: ObservableObject {
     }
 
     func minutesToday(for dogID: UUID) -> Int {
-        walks.filter { $0.counted(for: dogID) && cal.isDateInToday($0.start) }
+        walks.filter { $0.counted(for: dogID) && cal.isDateInToday($0.day(in: cal)) }
             .reduce(0) { $0 + $1.minutes }
     }
 
@@ -397,7 +398,7 @@ final class AppState: ObservableObject {
     }
 
     /// Every walk logged today, whoever it was for. The log, not one dog's ring.
-    var todaysWalks: [Walk] { walks.filter { cal.isDateInToday($0.start) } }
+    var todaysWalks: [Walk] { walks.filter { cal.isDateInToday($0.day(in: cal)) } }
 
     var walkedToday: Bool { stats.minutesToday > 0 }
 
@@ -413,7 +414,7 @@ final class AppState: ObservableObject {
         guard let start = cal.dateInterval(of: .weekOfYear, for: today)?.start else { return [] }
         var minutesByDay: [Date: Int] = [:]
         for walk in walks(forDog: selectedDogID) {
-            minutesByDay[cal.startOfDay(for: walk.start), default: 0] += walk.minutes
+            minutesByDay[walk.day(in: cal), default: 0] += walk.minutes
         }
         return (0..<7).compactMap { offset in
             guard let date = cal.date(byAdding: .day, value: offset, to: start) else { return nil }

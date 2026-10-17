@@ -24,7 +24,7 @@ struct Stats: Equatable {
         var minutesByDay: [Date: Int] = [:]
         var stats = Stats()
         for walk in walks where walk.minutes > 0 {
-            minutesByDay[cal.startOfDay(for: walk.start), default: 0] += walk.minutes
+            minutesByDay[walk.day(in: cal), default: 0] += walk.minutes
             stats.walkCount += 1
             stats.totalMinutes += walk.minutes
             stats.totalMeters += max(0, walk.distanceMeters)
@@ -99,7 +99,7 @@ struct Stats: Equatable {
             // Which dogs walked on each day, and the totals, in one pass.
             var dogsByDay: [Date: Set<UUID>] = [:]
             for walk in walks where walk.minutes > 0 {
-                let day = cal.startOfDay(for: walk.start)
+                let day = walk.day(in: cal)
                 let walked = walk.dogIDs.isEmpty ? dogs.map(\.id) : walk.dogIDs
                 dogsByDay[day, default: []].formUnion(walked)
                 household.walkCount += 1

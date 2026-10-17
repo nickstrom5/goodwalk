@@ -56,7 +56,7 @@ struct MonthSummary: Equatable {
         var countByDay: [Date: Int] = [:]
         var photoDays: Set<Date> = []
         for walk in walks where walk.minutes > 0 {
-            let day = cal.startOfDay(for: walk.start)
+            let day = walk.day(in: cal)
             minutesByDay[day, default: 0] += walk.minutes
             countByDay[day, default: 0] += 1
             if walk.hasPhoto { photoDays.insert(day) }
