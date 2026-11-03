@@ -99,7 +99,7 @@ No market-size figures (TAM, owner counts, APPA numbers) appear anywhere in the 
 
 | Claim | Where | Source | Action |
 |---|---|---|---|
-| National Walk Your Dog Week, 1–7 October | `README.md:11`, `playbook/01-strategy.md:43`, `playbook/06-app-store-listing.md:18`, `playbook/09-app-store-connect.md:127`, `docs/index.html` (hero note) | https://nationaltoday.com/national-walk-your-dog-week/ (opened): October 1–7 annually, founded by Colleen Paige in 2010 | Kept + cited. It is an unofficial observance; don't call it anything grander |
+| National Walk Your Dog Week, 1–7 October | `README.md:11`, `playbook/01-strategy.md:43`, `playbook/09-app-store-connect.md:127`, `docs/index.html` (hero note) | https://nationaltoday.com/national-walk-your-dog-week/ (opened): October 1–7 annually, founded by Colleen Paige in 2010 | Kept + cited. It is an unofficial observance; don't call it anything grander |
 | Walk Your Dog Month is January | `README.md:11`, `playbook/01-strategy.md:44` | Search results only (American Humane, Rover, Dogster, nationaltoday.com/walk-dog-month/ all titled "January"); no page opened | Kept. Low risk, widely repeated; flag lifted once one page is opened |
 
 ## 4b. The public site (added 18 Sep 2026, SEO pass)
