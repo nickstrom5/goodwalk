@@ -109,7 +109,7 @@ private struct WalkRow: View {
                 Text("\(walk.minutes) min · \(Stats.milesPhrase(walk.miles))\(walk.distanceEstimated ? " est." : "")")
                     .font(Theme.Font.headline)
                     .foregroundStyle(Theme.textPrimary)
-                Text("\(walk.start.formatted(date: .omitted, time: .shortened)) · \(dogs)")
+                Text("\(walk.startTime) · \(dogs)")
                     .font(Theme.Font.caption)
                     .foregroundStyle(Theme.textSecondary)
                     .lineLimit(1)

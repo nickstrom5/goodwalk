@@ -15,7 +15,7 @@ first onboarding screen.
 
 ## Promotional text (170 chars, editable without review)
 
-`Walk Your Dog Week is 1–7 October. One tap a day, your dog's face in the ring, and a streak that belongs to them. No collar. No account. No map.`
+`One tap a day, your dog's face in the ring, and a streak that belongs to them. No collar. No account. No map.`
 
 Swap in December: `New year, same dog, longer walks. …`
 

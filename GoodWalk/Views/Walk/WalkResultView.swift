@@ -122,9 +122,10 @@ struct WalkResultView: View {
     private var heading: String {
         guard context == .fromLog else { return "Nice walk." }
         let cal = Calendar.current
-        if cal.isDateInToday(walk.start) { return "Today's walk." }
-        if cal.isDateInYesterday(walk.start) { return "Yesterday's walk." }
-        return walk.start.formatted(date: .abbreviated, time: .omitted)
+        let day = walk.day(in: cal)
+        if cal.isDateInToday(day) { return "Today's walk." }
+        if cal.isDateInYesterday(day) { return "Yesterday's walk." }
+        return day.formatted(date: .abbreviated, time: .omitted)
     }
 
     private var summary: String {
