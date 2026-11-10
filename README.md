@@ -4,6 +4,8 @@ _(Repo folder is `dogwalk/`, the working slug. See `playbook/05-naming.md`.)_
 
 **Your dog needs a walk every day. Good Walk makes it a streak.**
 
+**[Get it on the App Store](https://apps.apple.com/us/app/good-walk-dog-walk-streak/id6814555254)** · Site: [getgoodwalk.app](https://getgoodwalk.app)
+
 An iOS dog-walk streak app built to the same recipe as Clam and Mostly ("30,600 apps" research):
 proven market, one-sentence pitch, onboarding that sells, hard paywall, one core loop, shareable
 result. Tell it about your dog, see what a dog like yours is built for ("Rex needs about 60 min a
